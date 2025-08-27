@@ -613,22 +613,22 @@ const SlideshowWithTopBar = () => {
   const slidesData = useMemo(() => [
     {
       id: 1,
-      heroHeading: "Your Car. Yours Personally",
-      media: { src: "/models/WhatsApp Image 2025-08-27 at 15.28.57_d29fbb32.jpg", alt: "Custom Headrest" },
-      accentColor: "#8B4513"
+      // heroHeading: "Your Car. Yours Personally",
+      media: { src: "/slider.png", alt: "Custom Headrest" },
+      accentColor: "#94701f"
     },
-    {
-      id: 2,
-      heroHeading: "Your Car. Your Signature",
-      media: { src: "/models/mahindra-2.png", alt: "Luxury Materials" },
-      accentColor: "#8B4513"
-    },
-    {
-      id: 3,
-      heroHeading: "Your Car. Your Way",
-      media: { src: "/models/mahindra-3.png", alt: "Custom Fit" },
-      accentColor: "#8B4513"
-    }
+    // {
+    //   id: 2,
+    //   heroHeading: "Your Car. Your Signature",
+    //   media: { src: "/models/mahindra-2.png", alt: "Luxury Materials" },
+    //   accentColor: "#8B4513"
+    // },
+    // {
+    //   id: 3,
+    //   heroHeading: "Your Car. Your Way",
+    //   media: { src: "/models/mahindra-3.png", alt: "Custom Fit" },
+    //   accentColor: "#8B4513"
+    // }
   ], []);
 
   useEffect(() => {
@@ -645,7 +645,7 @@ const SlideshowWithTopBar = () => {
   return (
     <div className="slideshow-container">
       <div className="slide-topbar">
-        <img src="/logo-rec.png" alt="Logo" className="slide-logo-top" />
+        {/* <img src="/logo-rec.png" alt="Logo" className="slide-logo-top" /> */}
         <div className="center-heading">
           {/* <h1>Your's Personally</h1> */}
         </div>
