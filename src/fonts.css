@@ -1,0 +1,46 @@
+/* Custom Fonts CSS - Save as src/assets/fonts.css or src/fonts.css */
+
+/* Book Script Font */
+@font-face {
+  font-family: 'Book Script';
+  src: url('/fonts/books-script.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Chancery Font */
+@font-face {
+  font-family: 'Chancery';
+  src: url('/fonts/Apple Chancery.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Fair Script Font (Fair Prosper) */
+@font-face {
+  font-family: 'Fair Script';
+  src: url('/fonts/Fair Prosper.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Georgia Custom Font */
+@font-face {
+  font-family: 'Georgia Custom';
+  src: url('/fonts/georgia.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Holmes Font */
+@font-face {
+  font-family: 'Holmes';
+  src: url('/fonts/HOLME_DEMO.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
