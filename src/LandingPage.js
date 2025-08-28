@@ -645,7 +645,7 @@ const SlideshowWithTopBar = () => {
   return (
     <div className="slideshow-container">
       <div className="slide-topbar">
-        {/* <img src="/logo-rec.png" alt="Logo" className="slide-logo-top" /> */}
+        <img src="/logo-rec - Copy.png" alt="Logo" className="slide-logo-top" /> 
         <div className="center-heading">
           {/* <h1>Your's Personally</h1> */}
         </div>

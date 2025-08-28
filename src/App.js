@@ -59,150 +59,150 @@ const textPositions = {
         { top: '38%', left: '74%', rotation: 0, fontSize: { desktop: 16, tablet: 12, mobile: 6 } },
       ],
       'Sustainable comfort kit': [
-        { top: '36.7%', left: '25%', rotation: 0, fontSize: { desktop: 16, tablet: 12, mobile: 8 } },
-        { top: '36.7%', left: '74%', rotation: 0, fontSize: { desktop: 16, tablet: 12, mobile: 8 } },
+        { top: '36.7%', left: '25%', rotation: 0, fontSize: { desktop: 16, tablet: 12, mobile: 6 } },
+        { top: '36.7%', left: '74%', rotation: 0, fontSize: { desktop: 16, tablet: 12, mobile: 6 } },
       ]
     },
     'Rear Row': {
       'Black comfort kit': [
-        { top: '68.5%', left: '30.5%', rotation: 0, fontSize: { desktop: 16, tablet: 12, mobile: 8 } },
-        { top: '68.5%', left: '68%', rotation: 0, fontSize: { desktop: 16, tablet: 12, mobile: 8 } },
+        { top: '68.5%', left: '30.5%', rotation: 0, fontSize: { desktop: 16, tablet: 12, mobile: 6 } },
+        { top: '68.5%', left: '68%', rotation: 0, fontSize: { desktop: 16, tablet: 12, mobile: 6 } },
       ],
       'Sustainable comfort kit': [
-        { top: '68%', left: '30%', rotation: 0, fontSize: { desktop: 16, tablet: 12, mobile: 8 } },
-        { top: '68%', left: '68%', rotation: 0, fontSize: { desktop: 16, tablet: 12, mobile: 8 } }
+        { top: '68%', left: '30%', rotation: 0, fontSize: { desktop: 16, tablet: 12, mobile: 6 } },
+        { top: '68%', left: '68%', rotation: 0, fontSize: { desktop: 16, tablet: 12, mobile: 6 } }
       ]
     }
   },
   'THAR': {
     'Front Row': {
       'Black comfort kit': [
-        { top: '45%', left: '28%', rotation: 0, fontSize: { desktop: 14, tablet: 12, mobile: 8 } },
-        { top: '45%', left: '72.8%', rotation: 0, fontSize: { desktop: 14, tablet: 12, mobile: 8 } },
+        { top: '45%', left: '28%', rotation: 0, fontSize: { desktop: 14, tablet: 12, mobile: 6 } },
+        { top: '45%', left: '72.8%', rotation: 0, fontSize: { desktop: 14, tablet: 12, mobile: 6 } },
       ],
       'Sustainable comfort kit': [
-       { top: '44.5%', left: '28.4%', rotation: 0, fontSize: { desktop: 14, tablet: 12, mobile: 8 } },
-        { top: '44.5%', left: '71.5%', rotation: 0, fontSize: { desktop: 14, tablet: 12, mobile: 8 } },
+       { top: '44.5%', left: '28.4%', rotation: 0, fontSize: { desktop: 14, tablet: 12, mobile: 6 } },
+        { top: '44.5%', left: '71.5%', rotation: 0, fontSize: { desktop: 14, tablet: 12, mobile: 6 } },
       ]
     },
     'Rear Row': {
       'Black comfort kit': [
-        { top: '56.5%', left: '33.6%', rotation: -0, fontSize: { desktop: 14, tablet: 12, mobile: 8 } },
-        { top: '56.5%', left: '65%', rotation: 0, fontSize: { desktop: 14, tablet: 12, mobile: 8 } },
+        { top: '56.5%', left: '33.6%', rotation: -0, fontSize: { desktop: 14, tablet: 12, mobile: 6 } },
+        { top: '56.5%', left: '65%', rotation: 0, fontSize: { desktop: 14, tablet: 12, mobile: 6 } },
       ],
       'Sustainable comfort kit': [
-        { top: '57%', left: '32.5%', rotation: 0, fontSize: { desktop: 14, tablet: 12, mobile: 8 } },
-        { top: '57%', left: '65.5%', rotation: 0, fontSize: { desktop: 14, tablet: 12, mobile: 8 } }
+        { top: '57%', left: '32.5%', rotation: 0, fontSize: { desktop: 14, tablet: 12, mobile: 6 } },
+        { top: '57%', left: '65.5%', rotation: 0, fontSize: { desktop: 14, tablet: 12, mobile: 6 } }
       ]
     }
   },
   'XUV700': {
     'Front Row': {
       'Black comfort kit': [
-        { top: '30.8%', left: '28.2%', rotation: 0, fontSize: { desktop: 14, tablet: 12, mobile: 8 } },
-        { top: '31%', left: '75%', rotation: 0, fontSize: { desktop: 14, tablet: 12, mobile: 8 } },
+        { top: '30.8%', left: '28.2%', rotation: 0, fontSize: { desktop: 14, tablet: 12, mobile: 6 } },
+        { top: '31%', left: '75%', rotation: 0, fontSize: { desktop: 14, tablet: 12, mobile: 6 } },
       ],
       'Sustainable comfort kit': [
-        { top: '30.5%', left: '28%', rotation: 0, fontSize: { desktop: 14, tablet: 12, mobile: 8 } },
-        { top: '31.5%', left: '75%', rotation: 0, fontSize: { desktop: 14, tablet: 12, mobile: 8 } },
+        { top: '30.5%', left: '28%', rotation: 0, fontSize: { desktop: 14, tablet: 12, mobile: 6 } },
+        { top: '31.5%', left: '75%', rotation: 0, fontSize: { desktop: 14, tablet: 12, mobile: 6 } },
       ]
     },
     'Rear Row': {
       'Black comfort kit': [
-        { top: '62%', left: '35.3%', rotation: 0, fontSize: { desktop: 14, tablet: 12, mobile: 8 } },
-        { top: '62%', left: '71%', rotation: 0, fontSize: { desktop: 14, tablet: 12, mobile: 8 } }
+        { top: '62%', left: '35.3%', rotation: 0, fontSize: { desktop: 14, tablet: 12, mobile: 6 } },
+        { top: '62%', left: '71%', rotation: 0, fontSize: { desktop: 14, tablet: 12, mobile: 6 } }
       ],
       'Sustainable comfort kit': [
-        { top: '63%', left: '32.6%', rotation: 0, fontSize: { desktop: 14, tablet: 12, mobile: 8 } },
-        { top: '63%', left: '69.5%', rotation: 0, fontSize: { desktop: 14, tablet: 12, mobile: 8 } },
+        { top: '63%', left: '32.6%', rotation: 0, fontSize: { desktop: 14, tablet: 12, mobile: 6 } },
+        { top: '63%', left: '69.5%', rotation: 0, fontSize: { desktop: 14, tablet: 12, mobile: 6 } },
       ]
     }
   },
   'XUV3X0': {
     'Front Row': {
       'Black comfort kit': [
-        { top: '35%', left: '26%', rotation: 0, fontSize: { desktop: 14, tablet: 12, mobile: 8 } },
-        { top: '35%', left: '72.8%', rotation: 0, fontSize: { desktop: 14, tablet: 12, mobile: 8 } },
+        { top: '35%', left: '26%', rotation: 0, fontSize: { desktop: 14, tablet: 12, mobile: 6 } },
+        { top: '35%', left: '72.8%', rotation: 0, fontSize: { desktop: 14, tablet: 12, mobile: 6 } },
       ],
       'Sustainable comfort kit': [
-        { top: '35%', left: '25.3%', rotation: 0, fontSize: { desktop: 14, tablet: 12, mobile: 8 } },
-        { top: '35%', left: '72.5%', rotation: 0, fontSize: { desktop: 14, tablet: 12, mobile: 8 } },
+        { top: '35%', left: '25.3%', rotation: 0, fontSize: { desktop: 14, tablet: 12, mobile: 6 } },
+        { top: '35%', left: '72.5%', rotation: 0, fontSize: { desktop: 14, tablet: 12, mobile: 6 } },
       ]
     },
     'Rear Row': {
       'Black comfort kit': [
-        { top: '63.5%', left: '28.5%', rotation: -1, fontSize: { desktop: 14, tablet: 12, mobile: 8 } },
-        { top: '63.5%', left: '70%', rotation: 0, fontSize: { desktop: 14, tablet: 12, mobile: 8 } },
+        { top: '63.5%', left: '28.5%', rotation: -1, fontSize: { desktop: 14, tablet: 12, mobile: 6 } },
+        { top: '63.5%', left: '70%', rotation: 0, fontSize: { desktop: 14, tablet: 12, mobile: 6 } },
       ],
       'Sustainable comfort kit': [
-        { top: '64%', left: '30%', rotation: 0, fontSize: { desktop: 14, tablet: 12, mobile: 8 } },
-        { top: '64%', left: '70%', rotation: 0, fontSize: { desktop: 14, tablet: 12, mobile: 8 } },
+        { top: '64%', left: '30%', rotation: 0, fontSize: { desktop: 14, tablet: 12, mobile: 6 } },
+        { top: '64%', left: '70%', rotation: 0, fontSize: { desktop: 14, tablet: 12, mobile: 6 } },
       ]
     }
   },
   'SCORPIO N': {
     'Front Row': {
       'Black comfort kit': [
-        { top: '34%', left: '24%', rotation: 0, fontSize: { desktop: 14, tablet: 12, mobile: 8 } },
-        { top: '34%', left: '72.5%', rotation: 0, fontSize: { desktop: 14, tablet: 12, mobile: 8 } },
+        { top: '34%', left: '24%', rotation: 0, fontSize: { desktop: 14, tablet: 12, mobile: 6 } },
+        { top: '34%', left: '72.5%', rotation: 0, fontSize: { desktop: 14, tablet: 12, mobile: 6 } },
       ],
       'Sustainable comfort kit': [
-        { top: '34.5%', left: '23%', rotation: 0, fontSize: { desktop: 14, tablet: 12, mobile: 8 } },
-        { top: '34.5%', left: '70.5%', rotation: 0, fontSize: { desktop:14, tablet: 12, mobile:8 } },
+        { top: '34.5%', left: '23%', rotation: 0, fontSize: { desktop: 14, tablet: 12, mobile: 6 } },
+        { top: '34.5%', left: '70.5%', rotation: 0, fontSize: { desktop:14, tablet: 12, mobile:6 } },
       ]
     },
     'Rear Row': {
       'Black comfort kit': [
-        { top: '60%', left: '26.5%', rotation: 0, fontSize: { desktop: 14, tablet: 12, mobile: 8 } },
-        { top: '60%', left: '70.2%', rotation: 0, fontSize: { desktop: 14, tablet: 12, mobile: 8 } },
+        { top: '60%', left: '26.5%', rotation: 0, fontSize: { desktop: 14, tablet: 12, mobile: 6 } },
+        { top: '60%', left: '70.2%', rotation: 0, fontSize: { desktop: 14, tablet: 12, mobile: 6 } },
       ],
       'Sustainable comfort kit': [
-        { top: '58.5%', left: '26.5%', rotation: 0, fontSize: { desktop: 16, tablet: 12, mobile: 8 } },
-        { top: '58.5%', left: '72%', rotation: 0, fontSize: { desktop: 16, tablet: 12, mobile: 8 } },
+        { top: '58.5%', left: '26.5%', rotation: 0, fontSize: { desktop: 16, tablet: 12, mobile: 6 } },
+        { top: '58.5%', left: '72%', rotation: 0, fontSize: { desktop: 16, tablet: 12, mobile: 6 } },
       ]
     }
   },
   'BOLERO NEO': {
     'Front Row': {
       'Black comfort kit': [
-        { top: '36%', left: '27.5%', rotation: 0, fontSize: { desktop: 14, tablet: 12, mobile: 8 } },
-        { top: '35.8%', left: '76%', rotation: 0, fontSize: { desktop: 14, tablet: 12, mobile: 8 } },
+        { top: '36%', left: '27.5%', rotation: 0, fontSize: { desktop: 14, tablet: 12, mobile: 6 } },
+        { top: '35.8%', left: '76%', rotation: 0, fontSize: { desktop: 14, tablet: 12, mobile: 6 } },
       ],
       'Sustainable comfort kit': [
-        { top: '36.4%', left: '27%', rotation: 0, fontSize: { desktop: 14, tablet: 12, mobile: 8 } },
-        { top: '36.4%', left: '75.5%', rotation: 0, fontSize: { desktop: 14, tablet: 12, mobile: 8 } },
+        { top: '36.4%', left: '27%', rotation: 0, fontSize: { desktop: 14, tablet: 12, mobile: 6 } },
+        { top: '36.4%', left: '75.5%', rotation: 0, fontSize: { desktop: 14, tablet: 12, mobile: 6 } },
       ]
     },
     'Rear Row': {
       'Black comfort kit': [
-        { top: '57%', left: '32%', rotation: 0, fontSize: { desktop: 16, tablet: 12, mobile: 8 } },
-        { top: '57%', left: '72%', rotation: 0, fontSize: { desktop: 16, tablet: 12, mobile: 8 } }
+        { top: '57%', left: '32%', rotation: 0, fontSize: { desktop: 16, tablet: 12, mobile: 6 } },
+        { top: '57%', left: '72%', rotation: 0, fontSize: { desktop: 16, tablet: 12, mobile: 6 } }
       ],
       'Sustainable comfort kit': [
-        { top: '57%', left: '33%', rotation: 0, fontSize: { desktop: 16, tablet: 12, mobile: 8 } },
-        { top: '57%', left: '70%', rotation: 0, fontSize: { desktop: 16, tablet: 12, mobile: 8 } },
+        { top: '57%', left: '33%', rotation: 0, fontSize: { desktop: 16, tablet: 12, mobile: 6 } },
+        { top: '57%', left: '70%', rotation: 0, fontSize: { desktop: 16, tablet: 12, mobile: 6 } },
       ]
     }
   },
   'BOLERO': {
     'Front Row': {
       'Black comfort kit': [
-        { top: '34.5%', left: '29%', rotation: 0, fontSize: { desktop: 14, tablet: 12, mobile: 8 } },
-        { top: '35%', left: '70%', rotation: 0, fontSize: { desktop: 14, tablet: 12, mobile: 8 } },
+        { top: '34.5%', left: '29%', rotation: 0, fontSize: { desktop: 14, tablet: 12, mobile: 6 } },
+        { top: '35%', left: '70%', rotation: 0, fontSize: { desktop: 14, tablet: 12, mobile: 6 } },
       ],
       'Sustainable comfort kit': [
-        { top: '36%', left: '29%', rotation: 0, fontSize: { desktop: 14, tablet: 12, mobile: 8 } },
-        { top: '36%', left: '69.8%', rotation: 0, fontSize: { desktop: 14, tablet: 12, mobile: 8 } },
+        { top: '36%', left: '29%', rotation: 0, fontSize: { desktop: 14, tablet: 12, mobile: 6 } },
+        { top: '36%', left: '69.8%', rotation: 0, fontSize: { desktop: 14, tablet: 12, mobile: 6 } },
       ]
     },
     'Rear Row': {
       'Black comfort kit': [
-        { top: '66%', left: '30.8%', rotation: 0, fontSize: { desktop: 14, tablet: 12, mobile: 8 } },
-        { top: '66%', left: '66.5%', rotation: 0, fontSize: { desktop: 14, tablet: 12, mobile: 8} },
+        { top: '66%', left: '30.8%', rotation: 0, fontSize: { desktop: 14, tablet: 12, mobile: 6 } },
+        { top: '66%', left: '66.5%', rotation: 0, fontSize: { desktop: 14, tablet: 12, mobile: 6} },
       ],
       'Sustainable comfort kit': [
-        { top: '68%', left: '31.5%', rotation: 0, fontSize: { desktop: 14, tablet: 12, mobile: 8 } },
-        { top: '68%', left: '65.8%', rotation: 0, fontSize: { desktop: 14, tablet: 12, mobile: 8 } },
+        { top: '68%', left: '31.5%', rotation: 0, fontSize: { desktop: 14, tablet: 12, mobile: 6 } },
+        { top: '68%', left: '65.8%', rotation: 0, fontSize: { desktop: 14, tablet: 12, mobile: 6 } },
       ]
     }
   }
@@ -575,18 +575,12 @@ const EmbroideredText = ({ text, fontFamily, position, textColor, isMobile }) =>
 
   const strokeColor = getStrokeColor(textColor);
 
-  // ✅ Add device checks
-  const isTablet = !isMobile && window.innerWidth > 768 && window.innerWidth <= 1024;
-  const isDesktop = !isMobile && window.innerWidth > 1024;
-
-  // ✅ Updated font size logic
+  // FIXED: Updated font size logic - tablets now use desktop sizes
   const fontSize = position.fontSize
     ? (isMobile 
         ? position.fontSize.mobile 
-        : isTablet 
-          ? position.fontSize.tablet 
-          : position.fontSize.desktop)
-    : (isMobile ? 10 : isTablet ? 12 : 14);
+        : position.fontSize.desktop)  // Remove tablet check, use desktop for both tablet and desktop
+    : (isMobile ? 0 : 14);  // Default to 14 for non-mobile (both tablet and desktop)
 
   return (
     <div
@@ -625,6 +619,7 @@ const OrderForm = ({
  selectedSeatView,
  selectedAccessory,
  personalisedContent,
+ selectedFont,  // Add this line
  selectedColor,
  numSets,
  imageRef,
@@ -648,7 +643,6 @@ const OrderForm = ({
 const isValidPhone = (s) => /^\d{10}$/.test(s || '');
  // track fields locked (disabled) after user click — dealership will fill these
  const [lockedFields, setLockedFields] = useState({});
- const [selectedFont, setSelectedFont] = useState("");
 
 
  // modern badge style for "Filled by Dealership only"
@@ -861,247 +855,413 @@ const addImageFromUrl = async (pdf, url, x, y, w, h) => {
 
 
 
+//Editable Pdf generation
+
 const handleDownloadOrder = async () => {
-if (!orderFormRef.current) return;
+  if (!orderFormRef.current) return;
 
   try {
-    const pdf = new jsPDF('p', 'mm', 'a4');
-    const pageWidth = pdf.internal.pageSize.getWidth();
-    const margin = 10;
-    let currentY = 10;
+    const pdfDoc = await PDFDocument.create();
+    const page = pdfDoc.addPage([595.28, 841.89]); // A4 size in points
+    const { width: pageWidth, height: pageHeight } = page.getSize();
+    
+    // Convert mm to points (1mm = 2.834645669 points)
+    const mmToPt = (mm) => mm * 2.834645669;
+    
+    // CONFIGURABLE MARGINS - Adjust these values to increase/decrease margins
+    const topMargin = mmToPt(10);    // Increase this value for more top margin
+    const bottomMargin = mmToPt(10);  // Increase this value for more bottom margin
+    const leftMargin = mmToPt(10);    // Left margin
+    const rightMargin = mmToPt(10);   // Right margin
+    
+    let currentY = pageHeight - topMargin;
 
-    const labelColor = [0, 0, 0];
-    const valueColor = [80, 80, 80];
-    const sectionBg = [245, 245, 245];
+    // Load fonts
+    const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
+    const boldFont = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
+    
+    // Get form
+    const form = pdfDoc.getForm();
+
+    const labelColor = rgb(0, 0, 0);
+    const valueColor = rgb(80/255, 80/255, 80/255);
+    const sectionBg = rgb(245/255, 245/255, 245/255);
 
     const formattedDate = new Date(orderDate).toLocaleDateString('en-GB', {
       day: '2-digit', month: '2-digit', year: 'numeric'
     }).replace(/\//g, ' - ');
 
-    // Mahindra logo
-// Page dimensions
-// const pageWidth = pdf.internal.pageSize.getWidth();
-const pageHeight = pdf.internal.pageSize.getHeight();
+    // Helper function for invisible editable fields
+    const addInvisibleEditableField = (name, x, y, width = mmToPt(50), height = mmToPt(4), defaultValue = '') => {
+      const textField = form.createTextField(name);
+      textField.setText(defaultValue);
+      textField.addToPage(page, {
+        x,
+        y: y - height,
+        width,
+        height,
+        borderWidth: 0,
+        backgroundColor: rgb(1, 1, 1, 0), // Transparent
+      });
+      textField.setFontSize(9);
+      return textField;
+    };
 
-// Margins
-const marginLeft = 3.5;
-const marginTop =2.5;
-const marginRight = 10;
-const marginBottom = 0;
+    // Updated addLabelValue function with selective editability
+    const addLabelValue = (label, value, x, y, labelWidth = mmToPt(45), fieldName = '', isEditable = false) => {
+      const safeValue = (value && value !== 'N/A') ? value : '';
+      
+      page.drawText(label, {
+        x: x,
+        y: y,
+        size: 9,
+        font: boldFont,
+        color: labelColor,
+      });
 
-// Available space inside margins
-const availableWidth = pageWidth - marginLeft - marginRight;
-const availableHeight = pageHeight - marginTop - marginBottom;
+      if (fieldName && isEditable) {
+        // Make field editable with customizable dimensions
+        addInvisibleEditableField(fieldName, x + labelWidth, y - mmToPt(1), mmToPt(60), mmToPt(4), safeValue);
+      } else {
+        // Static text (not editable)
+        page.drawText(safeValue, {
+          x: x + labelWidth,
+          y: y,
+          size: 9,
+          font: font,
+          color: valueColor,
+        });
+      }
+    };
 
-const logoResponse = await fetch('/loogo.png');
-const logoBlob = await logoResponse.blob();
-const logoDataUrl = await new Promise(resolve => {
-  const reader = new FileReader();
-  reader.onload = () => resolve(reader.result);
-  reader.readAsDataURL(logoBlob);
-});
+    // FIXED: Updated addLabelValueWithWrap function with proper editability
+    const addLabelValueWithWrap = (label, value, x, y, labelWidth = mmToPt(45), maxWidth = mmToPt(80), fieldName = '', isEditable = false) => {
+      const safeValue = (value && value !== 'N/A') ? value : '';
+      
+      page.drawText(label, {
+        x: x,
+        y: y,
+        size: 9,
+        font: boldFont,
+        color: labelColor,
+      });
+      
+      if (fieldName && isEditable) {
+        // Make field editable - FIXED: Now properly creates editable field
+        addInvisibleEditableField(fieldName, x + labelWidth, y - mmToPt(1), maxWidth - labelWidth, mmToPt(8), safeValue);
+        return mmToPt(Math.max(4, 5));
+      } else if (safeValue) {
+        const availableWidth = maxWidth - labelWidth;
+        // Simple text placement for static text
+        page.drawText(safeValue, {
+          x: x + labelWidth,
+          y: y,
+          size: 9,
+          font: font,
+          color: valueColor,
+          maxWidth: availableWidth,
+        });
+        return mmToPt(Math.max(4, 5));
+      }
+      return mmToPt(5);
+    };
 
-const img = new Image();
-img.src = logoDataUrl;
+    // Mahindra logo - Updated to use configurable margins
+    const logoMarginLeft = mmToPt(3.5);
+    const logoMarginTop = pageHeight - mmToPt(2.5);
+    const logoMarginRight = mmToPt(10);
+    const logoMarginBottom = 0;
 
-await new Promise(resolve => {
-  img.onload = resolve;
-});
+    const availableWidth = pageWidth - logoMarginLeft - logoMarginRight;
+    const availableHeight = pageHeight - (pageHeight - logoMarginTop) - logoMarginBottom;
 
-// Natural size
-let logoWidth = img.width;
-let logoHeight = img.height;
-const aspectRatio = logoWidth / logoHeight;
+    try {
+      const logoResponse = await fetch('/loogo.png');
+      const logoBytes = await logoResponse.arrayBuffer();
+      const logoImage = await pdfDoc.embedPng(logoBytes);
 
-// Desired max logo size (mm)
-const maxWidth = 40;
-const maxHeight = 40;
+      const img = new Image();
+      const logoDataUrl = URL.createObjectURL(new Blob([logoBytes]));
+      img.src = logoDataUrl;
 
-// Scale within max size
-if (logoWidth > maxWidth) {
-  logoWidth = maxWidth;
-  logoHeight = logoWidth / aspectRatio;
-}
-if (logoHeight > maxHeight) {
-  logoHeight = maxHeight;
-  logoWidth = logoHeight * aspectRatio;
-}
+      await new Promise(resolve => {
+        img.onload = resolve;
+      });
 
-// Also check page available space
-if (logoWidth > availableWidth) {
-  logoWidth = availableWidth;
-  logoHeight = logoWidth / aspectRatio;
-}
-if (logoHeight > availableHeight) {
-  logoHeight = availableHeight;
-  logoWidth = logoHeight * aspectRatio;
-}
+      // Natural size converted to points
+      let logoWidth = mmToPt(img.width * 0.264583); // px to mm conversion
+      let logoHeight = mmToPt(img.height * 0.264583);
+      const aspectRatio = logoWidth / logoHeight;
 
-// Position: top-left inside margins
-const x = marginLeft;
-const y = marginTop;
+      // Desired max logo size
+      const maxWidth = mmToPt(40);
+      const maxHeight = mmToPt(40);
 
-// Add logo
-pdf.addImage(logoDataUrl, 'PNG', x, y, logoWidth, logoHeight);
+      // Scale within max size
+      if (logoWidth > maxWidth) {
+        logoWidth = maxWidth;
+        logoHeight = logoWidth / aspectRatio;
+      }
+      if (logoHeight > maxHeight) {
+        logoHeight = maxHeight;
+        logoWidth = logoHeight * aspectRatio;
+      }
 
+      // Check page available space
+      if (logoWidth > availableWidth) {
+        logoWidth = availableWidth;
+        logoHeight = logoWidth / aspectRatio;
+      }
+      if (logoHeight > availableHeight) {
+        logoHeight = availableHeight;
+        logoWidth = logoHeight * aspectRatio;
+      }
 
+      page.drawImage(logoImage, {
+        x: logoMarginLeft,
+        y: logoMarginTop - logoHeight,
+        width: logoWidth,
+        height: logoHeight,
+      });
 
-    // Order info
-    pdf.setFontSize(10);
-    pdf.setTextColor(...valueColor);
-    pdf.text(`Order No : ${orderNo}`, pageWidth - margin, currentY + 6, { align: 'right' });
-    pdf.text(`Date : ${formattedDate}`, pageWidth - margin, currentY + 12, { align: 'right' });
+      URL.revokeObjectURL(logoDataUrl);
+    } catch (error) {
+      console.warn('Logo could not be loaded:', error);
+    }
 
-    currentY += 18;
-    pdf.setDrawColor(255, 153, 153);
-    pdf.setLineWidth(0.5);
-    pdf.line(margin, currentY, pageWidth - margin, currentY);
-    currentY += 4;
+    // Order info - Updated to use configurable margins
+    page.drawText(`Order No : ${orderNo}`, {
+      x: pageWidth - rightMargin - mmToPt(50),
+      y: currentY - mmToPt(6),
+      size: 10,
+      font: font,
+      color: valueColor,
+    });
+
+    page.drawText(`Date : ${formattedDate}`, {
+      x: pageWidth - rightMargin - mmToPt(50),
+      y: currentY - mmToPt(12),
+      size: 10,
+      font: font,
+      color: valueColor,
+    });
+
+    currentY -= mmToPt(18);
+    
+    // Line - Updated to use configurable margins
+    page.drawLine({
+      start: { x: leftMargin, y: currentY },
+      end: { x: pageWidth - rightMargin, y: currentY },
+      thickness: mmToPt(0.5),
+      color: rgb(1, 153/255, 153/255),
+    });
+    
+    currentY -= mmToPt(4);
 
     const addSectionHeader = (title) => {
-      pdf.setFillColor(...sectionBg);
-      pdf.rect(margin, currentY, pageWidth - 2 * margin, 8, 'F');
-      pdf.setTextColor(...labelColor);
-      pdf.setFontSize(12);
-      pdf.setFont(undefined, 'bold');
-      pdf.text(title, margin + 1, currentY + 5.5);
-      currentY += 12;
+      page.drawRectangle({
+        x: leftMargin,
+        y: currentY - mmToPt(8),
+        width: pageWidth - leftMargin - rightMargin,
+        height: mmToPt(8),
+        color: sectionBg,
+      });
+      
+      page.drawText(title, {
+        x: leftMargin + mmToPt(1),
+        y: currentY - mmToPt(5.5),
+        size: 12,
+        font: boldFont,
+        color: labelColor,
+      });
+      
+      currentY -= mmToPt(12);
     };
 
-    // Add Dealer & Customer Section
+    // DEALER & CUSTOMER DETAILS
     addSectionHeader('DEALER & CUSTOMER DETAILS');
 
-    const dealerX = margin;
-    const customerX = pageWidth / 2 + 5;
-    let dealerY = currentY + 3;
-    let customerY = currentY + 3;
+    const dealerX = leftMargin;
+    const customerX = pageWidth / 2 + mmToPt(5);
+    let dealerY = currentY - mmToPt(3);
+    let customerY = currentY - mmToPt(3);
 
-    pdf.setFontSize(10);
-    pdf.setFont(undefined, 'bold');
-    pdf.setTextColor(...labelColor);
-    pdf.text('DEALER INFORMATION', dealerX, dealerY);
-    pdf.text('CUSTOMER INFORMATION', customerX, customerY);
-    dealerY += 6;
-    customerY += 6;
+    page.drawText('DEALER INFORMATION', {
+      x: dealerX,
+      y: dealerY,
+      size: 10,
+      font: boldFont,
+      color: labelColor,
+    });
 
-    const addLabelValue = (label, value, x, y, labelWidth = 45) => {
-      const safeValue = (value && value !== 'N/A') ? value : '';
-      pdf.setFontSize(9);
-      pdf.setFont(undefined, 'bold');
-      pdf.setTextColor(...labelColor);
-      pdf.text(label, x, y);
-      pdf.setFont(undefined, 'normal');
-      pdf.setTextColor(...valueColor);
-      pdf.text(safeValue, x + labelWidth, y);
-    };
+    page.drawText('CUSTOMER INFORMATION', {
+      x: customerX,
+      y: customerY,
+      size: 10,
+      font: boldFont,
+      color: labelColor,
+    });
 
-    const addLabelValueWithWrap = (label, value, x, y, labelWidth = 45, maxWidth = 80) => {
-      const safeValue = (value && value !== 'N/A') ? value : '';
-      
-      // Add label
-      pdf.setFontSize(9);
-      pdf.setFont(undefined, 'bold');
-      pdf.setTextColor(...labelColor);
-      pdf.text(label, x, y);
-      
-      if (safeValue) {
-        pdf.setFont(undefined, 'normal');
-        pdf.setTextColor(...valueColor);
-        
-        // Split text to fit within available width
-        const availableWidth = maxWidth - labelWidth;
-        const lines = pdf.splitTextToSize(safeValue, availableWidth);
-        
-        // Place text starting from the same line as label, then wrap if needed
-        const valueX = x + labelWidth;
-        for (let i = 0; i < lines.length; i++) {
-          pdf.text(lines[i], valueX, y + (i * 4));
-        }
-        
-        return Math.max(lines.length * 4, 5); // Return height used (minimum 5 for single line)
-      }
-      return 5; // Default height for label only
-    };
+    dealerY -= mmToPt(6);
+    customerY -= mmToPt(6);
 
-    // Dealer info
-    addLabelValue('Dealer Name :', dealershipName, dealerX, dealerY);
-    dealerY += 5;
-    addLabelValue('Accessory Manager Name :', dealershipManager, dealerX, dealerY);
-    dealerY += 5;
-    addLabelValue('Dealer Location :', dealershipLocation, dealerX, dealerY);
-    dealerY += 5;
+// Replace the dealer information section with this code:
 
-    // Use new function for dealer address with proper wrapping
-    const dealerAddrHeight = addLabelValueWithWrap('Dealer Address :', dealershipAddress, dealerX, dealerY, 45, 80);
-    dealerY += dealerAddrHeight;
-        addLabelValue('Booking ID :', BookingID, dealerX, dealerY);
-dealerY += 5;
+// Dealer info - Custom positioning for editable fields
+page.drawText('Dealer Name :', {
+  x: dealerX,
+  y: dealerY,
+  size: 9,
+  font: boldFont,
+  color: labelColor,
+});
+// Custom positioned editable field for Dealer Name
+addInvisibleEditableField('dealerName', dealerX + mmToPt(45), dealerY - mmToPt(-3), mmToPt(40), mmToPt(4), dealershipName || '');
+dealerY -= mmToPt(5);
 
-    // Customer info - Updated labels
-    addLabelValue('Customer Name :', customerName, customerX, customerY);
-    customerY += 5;
-    addLabelValue('Customer Phone :', customerPhone, customerX, customerY);
-    customerY += 5;
-  
+page.drawText('Accessory Manager Name :', {
+  x: dealerX,
+  y: dealerY,
+  size: 9,
+  font: boldFont,
+  color: labelColor,
+});
+// Custom positioned editable field for Manager Name
+addInvisibleEditableField('dealerManager', dealerX + mmToPt(45), dealerY - mmToPt(-3), mmToPt(40), mmToPt(4), dealershipManager || '');
+dealerY -= mmToPt(5);
+
+page.drawText('Dealer Location :', {
+  x: dealerX,
+  y: dealerY,
+  size: 9,
+  font: boldFont,
+  color: labelColor,
+});
+// Custom positioned editable field for Location
+addInvisibleEditableField('dealerLocation', dealerX + mmToPt(45), dealerY - mmToPt(-3), mmToPt(40), mmToPt(4), dealershipLocation || '');
+dealerY -= mmToPt(7);
+
+page.drawText('Dealer Address :', {
+  x: dealerX,
+  y: dealerY,
+  size: 9,
+  font: boldFont,
+  color: labelColor,
+});
+// Custom positioned editable field for Address (taller for multi-line)
+addInvisibleEditableField('dealerAddress', dealerX + mmToPt(45), dealerY - mmToPt(-5), mmToPt(40), mmToPt(5), dealershipAddress || '');
+dealerY -= mmToPt(6); // More space for taller address field
+
+page.drawText('Booking ID :', {
+  x: dealerX,
+  y: dealerY,
+  size: 9,
+  font: boldFont,
+  color: labelColor,
+});
+// Custom positioned editable field for Booking ID
+addInvisibleEditableField('bookingId', dealerX + mmToPt(45), dealerY - mmToPt(-3), mmToPt(40), mmToPt(4), BookingID || '');
+dealerY -= mmToPt(5);
+
+
+
+
+
+    // Customer info - NOT editable (remove the fieldName parameter or set isEditable to false)
+    addLabelValue('Customer Name :', customerName, customerX, customerY, mmToPt(35)); // NOT EDITABLE
+    customerY -= mmToPt(5);
+    addLabelValue('Customer Phone :', customerPhone, customerX, customerY, mmToPt(35)); // NOT EDITABLE
+    customerY -= mmToPt(5);
+
+    currentY = Math.min(dealerY, customerY) - mmToPt(2);
     
-    // Part Number (if needed)
-    // addLabelValue('Part No. :', partNumber, customerX, customerY);
-    // customerY += 5;
+    page.drawLine({
+      start: { x: leftMargin, y: currentY },
+      end: { x: pageWidth - rightMargin, y: currentY },
+      thickness: 1,
+      color: labelColor,
+    });
+    
+    currentY -= mmToPt(4);
 
-    currentY = Math.max(dealerY, customerY) + 2;
-    pdf.line(margin, currentY, pageWidth - margin, currentY);
-    currentY += 4;
-
-    // VEHICLE & PERSONALIZATION
+    // VEHICLE & PERSONALIZATION - Make these NOT editable
     addSectionHeader('VEHICLE & PERSONALIZATION');
-    addLabelValue('Vehicle Model :', selectedVehicleModel, margin, currentY);
-    addLabelValue('Accessory Kit :', selectedAccessory, pageWidth / 2 + 5, currentY);
-    currentY += 6;
-    addLabelValue('Personalized Text :', personalisedContent, margin, currentY);
-    addLabelValue('Font Style :', selectedFont, pageWidth / 2 + 5, currentY);
-    currentY += 6;
-    const textColorName = textColors.find(c => c.value === selectedColor)?.name || selectedColor;
-    addLabelValue('Thread Color :', textColorName, margin, currentY);
-    const boxSize = 5;
-    const boxX = margin + 45 + pdf.getTextWidth(textColorName) + 3;
-    const boxY = currentY - 3.5;
-
-    pdf.setDrawColor(0);
-    pdf.setFillColor(selectedColor);
-    pdf.roundedRect(boxX, boxY, boxSize, boxSize, 1.5, 1.5, 'F');
-    addLabelValue('Quantity :', numSets.toString(), pageWidth / 2 + 5, currentY);
     
-  // Add price information
-currentY += 6;
-const unitPrice = selectedAccessory
-  ? parseInt(kitPrices[selectedAccessory].replace(/[^\d]/g, ''))
-  : 0;
-const totalPrice = unitPrice * (Number(numSets) || 1);
+    addLabelValue('Vehicle Model :', selectedVehicleModel, leftMargin, currentY, mmToPt(35)); // NOT EDITABLE
+    addLabelValue('Accessory Kit :', selectedAccessory, pageWidth / 2 + mmToPt(5), currentY, mmToPt(35)); // NOT EDITABLE
+    currentY -= mmToPt(6);
+    
+    addLabelValue('Personalized Text :', personalisedContent, leftMargin, currentY, mmToPt(35)); // NOT EDITABLE
+    addLabelValue('Font Style :', selectedFont , pageWidth / 2 + mmToPt(5), currentY, mmToPt(35)); // NOT EDITABLE
+    currentY -= mmToPt(6);
+    
+    const textColorName = textColors?.find(c => c.value === selectedColor)?.name || selectedColor;
+    addLabelValue('Thread Color :', textColorName, leftMargin, currentY, mmToPt(35)); // NOT EDITABLE
+    
+    // Color box - Updated to use configurable margins
+    const boxSize = mmToPt(4);
+    const textWidth = font.widthOfTextAtSize(textColorName || '', 9);
+    const boxX = leftMargin + mmToPt(35) + textWidth + mmToPt(3);
+    const boxY = currentY - mmToPt(1);
 
-// Draw label with default font
-pdf.setFontSize(10);
-pdf.setFont(undefined, 'bold');
-pdf.setTextColor(...labelColor);
-pdf.text('MRP :', margin, currentY);
+    if (selectedColor) {
+      page.drawRectangle({
+        x: boxX,
+        y: boxY,
+        width: boxSize,
+        height: boxSize,
+        color: rgb(
+          parseInt(selectedColor.slice(1, 3), 16) / 255,
+          parseInt(selectedColor.slice(3, 5), 16) / 255,
+          parseInt(selectedColor.slice(5, 7), 16) / 255
+        ),
+        borderColor: labelColor,
+        borderWidth: 0.5,
+      });
+    }
+    
+    addLabelValue('Quantity :', numSets?.toString(), pageWidth / 2 + mmToPt(5), currentY, mmToPt(35)); // NOT EDITABLE
+    
+    currentY -= mmToPt(6);
+    
+    // Price information - Make MRP NOT editable
+    const unitPrice = selectedAccessory && kitPrices?.[selectedAccessory]
+      ? parseInt(kitPrices[selectedAccessory].replace(/[^\d]/g, ''))
+      : 0;
+    const totalPrice = unitPrice * (Number(numSets) || 1);
 
-// Always show "Rs." before price, keep normal font
-const priceText = `Rs. ${totalPrice.toLocaleString()} (inclusive of all taxes)`;
+    page.drawText('MRP :', {
+      x: leftMargin,
+      y: currentY,
+      size: 10,
+      font: boldFont,
+      color: labelColor,
+    });
 
-pdf.setFont(undefined, 'normal');
-pdf.setTextColor(...valueColor);
-pdf.text(priceText, margin + 45, currentY);
+    const priceText = `Rs. ${totalPrice.toLocaleString()} (inclusive of all taxes)`;
+    page.drawText(priceText, {
+      x: leftMargin + mmToPt(35),
+      y: currentY,
+      size: 9,
+      font: font,
+      color: valueColor,
+    });
 
-// Reset to default font afterwards (if needed for next sections)
-pdf.setFont(undefined, 'normal');
-
-currentY += 8;
-pdf.line(margin, currentY, pageWidth - margin, currentY);
-currentY += 4;
-
+    currentY -= mmToPt(8);
+    
+    page.drawLine({
+      start: { x: leftMargin, y: currentY },
+      end: { x: pageWidth - rightMargin, y: currentY },
+      thickness: 1,
+      color: labelColor,
+    });
+    
+    currentY -= mmToPt(4);
 
     // DESIGN PREVIEW
     addSectionHeader('DESIGN PREVIEW');
 
+    // Image capture and display - Updated to use configurable margins
     const captureSeatView = async (seatView) => {
       const element = document.createElement('div');
       element.style.position = 'fixed';
@@ -1121,7 +1281,7 @@ currentY += 4;
 
       await new Promise(resolve => img.onload = resolve);
 
-      const positions = pdfTextPositions[selectedVehicleModel]?.[seatView]?.[selectedAccessory] || [];
+      const positions = pdfTextPositions?.[selectedVehicleModel]?.[seatView]?.[selectedAccessory] || [];
       positions.forEach(position => {
         const textEl = document.createElement('div');
         textEl.textContent = personalisedContent;
@@ -1146,82 +1306,224 @@ currentY += 4;
       return canvas.toDataURL('image/jpeg', 0.95);
     };
 
-    const [frontImage, rearImage] = await Promise.all([
-      captureSeatView('Front Row'),
-      captureSeatView('Rear Row')
-    ]);
+    try {
+      const [frontImage, rearImage] = await Promise.all([
+        captureSeatView('Front Row'),
+        captureSeatView('Rear Row')
+      ]);
 
-    const imgW = (pageWidth - 2 * margin - 10) / 2;
-    const img1 = new Image(); img1.src = frontImage;
-    const img2 = new Image(); img2.src = rearImage;
-    await Promise.all([img1.decode(), img2.decode()]);
-    const h1 = (img1.height / img1.width) * imgW;
-    const h2 = (img2.height / img2.width) * imgW;
-    const imgH = Math.max(h1, h2);
-    pdf.addImage(frontImage, 'JPEG', margin, currentY, imgW, h1);
-    pdf.text('Front Row', margin + imgW / 2, currentY + h1 + 5, { align: 'center' });
-    pdf.addImage(rearImage, 'JPEG', margin + imgW + 10, currentY, imgW, h2);
-    pdf.text('Rear Row', margin + imgW + 10 + imgW / 2, currentY + h2 + 5, { align: 'center' });
-    currentY += imgH + 12;
+      const imgW = (pageWidth - leftMargin - rightMargin - mmToPt(10)) / 2;
+      
+      // Load images to get dimensions
+      const img1 = new Image(); 
+      img1.src = frontImage;
+      const img2 = new Image(); 
+      img2.src = rearImage;
+      
+      await Promise.all([
+        new Promise(resolve => img1.onload = resolve),
+        new Promise(resolve => img2.onload = resolve)
+      ]);
+      
+      const h1 = (img1.height / img1.width) * imgW;
+      const h2 = (img2.height / img2.width) * imgW;
+      const imgH = Math.max(h1, h2);
+
+      // Convert to PDF images
+      const frontImageBytes = await fetch(frontImage).then(res => res.arrayBuffer());
+      const rearImageBytes = await fetch(rearImage).then(res => res.arrayBuffer());
+      
+      const frontPdfImage = await pdfDoc.embedJpg(frontImageBytes);
+      const rearPdfImage = await pdfDoc.embedJpg(rearImageBytes);
+
+      // Draw images
+      page.drawImage(frontPdfImage, {
+        x: leftMargin,
+        y: currentY - h1,
+        width: imgW,
+        height: h1,
+      });
+
+      page.drawText('Front Row', {
+        x: leftMargin + imgW / 2 - mmToPt(8),
+        y: currentY - h1 - mmToPt(5),
+        size: 10,
+        font: font,
+        color: labelColor,
+      });
+
+      page.drawImage(rearPdfImage, {
+        x: leftMargin + imgW + mmToPt(10),
+        y: currentY - h2,
+        width: imgW,
+        height: h2,
+      });
+
+      page.drawText('Rear Row', {
+        x: leftMargin + imgW + mmToPt(10) + imgW / 2 - mmToPt(8),
+        y: currentY - h2 - mmToPt(5),
+        size: 10,
+        font: font,
+        color: labelColor,
+      });
+
+      currentY -= imgH + mmToPt(12);
+    } catch (error) {
+      console.warn('Could not load preview images:', error);
+      currentY -= mmToPt(50);
+    }
 
     // DEALERSHIP AUTHENTICATION
     addSectionHeader('DEALERSHIP AUTHENTICATION');
-    pdf.setFontSize(8);
-    pdf.setTextColor(...valueColor);
-    pdf.text(
-      'Please affix the official dealership seal and provide an authorized signature below to validate this personalization.',
-      margin, currentY
-    );
-    currentY += 12;
+    
+    page.drawText('Please affix the official dealership seal and provide an authorized signature below to validate this personalization.', {
+      x: leftMargin,
+      y: currentY,
+      size: 8,
+      font: font,
+      color: valueColor,
+    });
+    
+    currentY -= mmToPt(7);
 
-    pdf.setFont(undefined, 'bold');
-    pdf.setFontSize(9);
-    pdf.setTextColor(...labelColor);
-    pdf.text('Authorized Representative Name:', margin, currentY);
-    currentY += 6;
-    pdf.text('Signature:', margin, currentY);
-    currentY += 6;
-    pdf.text('Date:', margin, currentY);
-    currentY += 9;
+    // DEALERSHIP AUTHENTICATION - Make these fields editable with custom dimensions
+    page.drawText('Authorized Representative Name:', {
+      x: leftMargin,
+      y: currentY,
+      size: 9,
+      font: boldFont,
+      color: labelColor,
+    });
+    // Custom width and height for this field - EDITABLE
+    addInvisibleEditableField('authRepName', leftMargin + mmToPt(55), currentY - mmToPt(-4), mmToPt(60), mmToPt(5), ''); // Wider and taller
 
-    pdf.setFont(undefined, 'italic');
-    pdf.setFontSize(8);
-    pdf.setTextColor(150, 0, 0);
-    pdf.text('Note: Personalization will not be processed without dealership authentication.', margin, currentY);
-    currentY += 9;
+    currentY -= mmToPt(7); // More space for taller field
+
+    page.drawText('Signature:', {
+      x: leftMargin,
+      y: currentY,
+      size: 9,
+      font: boldFont,
+      color: labelColor,
+    });
+    // Custom dimensions for signature field - EDITABLE
+    addInvisibleEditableField('signature', leftMargin + mmToPt(18), currentY - mmToPt(-5), mmToPt(50), mmToPt(8), ''); // Very wide and tall for signature
+
+    currentY -= mmToPt(7); // More space for signature field
+
+    page.drawText('Date:', {
+      x: leftMargin,
+      y: currentY,
+      size: 9,
+      font: boldFont,
+      color: labelColor,
+    });
+    // Standard size for date field - EDITABLE
+    addInvisibleEditableField('authDate', leftMargin + mmToPt(15), currentY - mmToPt(-3), mmToPt(40), mmToPt(4), '');
+    
+    currentY -= mmToPt(7.5);
+
+    page.drawText('Note: Personalization will not be processed without dealership authentication.', {
+      x: leftMargin,
+      y: currentY,
+      size: 8,
+      font: font,
+      color: rgb(150/255, 0, 0),
+    });
+    
+    currentY -= mmToPt(6);
 
     // DELIVERY TIMELINE NOTICE
-    pdf.setFont(undefined, 'bold');
-    pdf.setFontSize(10);
-    pdf.setTextColor(...labelColor);
-    pdf.text('Delivery Timeline Notice', margin, currentY);
-    currentY += 5;
+    page.drawText('Delivery Timeline Notice', {
+      x: leftMargin,
+      y: currentY,
+      size: 10,
+      font: boldFont,
+      color: labelColor,
+    });
+    
+    currentY -= mmToPt(5);
 
-    const deliveryText =
-      'Please note: Personalized orders may require additional processing time. Delivery timelines may vary depending on the nature of customization and your location. We appreciate your patience as we ensure your SUV reflects your unique style with precision and care.';
-    pdf.setFont(undefined, 'normal');
-    pdf.setFontSize(8);
-    const lines = pdf.splitTextToSize(deliveryText, pageWidth - 2 * margin);
-    pdf.text(lines, margin, currentY);
-    currentY += lines.length * 4 + 4;
+    const deliveryText = 'Please note: Personalized orders may require additional processing time. Delivery timelines may vary depending on the nature of customization and your location. We appreciate your patience as we ensure your SUV reflects your unique style with precision and care.';
+    
+    // Simple text wrapping - Updated to use configurable margins
+    const maxLineWidth = pageWidth - leftMargin - rightMargin;
+    const words = deliveryText.split(' ');
+    let line = '';
+    let lines = [];
+    
+    for (let word of words) {
+      const testLine = line + (line ? ' ' : '') + word;
+      const testWidth = font.widthOfTextAtSize(testLine, 8);
+      
+      if (testWidth <= maxLineWidth) {
+        line = testLine;
+      } else {
+        if (line) lines.push(line);
+        line = word;
+      }
+    }
+    if (line) lines.push(line);
 
-    // FOOTER
-    pdf.setFontSize(8);
-    pdf.setTextColor(100);
-    pdf.text('Generated by Mahindra Personalization Tool', margin, 290);
-    pdf.text(`${orderNo} - ${formattedDate}`, pageWidth - margin, 290, { align: 'right' });
-    pdf.setDrawColor(255, 153, 153);
-    pdf.line(margin, 292, pageWidth - margin, 292);
+    lines.forEach(textLine => {
+      page.drawText(textLine, {
+        x: leftMargin,
+        y: currentY,
+        size: 8,
+        font: font,
+        color: labelColor,
+      });
+      currentY -= mmToPt(4);
+    });
+    
+    currentY -= mmToPt(4);
 
+    // FOOTER - Updated to use configurable margins and respect bottom margin
+    const footerY = bottomMargin; // Use bottom margin
+    
+    page.drawText('Generated by Mahindra Personalization Tool', {
+      x: leftMargin,
+      y: footerY,
+      size: 8,
+      font: font,
+      color: rgb(100/255, 100/255, 100/255),
+    });
+
+    page.drawText(`${orderNo} - ${formattedDate}`, {
+      x: pageWidth - rightMargin - mmToPt(50),
+      y: footerY,
+      size: 8,
+      font: font,
+      color: rgb(100/255, 100/255, 100/255),
+    });
+
+    page.drawLine({
+      start: { x: leftMargin, y: footerY - mmToPt(2) },
+      end: { x: pageWidth - rightMargin, y: footerY - mmToPt(2) },
+      thickness: 1,
+      color: rgb(1, 153/255, 153/255),
+    });
+
+    // Save PDF with editable fields
+    const pdfBytes = await pdfDoc.save();
+    
+    // Download
     const filename = `Mahindra_Order_${orderNo || 'ORDER'}_${formattedDate.replace(/ /g, '-')}.pdf`;
-    pdf.save(filename);
+    const blob = new Blob([pdfBytes], { type: 'application/pdf' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
 
   } catch (err) {
     console.error('PDF generation failed:', err);
     alert('Something went wrong while generating the PDF.');
   }
 };
-
 
  return (
    <div style={{
@@ -1323,7 +1625,7 @@ currentY += 4;
       textAlign: 'center'
     }}
   >
-    Personalization Order Details
+    Personalisation Order Details
   </h2>
 </div>
 
@@ -1629,11 +1931,10 @@ currentY += 4;
                <span>{personalisedContent}</span>
              </div>
 
-             <div style={{ marginBottom: '12px', display: 'flex', alignItems: 'center', gap: '4px' }}>
-               <label style={{ fontWeight: 'bold', minWidth: '140px' }}>Font :</label>
-               <span>{selectedFont}</span>
-             </div>
-
+<div style={{ marginBottom: '12px', display: 'flex', alignItems: 'center', gap: '4px' }}>
+  <label style={{ fontWeight: 'bold', minWidth: '140px' }}>Font Style :</label>
+  <span>{selectedFont || 'Not selected'}</span>
+</div>
              <div style={{ marginBottom: '12px', display: 'flex', alignItems: 'center', gap: '4px' }}>
                <label style={{ fontWeight: 'bold', minWidth: '140px' }}>Thread :</label>
                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
@@ -2675,12 +2976,12 @@ positions.forEach(position => {
    );
  };
 
- if (showOrderForm) {
+if (showOrderForm) {
   return (
     <OrderForm 
       onClose={() => {
         setShowOrderForm(false);
-        setIsPreviewOpen(true); // Go back to Preview page when closing OrderForm
+        setIsPreviewOpen(true);
       }}
       onDownload={handleDownload}
       onShare={handleShareOrder}
@@ -2688,15 +2989,15 @@ positions.forEach(position => {
       selectedSeatView={selectedSeatView}
       selectedAccessory={selectedAccessory}
       personalisedContent={personalisedContent}
-      selectedFont={selectedFont}
+      selectedFont={selectedFont}  // Make sure this is included
       selectedColor={selectedColor}
       numSets={numSets}
       previewImage={previewImage}
       pushToast={pushToast}
+      imageRef={imageRef}
     />
   );
- }
-
+}
  if (isPreviewOpen) {
    return (
      <PreviewPage
