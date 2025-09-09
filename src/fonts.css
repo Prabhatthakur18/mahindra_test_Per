@@ -7,6 +7,7 @@
   font-weight: normal;
   font-style: normal;
   font-display: swap;
+  font-size: 24px;
 }
 
 /* Chancery Font */
@@ -20,8 +21,8 @@
 
 /* Fair Script Font (Fair Prosper) */
 @font-face {
-  font-family: 'Fair Script';
-  src: url('/fonts/Fair Prosper.ttf') format('truetype');
+  font-family: 'Brushability';
+  src: url('/fonts/Brushability-W00-Script.otf') format('truetype');
   font-weight: normal;
   font-style: normal;
   font-display: swap;
@@ -38,8 +39,8 @@
 
 /* Holmes Font */
 @font-face {
-  font-family: 'Holmes';
-  src: url('/fonts/HOLME_DEMO.ttf') format('truetype');
+  font-family: 'Berlinsans';
+  src: url('/fonts/berlinsans.otf') format('truetype');
   font-weight: normal;
   font-style: normal;
   font-display: swap;

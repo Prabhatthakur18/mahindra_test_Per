@@ -1,27 +1,20 @@
 @import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&display=swap');
 * {
-  cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' height='32' width='32'><text y='24' font-size='24'>🪡</text></svg>") 0 24, auto !important;
+  cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' height='32' width='32'><text y='24' font-size='24'>🪡</text></svg>") 0 24,
+         auto !important;
 }
 
+
 @font-face {
-  font-family: 'AdornSCondensedSans';
-  src: url('/fonts/AdornS_Condensed_Sans.ttf') format('truetype');
+  font-family: 'BrushabilityScript';
+  src: url('/fonts/Brushability-W00-Script.otf') format('opentype');
   font-weight: normal;
   font-style: normal;
+  
 }
 
 .adorn-text {
-  font-family: 'AdornSCondensedSans', sans-serif !important;
-}
-@font-face {
-  font-family: 'AdornS_Condensed_Sans';
-  src: url('/fonts/AdornS_Condensed_Sans.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
-}
-
-.adorn-text {
-  font-family: 'AdornS_Condensed_Sans', sans-serif !important;
+  font-family: 'BrushabilityScript', sans-serif !important;
 }
 /* .app-container {
   display: flex;

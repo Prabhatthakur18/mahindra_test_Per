@@ -32,9 +32,9 @@ const vehicleModels = ['THAR ROXX','THAR', 'XUV700', 'XUV3X0', 'SCORPIO N', 'BOL
 const accessories = ['Black comfort kit','Sustainable comfort kit'];
 const fontStyles = [
   'Book Script',
-  'Fair Script', 
+  'Brushability', 
   'Chancery',
-  'Holmes',
+  'Berlinsans',
   'Georgia'
 ];
 const textColors = [
@@ -47,15 +47,15 @@ const textColors = [
 
 // Define prices for each kit type
 const kitPrices = {
-  'Black comfort kit': '₹4,999',
-  'Sustainable comfort kit': '₹5,999'
+  'Black comfort kit': '₹4,990',
+  'Sustainable comfort kit': '₹4,990'
 };
 
 const textPositions = {
   'THAR ROXX': {
     'Front Row': {
       'Black comfort kit': [
-        { top: '38%', left: '25%', rotation: 0, fontSize: { desktop: 16, tablet: 12, mobile: 6 } },
+        { top: '38%', left: '25%', rotation: 0, fontSize: { desktop: 16,mobile: 6 } },
         { top: '38%', left: '74%', rotation: 0, fontSize: { desktop: 16, tablet: 12, mobile: 6 } },
       ],
       'Sustainable comfort kit': [
@@ -81,8 +81,8 @@ const textPositions = {
         { top: '45%', left: '72.8%', rotation: 0, fontSize: { desktop: 14, tablet: 12, mobile: 6 } },
       ],
       'Sustainable comfort kit': [
-       { top: '44.5%', left: '28.4%', rotation: 0, fontSize: { desktop: 14, tablet: 12, mobile: 6 } },
-        { top: '44.5%', left: '71.5%', rotation: 0, fontSize: { desktop: 14, tablet: 12, mobile: 6 } },
+       { top: '45%', left: '28.4%', rotation: 0, fontSize: { desktop: 14, tablet: 12, mobile: 6 } },
+        { top: '45%', left: '71.5%', rotation: 0, fontSize: { desktop: 14, tablet: 12, mobile: 6 } },
       ]
     },
     'Rear Row': {
@@ -573,14 +573,24 @@ const EmbroideredText = ({ text, fontFamily, position, textColor, isMobile }) =>
       : 'rgba(255, 255, 255, 0.5)';
   };
 
+
   const strokeColor = getStrokeColor(textColor);
 
-  // FIXED: Updated font size logic - tablets now use desktop sizes
-  const fontSize = position.fontSize
-    ? (isMobile 
-        ? position.fontSize.mobile 
-        : position.fontSize.desktop)  // Remove tablet check, use desktop for both tablet and desktop
-    : (isMobile ? 0 : 14);  // Default to 14 for non-mobile (both tablet and desktop)
+  // FIXED: Tablets now use desktop sizes, only mobile uses mobile sizes
+  // const fontSize = position.fontSize
+  //   ? (isMobile 
+  //       ? position.fontSize.mobile  // Only mobile devices use mobile sizes
+  //       : position.fontSize.desktop) // Both tablets and desktops use desktop sizes
+  //   : (isMobile ? 6 : 14);  // Default to 14 for non-mobile (both tablet and desktop)
+
+
+
+  
+// chnaged above to fixed sizes for better readability-----------------------------------------------------------------------------------
+const fontSize = isMobile ? 6 : 12; // Fixed size for mobile and non-mobile
+// chnaged above to fixed sizes for better readability-----------------------------------------------------------------------------------
+
+
 
   return (
     <div
@@ -612,7 +622,6 @@ const EmbroideredText = ({ text, fontFamily, position, textColor, isMobile }) =>
   );
 };
 
-
 const OrderForm = ({ 
  onClose, 
  selectedVehicleModel,
@@ -643,6 +652,15 @@ const OrderForm = ({
 const isValidPhone = (s) => /^\d{10}$/.test(s || '');
  // track fields locked (disabled) after user click — dealership will fill these
  const [lockedFields, setLockedFields] = useState({});
+ const [customerEmail, setCustomerEmail] = useState(''); // Added back for validation
+ const [emailError, setEmailError] = useState("");
+
+
+// your validation function
+const isValidEmail = (email) => {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailRegex.test(email);
+};
 
 
  // modern badge style for "Filled by Dealership only"
@@ -740,19 +758,31 @@ const lockField = (fieldName, e) => {
    });
 
    const handleResize = () => {
-     setIsMobile(window.innerWidth <= 768);
+     setIsMobile(window.innerWidth < 768);
    };
    handleResize();
    window.addEventListener('resize', handleResize);
    return () => window.removeEventListener('resize', handleResize);
  }, []);
 
- useEffect(() => {
-   // Auto-generate on first mount if empty
-   if (!orderNo) setOrderNo(`ORD-${generateRandomAlphaNum(8)}`);
-  //  if (!BookingID) setBookingID(`BK-${generateRandomAlphaNum(8)}`);
-   // eslint-disable-next-line react-hooks/exhaustive-deps
- }, []);
+useEffect(() => {
+  // Remove the auto-generation code
+  // if (!orderNo) setOrderNo(`ORD-${generateRandomAlphaNum(8)}`);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+}, []);
+
+useEffect(() => {
+  if (BookingID && BookingID !== orderNo) {
+    setOrderNo(BookingID);
+  }
+}, [BookingID]);
+
+useEffect(() => {
+  if (orderNo && orderNo !== BookingID) {
+    setBookingID(orderNo);
+  }
+}, [orderNo]);
+
 
  useEffect(() => {
    if (!dealershipName) return;
@@ -862,19 +892,15 @@ const handleDownloadOrder = async () => {
 
   try {
     const pdfDoc = await PDFDocument.create();
-    const page = pdfDoc.addPage([595.28, 841.89]); // A4 size in points
-    const { width: pageWidth, height: pageHeight } = page.getSize();
     
     // Convert mm to points (1mm = 2.834645669 points)
     const mmToPt = (mm) => mm * 2.834645669;
     
     // CONFIGURABLE MARGINS - Adjust these values to increase/decrease margins
-    const topMargin = mmToPt(10);    // Increase this value for more top margin
-    const bottomMargin = mmToPt(10);  // Increase this value for more bottom margin
-    const leftMargin = mmToPt(10);    // Left margin
-    const rightMargin = mmToPt(10);   // Right margin
-    
-    let currentY = pageHeight - topMargin;
+    const topMargin = mmToPt(10);
+    const bottomMargin = mmToPt(10);
+    const leftMargin = mmToPt(10);
+    const rightMargin = mmToPt(10);
 
     // Load fonts
     const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
@@ -887,15 +913,170 @@ const handleDownloadOrder = async () => {
     const valueColor = rgb(80/255, 80/255, 80/255);
     const sectionBg = rgb(245/255, 245/255, 245/255);
 
-    const formattedDate = new Date(orderDate).toLocaleDateString('en-GB', {
+    const cleanDate = new Date(orderDate).toLocaleDateString('en-GB', {
       day: '2-digit', month: '2-digit', year: 'numeric'
-    }).replace(/\//g, ' - ');
+    }).replace(/\//g, '-');
 
-    // Helper function for invisible editable fields
+    const safeCustomerName = (customerName || 'Customer').replace(/[^a-zA-Z0-9]/g, '_');
+
+    // Create shared order number variable
+    const sharedOrderNumber = BookingID || orderNo || '';
+
+    // HELPER FUNCTION: Add header and footer to any page
+    const addHeaderFooter = async (page, pageType = 'first') => {
+      const { width: pageWidth, height: pageHeight } = page.getSize();
+      
+      // Mahindra logo
+      const logoMarginLeft = mmToPt(3.5);
+      const logoMarginTop = pageHeight - mmToPt(2.5);
+      const logoMarginRight = mmToPt(10);
+      
+      try {
+        const logoResponse = await fetch('/loogo.png');
+        const logoBytes = await logoResponse.arrayBuffer();
+        const logoImage = await pdfDoc.embedPng(logoBytes);
+
+        const img = new Image();
+        const logoDataUrl = URL.createObjectURL(new Blob([logoBytes]));
+        img.src = logoDataUrl;
+
+        await new Promise(resolve => {
+          img.onload = resolve;
+        });
+
+        // Natural size converted to points
+        let logoWidth = mmToPt(img.width * 0.264583);
+        let logoHeight = mmToPt(img.height * 0.264583);
+        const aspectRatio = logoWidth / logoHeight;
+
+        // Desired max logo size
+        const maxWidth = mmToPt(40);
+        const maxHeight = mmToPt(40);
+
+        // Scale within max size
+        if (logoWidth > maxWidth) {
+          logoWidth = maxWidth;
+          logoHeight = logoWidth / aspectRatio;
+        }
+        if (logoHeight > maxHeight) {
+          logoHeight = maxHeight;
+          logoWidth = logoHeight * aspectRatio;
+        }
+
+        page.drawImage(logoImage, {
+          x: logoMarginLeft,
+          y: logoMarginTop - logoHeight,
+          width: logoWidth,
+          height: logoHeight,
+        });
+
+        URL.revokeObjectURL(logoDataUrl);
+      } catch (error) {
+        console.warn('Logo could not be loaded:', error);
+      }
+
+      // Add editable order number field based on page type
+      if (pageType === 'first') {
+        // Order info text (static)
+        page.drawText(`Order No :`, {
+          x: pageWidth - rightMargin - mmToPt(50),
+          y: pageHeight - topMargin - mmToPt(6),
+          size: 10,
+          font: font,
+          color: labelColor,
+        });
+
+        // Create editable Order Number field in header
+        const headerOrderNoField = form.createTextField("headerOrderNo");
+        headerOrderNoField.setText(sharedOrderNumber + (sharedOrderNumber && !sharedOrderNumber.endsWith('-P') ? '-P' : ''));
+        headerOrderNoField.addToPage(page, {
+          x: pageWidth - rightMargin - mmToPt(30),
+          y: pageHeight - topMargin - mmToPt(7),
+          width: mmToPt(30),
+          height: mmToPt(4),
+          borderWidth: 0,
+          backgroundColor: rgb(1, 1, 1, 0), // Transparent
+        });
+        headerOrderNoField.setFontSize(9);
+      } else if (pageType === 'second') {
+        // Order info text (static)
+        page.drawText(`Order No :`, {
+          x: pageWidth - rightMargin - mmToPt(50),
+          y: pageHeight - topMargin - mmToPt(6),
+          size: 10,
+          font: font,
+          color: labelColor,
+        });
+
+        // Create editable Order Number field in second page header
+        const headerOrderNoFieldPage2 = form.createTextField("headerOrderNoPage2");
+        headerOrderNoFieldPage2.setText(sharedOrderNumber + (sharedOrderNumber && !sharedOrderNumber.endsWith('-P') ? '-P' : ''));
+        headerOrderNoFieldPage2.addToPage(page, {
+          x: pageWidth - rightMargin - mmToPt(30),
+          y: pageHeight - topMargin - mmToPt(7),
+          width: mmToPt(30),
+          height: mmToPt(4),
+          borderWidth: 0,
+          backgroundColor: rgb(1, 1, 1, 0), // Transparent
+        });
+        headerOrderNoFieldPage2.setFontSize(9);
+      }
+
+      page.drawText(`Date : ${cleanDate}`, {
+        x: pageWidth - rightMargin - mmToPt(50),
+        y: pageHeight - topMargin - mmToPt(12),
+        size: 10,
+        font: font,
+        color: valueColor,
+      });
+
+      // Header line
+      page.drawLine({
+        start: { x: leftMargin, y: pageHeight - topMargin - mmToPt(18) },
+        end: { x: pageWidth - rightMargin, y: pageHeight - topMargin - mmToPt(18) },
+        thickness: mmToPt(0.5),
+        color: rgb(1, 153/255, 153/255),
+      });
+
+      // Footer line
+      page.drawLine({
+        start: { x: leftMargin, y: bottomMargin - mmToPt(2) },
+        end: { x: pageWidth - rightMargin, y: bottomMargin - mmToPt(2) },
+        thickness: 1,
+        color: rgb(1, 153/255, 153/255),
+      });
+    };
+
+    // ==================== FIRST PAGE ====================
+    const firstPage = pdfDoc.addPage([595.28, 841.89]); // A4 size in points
+    const { width: pageWidth, height: pageHeight } = firstPage.getSize();
+    
+    // Add header and footer to first page
+    await addHeaderFooter(firstPage, 'first');
+    
+    let currentY = pageHeight - topMargin;
+
+    // Helper function for invisible editable fields on FIRST PAGE
     const addInvisibleEditableField = (name, x, y, width = mmToPt(50), height = mmToPt(4), defaultValue = '') => {
       const textField = form.createTextField(name);
       textField.setText(defaultValue);
-      textField.addToPage(page, {
+      textField.addToPage(firstPage, {
+        x,
+        y: y - height,
+        width,
+        height,
+        borderWidth: 0,
+        backgroundColor: rgb(1, 1, 1, 0), // Transparent
+      });
+      textField.setFontSize(9);
+      return textField;
+    };
+
+    // Helper function for invisible editable fields on SECOND PAGE
+    const addInvisibleEditableFieldPage2 = (name, x, y, width = mmToPt(50), height = mmToPt(4), defaultValue = '') => {
+      const textField = form.createTextField(name);
+      textField.setText(defaultValue);
+      textField.addToPage(secondPage, {
         x,
         y: y - height,
         width,
@@ -911,7 +1092,7 @@ const handleDownloadOrder = async () => {
     const addLabelValue = (label, value, x, y, labelWidth = mmToPt(45), fieldName = '', isEditable = false) => {
       const safeValue = (value && value !== 'N/A') ? value : '';
       
-      page.drawText(label, {
+      firstPage.drawText(label, {
         x: x,
         y: y,
         size: 9,
@@ -924,7 +1105,7 @@ const handleDownloadOrder = async () => {
         addInvisibleEditableField(fieldName, x + labelWidth, y - mmToPt(1), mmToPt(60), mmToPt(4), safeValue);
       } else {
         // Static text (not editable)
-        page.drawText(safeValue, {
+        firstPage.drawText(safeValue, {
           x: x + labelWidth,
           y: y,
           size: 9,
@@ -938,7 +1119,7 @@ const handleDownloadOrder = async () => {
     const addLabelValueWithWrap = (label, value, x, y, labelWidth = mmToPt(45), maxWidth = mmToPt(80), fieldName = '', isEditable = false) => {
       const safeValue = (value && value !== 'N/A') ? value : '';
       
-      page.drawText(label, {
+      firstPage.drawText(label, {
         x: x,
         y: y,
         size: 9,
@@ -953,7 +1134,7 @@ const handleDownloadOrder = async () => {
       } else if (safeValue) {
         const availableWidth = maxWidth - labelWidth;
         // Simple text placement for static text
-        page.drawText(safeValue, {
+        firstPage.drawText(safeValue, {
           x: x + labelWidth,
           y: y,
           size: 9,
@@ -966,100 +1147,12 @@ const handleDownloadOrder = async () => {
       return mmToPt(5);
     };
 
-    // Mahindra logo - Updated to use configurable margins
-    const logoMarginLeft = mmToPt(3.5);
-    const logoMarginTop = pageHeight - mmToPt(2.5);
-    const logoMarginRight = mmToPt(10);
-    const logoMarginBottom = 0;
-
-    const availableWidth = pageWidth - logoMarginLeft - logoMarginRight;
-    const availableHeight = pageHeight - (pageHeight - logoMarginTop) - logoMarginBottom;
-
-    try {
-      const logoResponse = await fetch('/loogo.png');
-      const logoBytes = await logoResponse.arrayBuffer();
-      const logoImage = await pdfDoc.embedPng(logoBytes);
-
-      const img = new Image();
-      const logoDataUrl = URL.createObjectURL(new Blob([logoBytes]));
-      img.src = logoDataUrl;
-
-      await new Promise(resolve => {
-        img.onload = resolve;
-      });
-
-      // Natural size converted to points
-      let logoWidth = mmToPt(img.width * 0.264583); // px to mm conversion
-      let logoHeight = mmToPt(img.height * 0.264583);
-      const aspectRatio = logoWidth / logoHeight;
-
-      // Desired max logo size
-      const maxWidth = mmToPt(40);
-      const maxHeight = mmToPt(40);
-
-      // Scale within max size
-      if (logoWidth > maxWidth) {
-        logoWidth = maxWidth;
-        logoHeight = logoWidth / aspectRatio;
-      }
-      if (logoHeight > maxHeight) {
-        logoHeight = maxHeight;
-        logoWidth = logoHeight * aspectRatio;
-      }
-
-      // Check page available space
-      if (logoWidth > availableWidth) {
-        logoWidth = availableWidth;
-        logoHeight = logoWidth / aspectRatio;
-      }
-      if (logoHeight > availableHeight) {
-        logoHeight = availableHeight;
-        logoWidth = logoHeight * aspectRatio;
-      }
-
-      page.drawImage(logoImage, {
-        x: logoMarginLeft,
-        y: logoMarginTop - logoHeight,
-        width: logoWidth,
-        height: logoHeight,
-      });
-
-      URL.revokeObjectURL(logoDataUrl);
-    } catch (error) {
-      console.warn('Logo could not be loaded:', error);
-    }
-
-    // Order info - Updated to use configurable margins
-    page.drawText(`Order No : ${orderNo}`, {
-      x: pageWidth - rightMargin - mmToPt(50),
-      y: currentY - mmToPt(6),
-      size: 10,
-      font: font,
-      color: valueColor,
-    });
-
-    page.drawText(`Date : ${formattedDate}`, {
-      x: pageWidth - rightMargin - mmToPt(50),
-      y: currentY - mmToPt(12),
-      size: 10,
-      font: font,
-      color: valueColor,
-    });
-
     currentY -= mmToPt(18);
-    
-    // Line - Updated to use configurable margins
-    page.drawLine({
-      start: { x: leftMargin, y: currentY },
-      end: { x: pageWidth - rightMargin, y: currentY },
-      thickness: mmToPt(0.5),
-      color: rgb(1, 153/255, 153/255),
-    });
     
     currentY -= mmToPt(4);
 
     const addSectionHeader = (title) => {
-      page.drawRectangle({
+      firstPage.drawRectangle({
         x: leftMargin,
         y: currentY - mmToPt(8),
         width: pageWidth - leftMargin - rightMargin,
@@ -1067,7 +1160,7 @@ const handleDownloadOrder = async () => {
         color: sectionBg,
       });
       
-      page.drawText(title, {
+      firstPage.drawText(title, {
         x: leftMargin + mmToPt(1),
         y: currentY - mmToPt(5.5),
         size: 12,
@@ -1086,7 +1179,7 @@ const handleDownloadOrder = async () => {
     let dealerY = currentY - mmToPt(3);
     let customerY = currentY - mmToPt(3);
 
-    page.drawText('DEALER INFORMATION', {
+    firstPage.drawText('DEALER INFORMATION', {
       x: dealerX,
       y: dealerY,
       size: 10,
@@ -1094,7 +1187,7 @@ const handleDownloadOrder = async () => {
       color: labelColor,
     });
 
-    page.drawText('CUSTOMER INFORMATION', {
+    firstPage.drawText('CUSTOMER INFORMATION', {
       x: customerX,
       y: customerY,
       size: 10,
@@ -1105,77 +1198,79 @@ const handleDownloadOrder = async () => {
     dealerY -= mmToPt(6);
     customerY -= mmToPt(6);
 
-// Replace the dealer information section with this code:
+    // Dealer info - Custom positioning for editable fields
+    firstPage.drawText('Dealer Name :', {
+      x: dealerX,
+      y: dealerY,
+      size: 9,
+      font: boldFont,
+      color: labelColor,
+    });
+    // Custom positioned editable field for Dealer Name
+    addInvisibleEditableField('dealerName', dealerX + mmToPt(45), dealerY - mmToPt(-3), mmToPt(40), mmToPt(4), dealershipName || '');
+    dealerY -= mmToPt(5);
 
-// Dealer info - Custom positioning for editable fields
-page.drawText('Dealer Name :', {
-  x: dealerX,
-  y: dealerY,
-  size: 9,
-  font: boldFont,
-  color: labelColor,
-});
-// Custom positioned editable field for Dealer Name
-addInvisibleEditableField('dealerName', dealerX + mmToPt(45), dealerY - mmToPt(-3), mmToPt(40), mmToPt(4), dealershipName || '');
-dealerY -= mmToPt(5);
+    firstPage.drawText('Accessory Manager :', {
+      x: dealerX,
+      y: dealerY,
+      size: 9,
+      font: boldFont,
+      color: labelColor,
+    });
+    // Custom positioned editable field for Manager Name
+    addInvisibleEditableField('dealerManager', dealerX + mmToPt(45), dealerY - mmToPt(-3), mmToPt(40), mmToPt(4), dealershipManager || '');
+    dealerY -= mmToPt(5);
 
-page.drawText('Accessory Manager Name :', {
-  x: dealerX,
-  y: dealerY,
-  size: 9,
-  font: boldFont,
-  color: labelColor,
-});
-// Custom positioned editable field for Manager Name
-addInvisibleEditableField('dealerManager', dealerX + mmToPt(45), dealerY - mmToPt(-3), mmToPt(40), mmToPt(4), dealershipManager || '');
-dealerY -= mmToPt(5);
+    firstPage.drawText('Dealer Location :', {
+      x: dealerX,
+      y: dealerY,
+      size: 9,
+      font: boldFont,
+      color: labelColor,
+    });
+    // Custom positioned editable field for Location
+    addInvisibleEditableField('dealerLocation', dealerX + mmToPt(45), dealerY - mmToPt(-3), mmToPt(40), mmToPt(4), dealershipLocation || '');
+    dealerY -= mmToPt(7);
 
-page.drawText('Dealer Location :', {
-  x: dealerX,
-  y: dealerY,
-  size: 9,
-  font: boldFont,
-  color: labelColor,
-});
-// Custom positioned editable field for Location
-addInvisibleEditableField('dealerLocation', dealerX + mmToPt(45), dealerY - mmToPt(-3), mmToPt(40), mmToPt(4), dealershipLocation || '');
-dealerY -= mmToPt(7);
+    firstPage.drawText('Dealer Address :', {
+      x: dealerX,
+      y: dealerY,
+      size: 9,
+      font: boldFont,
+      color: labelColor,
+    });
+    // Custom positioned editable field for Address (taller for multi-line)
+    addInvisibleEditableField('dealerAddress', dealerX + mmToPt(45), dealerY - mmToPt(-3.5), mmToPt(40), mmToPt(5), dealershipAddress || '');
+    dealerY -= mmToPt(6); // More space for taller address field
 
-page.drawText('Dealer Address :', {
-  x: dealerX,
-  y: dealerY,
-  size: 9,
-  font: boldFont,
-  color: labelColor,
-});
-// Custom positioned editable field for Address (taller for multi-line)
-addInvisibleEditableField('dealerAddress', dealerX + mmToPt(45), dealerY - mmToPt(-5), mmToPt(40), mmToPt(5), dealershipAddress || '');
-dealerY -= mmToPt(6); // More space for taller address field
-
-page.drawText('Booking ID :', {
-  x: dealerX,
-  y: dealerY,
-  size: 9,
-  font: boldFont,
-  color: labelColor,
-});
-// Custom positioned editable field for Booking ID
-addInvisibleEditableField('bookingId', dealerX + mmToPt(45), dealerY - mmToPt(-3), mmToPt(40), mmToPt(4), BookingID || '');
-dealerY -= mmToPt(5);
-
-
-
-
+    firstPage.drawText('Booking ID / OTF No :', {
+      x: dealerX,
+      y: dealerY,
+      size: 9,
+      font: boldFont,
+      color: labelColor,
+    });
+    // Custom positioned editable field for Booking ID
+    const bookingIdField = addInvisibleEditableField(
+      "bookingId",
+      dealerX + mmToPt(45),
+      dealerY - mmToPt(-3),
+      mmToPt(40),
+      mmToPt(4),
+      sharedOrderNumber
+    );
 
     // Customer info - NOT editable (remove the fieldName parameter or set isEditable to false)
     addLabelValue('Customer Name :', customerName, customerX, customerY, mmToPt(35)); // NOT EDITABLE
     customerY -= mmToPt(5);
     addLabelValue('Customer Phone :', customerPhone, customerX, customerY, mmToPt(35)); // NOT EDITABLE
     customerY -= mmToPt(5);
+    addLabelValue(customerEmail ? 'Customer Email :' : 'Customer Email :', customerEmail, customerX, customerY, mmToPt(35)); // NOT EDITABLE
+    customerY -= mmToPt(5);
 
     currentY = Math.min(dealerY, customerY) - mmToPt(2);
     
-    page.drawLine({
+    firstPage.drawLine({
       start: { x: leftMargin, y: currentY },
       end: { x: pageWidth - rightMargin, y: currentY },
       thickness: 1,
@@ -1205,7 +1300,7 @@ dealerY -= mmToPt(5);
     const boxY = currentY - mmToPt(1);
 
     if (selectedColor) {
-      page.drawRectangle({
+      firstPage.drawRectangle({
         x: boxX,
         y: boxY,
         width: boxSize,
@@ -1220,8 +1315,17 @@ dealerY -= mmToPt(5);
       });
     }
     
-    addLabelValue('Quantity :', numSets?.toString(), pageWidth / 2 + mmToPt(5), currentY, mmToPt(35)); // NOT EDITABLE
-    
+    const quantityText = numSets
+      ? `${numSets} ${numSets === 1 ? 'Set' : 'Sets'}`
+      : '0 Sets';
+
+    addLabelValue(
+      'Quantity :',
+      quantityText,
+      pageWidth / 2 + mmToPt(5),
+      currentY,
+      mmToPt(35)
+    );    
     currentY -= mmToPt(6);
     
     // Price information - Make MRP NOT editable
@@ -1230,7 +1334,7 @@ dealerY -= mmToPt(5);
       : 0;
     const totalPrice = unitPrice * (Number(numSets) || 1);
 
-    page.drawText('MRP :', {
+    firstPage.drawText('MRP :', {
       x: leftMargin,
       y: currentY,
       size: 10,
@@ -1239,7 +1343,7 @@ dealerY -= mmToPt(5);
     });
 
     const priceText = `Rs. ${totalPrice.toLocaleString()} (inclusive of all taxes)`;
-    page.drawText(priceText, {
+    firstPage.drawText(priceText, {
       x: leftMargin + mmToPt(35),
       y: currentY,
       size: 9,
@@ -1249,7 +1353,7 @@ dealerY -= mmToPt(5);
 
     currentY -= mmToPt(8);
     
-    page.drawLine({
+    firstPage.drawLine({
       start: { x: leftMargin, y: currentY },
       end: { x: pageWidth - rightMargin, y: currentY },
       thickness: 1,
@@ -1337,14 +1441,14 @@ dealerY -= mmToPt(5);
       const rearPdfImage = await pdfDoc.embedJpg(rearImageBytes);
 
       // Draw images
-      page.drawImage(frontPdfImage, {
+      firstPage.drawImage(frontPdfImage, {
         x: leftMargin,
         y: currentY - h1,
         width: imgW,
         height: h1,
       });
 
-      page.drawText('Front Row', {
+      firstPage.drawText('Front Row', {
         x: leftMargin + imgW / 2 - mmToPt(8),
         y: currentY - h1 - mmToPt(5),
         size: 10,
@@ -1352,14 +1456,14 @@ dealerY -= mmToPt(5);
         color: labelColor,
       });
 
-      page.drawImage(rearPdfImage, {
+      firstPage.drawImage(rearPdfImage, {
         x: leftMargin + imgW + mmToPt(10),
         y: currentY - h2,
         width: imgW,
         height: h2,
       });
 
-      page.drawText('Rear Row', {
+      firstPage.drawText('Rear Row', {
         x: leftMargin + imgW + mmToPt(10) + imgW / 2 - mmToPt(8),
         y: currentY - h2 - mmToPt(5),
         size: 10,
@@ -1375,66 +1479,90 @@ dealerY -= mmToPt(5);
 
     // DEALERSHIP AUTHENTICATION
     addSectionHeader('DEALERSHIP AUTHENTICATION');
-    
-    page.drawText('Please affix the official dealership seal and provide an authorized signature below to validate this personalization.', {
+
+    firstPage.drawText('Please affix the official dealership seal and provide an authorized signature below to validate this personalization.', {
       x: leftMargin,
       y: currentY,
       size: 8,
       font: font,
       color: valueColor,
     });
-    
+
     currentY -= mmToPt(7);
 
-    // DEALERSHIP AUTHENTICATION - Make these fields editable with custom dimensions
-    page.drawText('Authorized Representative Name:', {
-      x: leftMargin,
-      y: currentY,
+    // Use the same column positioning as the working dealer/customer section
+    const authDealerX = leftMargin;
+    const authCustomerX = pageWidth / 2 + mmToPt(5);
+    let authDealerY = currentY;
+    let authCustomerY = currentY;
+
+    // Dealership side
+    firstPage.drawText('Authorized Representative Name:', {
+      x: authDealerX,
+      y: authDealerY,
       size: 9,
       font: boldFont,
       color: labelColor,
     });
-    // Custom width and height for this field - EDITABLE
-    addInvisibleEditableField('authRepName', leftMargin + mmToPt(55), currentY - mmToPt(-4), mmToPt(60), mmToPt(5), ''); // Wider and taller
+    addInvisibleEditableField('authRepName', authDealerX + mmToPt(55), authDealerY - mmToPt(-4), mmToPt(40), mmToPt(5), '');
+    authDealerY -= mmToPt(7);
 
-    currentY -= mmToPt(7); // More space for taller field
-
-    page.drawText('Signature:', {
-      x: leftMargin,
-      y: currentY,
+    firstPage.drawText('Signature:', {
+      x: authDealerX,
+      y: authDealerY,
       size: 9,
       font: boldFont,
       color: labelColor,
     });
-    // Custom dimensions for signature field - EDITABLE
-    addInvisibleEditableField('signature', leftMargin + mmToPt(18), currentY - mmToPt(-5), mmToPt(50), mmToPt(8), ''); // Very wide and tall for signature
+    addInvisibleEditableField('signature', authDealerX + mmToPt(18), authDealerY - mmToPt(-5), mmToPt(50), mmToPt(8), '');
+    authDealerY -= mmToPt(7);
 
-    currentY -= mmToPt(7); // More space for signature field
-
-    page.drawText('Date:', {
-      x: leftMargin,
-      y: currentY,
+    firstPage.drawText('Date:', {
+      x: authDealerX,
+      y: authDealerY,
       size: 9,
       font: boldFont,
       color: labelColor,
     });
-    // Standard size for date field - EDITABLE
-    addInvisibleEditableField('authDate', leftMargin + mmToPt(15), currentY - mmToPt(-3), mmToPt(40), mmToPt(4), '');
-    
-    currentY -= mmToPt(7.5);
+    addInvisibleEditableField('authDate', authDealerX + mmToPt(15), authDealerY - mmToPt(-3), mmToPt(40), mmToPt(4), '');
 
-    page.drawText('Note: Personalization will not be processed without dealership authentication.', {
+    // Customer side (same Y positions)
+    authCustomerY -= mmToPt(7);
+
+    firstPage.drawText('Customer Signature:', {
+      x: authCustomerX,
+      y: authCustomerY,
+      size: 9,
+      font: boldFont,
+      color: labelColor,
+    });
+    addInvisibleEditableField('customerSignature', authCustomerX + mmToPt(35), authCustomerY - mmToPt(-5), mmToPt(45), mmToPt(8), '');
+    authCustomerY -= mmToPt(7);
+
+    firstPage.drawText('Date:', {
+      x: authCustomerX,
+      y: authCustomerY,
+      size: 9,
+      font: boldFont,
+      color: labelColor,
+    });
+    addInvisibleEditableField('customerDate', authCustomerX + mmToPt(15), authCustomerY - mmToPt(-3), mmToPt(40), mmToPt(4), '');
+
+    // Update currentY to the lowest Y position
+    currentY = Math.min(authDealerY, authCustomerY) - mmToPt(7);
+
+    firstPage.drawText('Note: Personalization will not be processed without dealership authentication.', {
       x: leftMargin,
       y: currentY,
       size: 8,
       font: font,
       color: rgb(150/255, 0, 0),
     });
-    
+
     currentY -= mmToPt(6);
 
     // DELIVERY TIMELINE NOTICE
-    page.drawText('Delivery Timeline Notice', {
+    firstPage.drawText('Delivery Timeline Notice', {
       x: leftMargin,
       y: currentY,
       size: 10,
@@ -1444,29 +1572,38 @@ dealerY -= mmToPt(5);
     
     currentY -= mmToPt(5);
 
-    const deliveryText = 'Please note: Personalized orders may require additional processing time. Delivery timelines may vary depending on the nature of customization and your location. We appreciate your patience as we ensure your SUV reflects your unique style with precision and care.';
-    
-    // Simple text wrapping - Updated to use configurable margins
-    const maxLineWidth = pageWidth - leftMargin - rightMargin;
-    const words = deliveryText.split(' ');
-    let line = '';
-    let lines = [];
-    
-    for (let word of words) {
-      const testLine = line + (line ? ' ' : '') + word;
-      const testWidth = font.widthOfTextAtSize(testLine, 8);
-      
-      if (testWidth <= maxLineWidth) {
-        line = testLine;
-      } else {
-        if (line) lines.push(line);
-        line = word;
-      }
-    }
-    if (line) lines.push(line);
+    const deliveryText = 'Orders may require additional processing time. Delivery timelines may vary depending on the nature of customization and Dealership Location.                We appreciate your patience. Thank You for giving us the opportunity to serve you!';
+    const dealershipLabel = 'Dealership Location :';
+    const dealershipMessage = 'Orders need to be picked from the Dealership Location.';
 
-    lines.forEach(textLine => {
-      page.drawText(textLine, {
+    // Helper: wrap text into lines
+    function wrapText(text, font, fontSize, maxLineWidth) {
+      const words = text.split(' ');
+      let line = '';
+      let lines = [];
+
+      for (let word of words) {
+        const testLine = line + (line ? ' ' : '') + word;
+        const testWidth = font.widthOfTextAtSize(testLine, fontSize);
+
+        if (testWidth <= maxLineWidth) {
+          line = testLine;
+        } else {
+          if (line) lines.push(line);
+          line = word;
+        }
+      }
+      if (line) lines.push(line);
+
+      return lines;
+    }
+
+    const maxLineWidth = pageWidth - leftMargin - rightMargin;
+
+    // === Draw Delivery Text ===
+    const deliveryLines = wrapText(deliveryText, font, 8, maxLineWidth);
+    deliveryLines.forEach(textLine => {
+      firstPage.drawText(textLine, {
         x: leftMargin,
         y: currentY,
         size: 8,
@@ -1475,56 +1612,225 @@ dealerY -= mmToPt(5);
       });
       currentY -= mmToPt(4);
     });
-    
-    currentY -= mmToPt(4);
 
-    // FOOTER - Updated to use configurable margins and respect bottom margin
-    const footerY = bottomMargin; // Use bottom margin
-    
-    page.drawText('Generated by Mahindra Personalization Tool', {
+    currentY -= mmToPt(2); // spacing after delivery
+
+    // === Draw Dealership Label + Message ===
+    // First draw the label in bold
+    firstPage.drawText(dealershipLabel, {
       x: leftMargin,
-      y: footerY,
+      y: currentY,
       size: 8,
-      font: font,
-      color: rgb(100/255, 100/255, 100/255),
+      font: boldFont,
+      color: rgb(0, 0, 0),
     });
 
-    page.drawText(`${orderNo} - ${formattedDate}`, {
-      x: pageWidth - rightMargin - mmToPt(50),
-      y: footerY,
-      size: 8,
-      font: font,
-      color: rgb(100/255, 100/255, 100/255),
-    });
+    // Measure width of label so we can start message right after
+    const labelWidth = boldFont.widthOfTextAtSize(dealershipLabel + ' ', 8);
 
-    page.drawLine({
-      start: { x: leftMargin, y: footerY - mmToPt(2) },
-      end: { x: pageWidth - rightMargin, y: footerY - mmToPt(2) },
-      thickness: 1,
-      color: rgb(1, 153/255, 153/255),
-    });
+    // Wrap dealership message
+    const dealerLines = wrapText(dealershipMessage, font, 8, maxLineWidth - labelWidth);
 
-    // Save PDF with editable fields
-    const pdfBytes = await pdfDoc.save();
+    // Draw first line of message right next to the label
+    if (dealerLines.length > 0) {
+      firstPage.drawText(dealerLines[0], {
+        x: leftMargin + labelWidth,
+        y: currentY,
+        size: 8,
+        font: font,
+        color: labelColor,
+      });
+      currentY -= mmToPt(4);
+    }
+
+    // Draw remaining wrapped lines below (aligned to left margin)
+    for (let i = 1; i < dealerLines.length; i++) {
+      firstPage.drawText(dealerLines[i], {
+        x: leftMargin,
+        y: currentY,
+        size: 8,
+        font: font,
+        color: labelColor,
+      });
+      currentY -= mmToPt(4);
+    }
+
+    currentY -= mmToPt(4); // spacing before footer
+
+    // ==================== SECOND PAGE (Terms & Conditions) ====================
+    const secondPage = pdfDoc.addPage([595.28, 841.89]); // A4 size in points
     
-    // Download
-    const filename = `Mahindra_Order_${orderNo || 'ORDER'}_${formattedDate.replace(/ /g, '-')}.pdf`;
-    const blob = new Blob([pdfBytes], { type: 'application/pdf' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = filename;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
+    // Add header and footer to second page
+    await addHeaderFooter(secondPage, 'second');
+    
+    let page2CurrentY = pageHeight - topMargin - mmToPt(22); // Start after header
 
-  } catch (err) {
-    console.error('PDF generation failed:', err);
-    alert('Something went wrong while generating the PDF.');
-  }
+    // Terms & Conditions Section Header
+    secondPage.drawRectangle({
+      x: leftMargin,
+      y: page2CurrentY - mmToPt(8),
+      width: pageWidth - leftMargin - rightMargin,
+      height: mmToPt(8),
+      color: sectionBg,
+    });
+    
+    secondPage.drawText('TERMS & CONDITIONS', {
+      x: leftMargin + mmToPt(1),
+      y: page2CurrentY - mmToPt(5.5),
+      size: 12,
+      font: boldFont,
+      color: labelColor,
+    });
+    
+    page2CurrentY -= mmToPt(16); // Space after header
+
+    // Terms & Conditions Content
+    const termsContent = [
+      'Once the order is confirmed, it cannot be Modified and cancelled.',
+   'The images represent the actual product, though the color of the image and product may slightly differ.',
+     'The product will be delivered within 15 working days from the date of order confirmation.',
+     'The product is non-returnable and non-refundable.'
+   ];
+
+   const maxTermsLineWidth = pageWidth - leftMargin - rightMargin - mmToPt(15); // Leave space for bullet
+
+   termsContent.forEach((term, index) => {
+     // Draw bullet point
+     secondPage.drawText('•', {
+       x: leftMargin + mmToPt(5),
+       y: page2CurrentY,
+       size: 11,
+       font: boldFont,
+       color: labelColor,
+     });
+
+     // Wrap and draw the term text
+     const wrappedLines = wrapText(term, font, 10, maxTermsLineWidth);
+     
+     wrappedLines.forEach((line, lineIndex) => {
+       secondPage.drawText(line, {
+         x: leftMargin + mmToPt(12), // Indent for bullet point
+         y: page2CurrentY - (lineIndex * mmToPt(5)),
+         size: 10,
+         font: font,
+         color: labelColor,
+       });
+     });
+
+     // Move to next term with appropriate spacing
+     page2CurrentY -= mmToPt(5) * wrappedLines.length + mmToPt(4);
+   });
+
+   // Add spacing before signature section
+   page2CurrentY -= mmToPt(30);
+
+   // Customer signature section with EDITABLE fields
+   const signatureX = pageWidth / 2 + mmToPt(5);
+   const signatureY = pageHeight/2+  mmToPt(40);
+   const dateSignX = pageWidth / 2 + mmToPt(5);
+   const dateSignY = signatureY - mmToPt(20);
+
+   // Customer Signature Label
+   secondPage.drawText('Customer Signature:', {
+     x: signatureX,
+     y: signatureY,
+     size: 9,
+     font: boldFont,
+     color: labelColor,
+   });
+
+   // Add editable signature field
+   addInvisibleEditableFieldPage2('termsCustomerSignature',
+     signatureX + mmToPt(35),
+      signatureY + mmToPt(5),
+       mmToPt(50), mmToPt(8), '');
+
+   // Date Label
+   secondPage.drawText('Date:', {
+     x: dateSignX,
+     y: dateSignY+ mmToPt(11),
+     size: 9,
+     font: boldFont,
+     color: labelColor,
+   });
+
+   // Add editable date field
+   addInvisibleEditableFieldPage2('termsDate',
+     dateSignX + mmToPt(15),
+      dateSignY + mmToPt(15),
+       mmToPt(40), mmToPt(6), '');
+
+   // Add JavaScript for field synchronization - Updated to include all order number fields
+   const javascript = `
+     var headerOrderNoField = this.getField("headerOrderNo");
+     var headerOrderNoFieldPage2 = this.getField("headerOrderNoPage2");
+     var bookingIdField = this.getField("bookingId");
+
+     function addSuffix(value) {
+       if (value == null || value.trim() === "") return "";
+       if (!value.endsWith("-P")) {
+         return value + "-P";
+       }
+       return value;
+     }
+
+     // Function to sync all order number fields
+     function syncAllOrderFields(sourceValue, excludeField) {
+       var processedValue = addSuffix(sourceValue.toUpperCase());
+       var bookingValue = sourceValue.toUpperCase().replace(/-P$/, '');
+       
+       if (excludeField !== "headerOrderNo" && headerOrderNoField) {
+         headerOrderNoField.value = processedValue;
+       }
+       if (excludeField !== "headerOrderNoPage2" && headerOrderNoFieldPage2) {
+         headerOrderNoFieldPage2.value = processedValue;
+       }
+       if (excludeField !== "bookingId" && bookingIdField) {
+         bookingIdField.value = bookingValue;
+       }
+     }
+
+     // Sync Booking ID field
+     bookingIdField.setAction("Keystroke", "event.change = event.change.toUpperCase();");
+     bookingIdField.setAction("Validate", "if (event.value != '') { syncAllOrderFields(event.value, 'bookingId'); }");
+     bookingIdField.setAction("Blur", "if (event.value != '') { syncAllOrderFields(event.value, 'bookingId'); }");
+
+     // Sync Header Order Number (Page 1)
+     headerOrderNoField.setAction("Keystroke", "event.change = event.change.toUpperCase();");
+     headerOrderNoField.setAction("Validate", "if (event.value != '') { syncAllOrderFields(event.value.replace(/-P$/, ''), 'headerOrderNo'); }");
+     headerOrderNoField.setAction("Blur", "if (event.value != '') { syncAllOrderFields(event.value.replace(/-P$/, ''), 'headerOrderNo'); }");
+
+     // Sync Header Order Number (Page 2)
+     headerOrderNoFieldPage2.setAction("Keystroke", "event.change = event.change.toUpperCase();");
+     headerOrderNoFieldPage2.setAction("Validate", "if (event.value != '') { syncAllOrderFields(event.value.replace(/-P$/, ''), 'headerOrderNoPage2'); }");
+     headerOrderNoFieldPage2.setAction("Blur", "if (event.value != '') { syncAllOrderFields(event.value.replace(/-P$/, ''), 'headerOrderNoPage2'); }");
+   `;
+
+   // Add the JavaScript to the document
+   pdfDoc.addJavaScript('syncFields', javascript);
+
+   // Save PDF with both pages
+   const pdfBytes = await pdfDoc.save();
+   
+   // Download with customer name in filename
+   const filename = `Mahindra_${safeCustomerName}_${cleanDate}.pdf`;
+   const blob = new Blob([pdfBytes], { type: 'application/pdf' });
+   const url = URL.createObjectURL(blob);
+   const a = document.createElement('a');
+   a.href = url;
+   a.download = filename;
+   document.body.appendChild(a);
+   a.click();
+   document.body.removeChild(a);
+   URL.revokeObjectURL(url);
+
+ } catch (err) {
+   console.error('PDF generation failed:', err);
+   alert('Something went wrong while generating the PDF.');
+ }
 };
 
+ 
  return (
    <div style={{
      position: 'fixed',
@@ -1644,7 +1950,10 @@ dealerY -= mmToPt(5);
          }}
        >
          {/* Order Number Row */}
-    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+  <div
+  className="tooltip-wrapper"
+  style={{ display: 'flex', alignItems: 'center', gap: '8px', position: 'relative' }}
+>
   <label
     style={{
       fontSize: '14px',
@@ -1659,16 +1968,18 @@ dealerY -= mmToPt(5);
     name="orderNo"
     type="text"
     value={orderNo}
-    readOnly   // 👈 makes it non-editable but still selectable/copyable
+    readOnly // 👈 non-editable but selectable
     style={{
       ...getInputStyle('orderNo'),
       width: '100px',
       textAlign: 'center',
-      backgroundColor: '#f5f5f5', // light grey background for clarity
-      cursor: 'not-allowed',      // cursor indicates it's not editable
+      backgroundColor: '#f5f5f5', // light grey for clarity
+      cursor: 'not-allowed',
     }}
   />
+  <span className="tooltip-text">For Office Use Only</span>
 </div>
+
 
 
          {/* Order Date Row */}
@@ -1805,27 +2116,34 @@ dealerY -= mmToPt(5);
   </div>
 
   {/* Booking ID */}
-  <div
-    className="tooltip-wrapper"
-    style={{ marginTop: '12px', display: 'flex', alignItems: 'center', gap: '4px', position: 'relative' }}
-  >
-    <label style={{ fontWeight: 'bold', minWidth: '140px' }}>Booking ID :</label>
-    <div style={{ display: 'flex', alignItems: 'center', width: '100%' }}>
-      <input
-        name="BookingID"
-        type="text"
-        value={BookingID}
-        readOnly
-        style={{
-          ...inputStyle,
-          borderBottom: '1px solid #000',
-          backgroundColor: '#f5f5f5',
-          cursor: 'not-allowed',
-        }}
-      />
-    </div>
-    <span className="tooltip-text">For Office Use Only</span>
+{/* // Update the Booking ID input to be editable */}
+<div
+  className="tooltip-wrapper"
+  style={{ marginTop: '12px', display: 'flex', alignItems: 'center', gap: '4px', position: 'relative' }}
+>
+  <label style={{ fontWeight: 'bold', minWidth: '140px' }}>Booking ID /<br/>OTF No :</label>
+  <div style={{ display: 'flex', alignItems: 'center', width: '100%' }}>
+    <input
+      name="BookingID"
+      type="text"
+      value={BookingID}
+      readOnly
+      style={{
+        ...inputStyle,
+        borderBottom: '1px solid #000',
+        padding: '4px 0',
+        backgroundColor: '#f5f5f5',
+        cursor: 'not-allowed',
+      }}
+    />
   </div>
+  <span className="tooltip-text">For Office Use Only</span>
+</div>
+
+
+
+
+
 </div>
 
 <style>
@@ -1887,26 +2205,41 @@ dealerY -= mmToPt(5);
   placeholder="Enter Customer Phone Number"
   style={inputStyle}
 />
+
              </div>
 
-             {/* <div style={{ display: 'flex', alignItems: 'flex-start', gap: '4px', marginBottom: '12px' }}>
-               <label style={{ fontWeight: 'bold', minWidth: '140px', marginTop: '6px', whiteSpace: 'nowrap' }}>Customer Address:</label>
-               <textarea 
-                 value={customerAddress} 
-                 onChange={(e) => setCustomerName(e.target.value)} 
-                 style={textareaStyle} 
-               />
-             </div> */}
-
-             {/* <div style={{ marginBottom: '12px', display: 'flex', alignItems: 'center', gap: '4px' }}>
-               <label style={{ fontWeight: 'bold', minWidth: '140px' }}>Customer Email :</label>
-               <input 
-                 type="email" 
-                 value={customerEmail} 
-                 onChange={(e) => setCustomerEmail(e.target.value)} 
-                 style={inputStyle} 
-               />
-             </div> */}
+ <div
+    style={{
+      marginBottom: "12px",
+      display: "flex",
+      alignItems: "center",
+      gap: "4px",
+    }}
+  >
+    <label style={{ fontWeight: "bold", minWidth: "140px" }}>
+      Customer Email :
+    </label>
+    <div style={{ display: "flex", flexDirection: "column", flex: 1 }}>
+      <input
+        type="email"
+        name="customerEmail"
+        value={customerEmail}
+        onChange={(e) => {
+          const val = e.target.value;
+          setCustomerEmail(val);
+          setEmailError(isValidEmail(val) ? "" : "Invalid email format");
+        }}
+        style={inputStyle}
+        placeholder="Enter Customer Email"
+        required
+      />
+      {emailError && (
+        <span style={{ color: "red", fontSize: "12px", marginTop: "4px" }}>
+          {emailError}
+        </span>
+      )}
+    </div>
+  </div>
 
              {/* Booking ID removed from Customer column — now placed under Dealer Address */}
            </div>
@@ -1951,10 +2284,20 @@ dealerY -= mmToPt(5);
                </div>
              </div>
 
-             <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-               <label style={{ fontWeight: 'bold', minWidth: '140px' }}>Qty :</label>
-               <span>{numSets}</span>
-             </div>
+<div
+  style={{
+    marginBottom: '12px',
+    display: 'flex',
+    alignItems: 'center',
+    gap: '4px',
+  }}
+>
+  <label style={{ fontWeight: 'bold', minWidth: '140px' }}>Qty :</label>
+  <span>
+    {numSets} {numSets === 1 ? 'set' : 'sets'}
+  </span>
+</div>
+
 
 <div
   style={{
@@ -2170,6 +2513,11 @@ onClick={() => {
     localPushToast('Enter a valid 10-digit Customer Phone.', 'error');
     return;
   }
+
+  if(!isValidEmail(customerEmail)) {
+    localPushToast('Enter a valid Customer Email.', 'error');
+    return;
+  }
   setTermsChecked(false);
   setShowTerms(true);
 }}
@@ -2214,7 +2562,7 @@ onClick={() => {
     textAlign: 'justify',         // justify text left and right
   }}
 >
-  <li>Once the order is confirmed, it cannot be cancelled.</li>
+  <li>Once the order is confirmed, it cannot be Modified and cancelled.</li>
   <li>
     The images represent the actual product, though the color of the image and
     product may slightly differ.
@@ -2473,7 +2821,7 @@ const PreviewPage = ({ savedImages, onModify, onConfirm, onClose }) => {
         marginBottom: '20px',
         color: 'rgba(255, 255, 255, 1)'
       }}>
-        Personalisation Preview
+        Preview
       </h2>
 
       <div style={{ display: 'flex', justifyContent: 'center', gap: '40px', flexWrap: 'wrap' }}>
@@ -2554,7 +2902,7 @@ const [isPreviewLoading, setIsPreviewLoading] = useState(false);
    document.head.appendChild(style);
 
    const handleResize = () => {
-     setIsMobile(window.innerWidth <= 768);
+     setIsMobile(window.innerWidth < 768);
    };
    handleResize();
    window.addEventListener('resize', handleResize);
@@ -2570,7 +2918,7 @@ const [isPreviewLoading, setIsPreviewLoading] = useState(false);
 
  const getImagePath = () => {
    if (!selectedVehicleModel || !selectedAccessory || !selectedSeatView) {
-     return '/Mahindra 02.png';
+     return '/Inside Page Banner.jpg';
    }
    
    return `/models/${selectedVehicleModel}/${selectedSeatView}/${selectedAccessory}.png`;
@@ -3091,16 +3439,19 @@ if (showOrderForm) {
       )}
      
      <div className="left-panel">
-<h3 className="adorn-text">Go Personalise</h3>
+{/* <h3 className="adorn-text">             </h3> */}
 
 <div
-  className="section-text adorn-text"
+  className="section-text"
   style={{ 
+    
     textAlign: "center", 
-    marginTop: "-15px", 
-    fontSize: "16px", 
-    lineHeight: "1.4", 
-    color: "white" 
+    // marginTop: "-15px", 
+    fontSize: "19px", 
+    lineHeight: "2", 
+    color: "white", 
+    marginBottom: "50px",
+    fontWeight  : "650",
   }}
 >
   <div>Your drive. Your space.</div>
@@ -3381,23 +3732,22 @@ style={{ marginTop:'8%', width: '100%', height: 'auto', display: isImageLoading 
            onError={() => setIsImageLoading(false)}
            onLoadStart={() => setIsImageLoading(true)}
          />
-
-         {personalisedContent && selectedVehicleModel && selectedAccessory && selectedSeatView && fontsLoaded && (
-           <>
-             {(isAdjustMode ? adjustablePositions : textPositions[selectedVehicleModel]?.[selectedSeatView]?.[selectedAccessory] || []).map((position, index) => (
-               position ? (
-                 <EmbroideredText
-                   key={`${index}-${selectedColor}-${selectedFont}`}
-                   text={personalisedContent}
-                   fontFamily={selectedFont}
-                   position={position}
-                   textColor={selectedColor}
-                   isMobile={isMobile}
-                 />
-               ) : null
-             ))}
-           </>
-         )}
+{personalisedContent && selectedVehicleModel && selectedAccessory && selectedSeatView && fontsLoaded && (
+  <>
+    {(isAdjustMode ? adjustablePositions : textPositions[selectedVehicleModel]?.[selectedSeatView]?.[selectedAccessory] || []).map((position, index) => (
+      position ? (
+        <EmbroideredText
+          key={`${index}-${selectedColor}-${selectedFont}`}
+          text={personalisedContent}
+          fontFamily={selectedFont}
+          position={position}
+          textColor={selectedColor}
+          isMobile={isMobile} // Make sure this is passed correctly
+        />
+      ) : null
+    ))}
+  </>
+)}
        </div>
 
        {/* Row Switch Buttons - Only show when both vehicle model and kit type are selected */}

@@ -236,6 +236,41 @@ line-height: 4.3;
 }
 
 
+
+
+
+
+
+/* For very small devices (up to 320px) */
+@media (max-width: 320px) {
+  .slide-logo-top{
+    /* margin-bottom: -17px; */
+    margin-left: -50px;
+
+  }
+}
+
+/* For small devices (321px to 380px) */
+@media (min-width: 321px) and (max-width: 380px) {
+.slide-logo-top {
+  margin-left: -50px;
+  }
+}
+
+/* For medium devices (381px to 480px) */
+@media (min-width: 381px) and (max-width: 480px) {
+.slide-logo-top {
+  margin-left: -50px;
+  }
+}
+/* For tablets (portrait: 481px to 770px) */
+@media (min-width: 481px) and (max-width: 770px) {
+  .slide-logo-top{
+     margin-left: -50px;
+  }
+}
+
+
 /* Corner Heading (Top Right) */
 /* Corner Heading (Top Right) */
 .corner-heading {
