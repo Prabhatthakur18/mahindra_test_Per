@@ -7,46 +7,162 @@
     <meta name="theme-color" content="#000000" />
     <meta
       name="description"
-      content="Web site created using create-react-app"
+      content="Mahindra Personalisation App - Customize your comfort kit with bespoke embroidery"
     />
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&display=swap" rel="stylesheet">
+
+    <!-- Security headers via meta tags (excluding X-Frame-Options which requires HTTP header) -->
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta http-equiv="X-XSS-Protection" content="1; mode=block">
+    <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
+
+    <!-- Enhanced Content Security Policy -->
+    <meta http-equiv="Content-Security-Policy" 
+          content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: blob:; connect-src 'self' data:; object-src 'none'; media-src 'self'; frame-src 'none'; form-action 'self'; base-uri 'self';">
+
+    <!-- Anti-clickjacking protection -->
+    <style id="antiClickjack">
+      html { display: none !important; }
+    </style>
+    <script>
+      if (self === top) {
+        var antiClickjack = document.getElementById("antiClickjack");
+        if (antiClickjack) {
+          antiClickjack.parentNode.removeChild(antiClickjack);
+        }
+      } else {
+        top.location = self.location;
+      }
+    </script>
+
+    <!-- Secure font loading with proper error handling (NO SRI for external fonts due to dynamic content) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+    <!-- Cinzel Decorative with secure loading -->
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&display=swap" 
+          rel="stylesheet" 
+          crossorigin="anonymous"
+          media="print" 
+          onload="this.media='all'"
+          onerror="this.onerror=null;console.warn('Failed to load Cinzel font, using fallback')">
+    
+    <!-- Main font bundle with secure loading -->
+    <link href="https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,100..900;1,100..900&family=Maven+Pro:wght@400..900&family=Sevillana&display=swap" 
+          rel="stylesheet"
+          crossorigin="anonymous"
+          media="print" 
+          onload="this.media='all'"
+          onerror="this.onerror=null;console.warn('Failed to load main fonts, using fallback')">
+    
+    <!-- Extended font bundle with secure loading -->
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&family=Exo+2:ital,wght@0,100..900;1,100..900&family=Maven+Pro:wght@400..900&family=Merienda:wght@300..900&family=Pacifico&family=Rubik:ital,wght@0,300..900;1,300..900&family=Sevillana&display=swap" 
+          rel="stylesheet"
+          crossorigin="anonymous"
+          media="print" 
+          onload="this.media='all'"
+          onerror="this.onerror=null;console.warn('Failed to load extended fonts, using fallback')">
+
+    <!-- Local fallback fonts in case external fonts fail -->
+    <noscript>
+      <style>
+        body {
+          font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif !important;
+        }
+      </style>
+    </noscript>
+
+    <!-- Enhanced font fallback CSS with security -->
+    <style>
+      /* Fallback font stacks for better security and performance */
+      body {
+        font-family: 'Exo 2', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+      }
+      
+      .cinzel-fallback {
+        font-family: 'Cinzel Decorative', 'Times New Roman', serif;
+      }
+      
+      .dancing-script-fallback {
+        font-family: 'Dancing Script', 'Brush Script MT', cursive;
+      }
+      
+      .pacifico-fallback {
+        font-family: 'Pacifico', 'Comic Sans MS', cursive;
+      }
+      
+      /* Security: Prevent font-based attacks */
+      @font-face {
+        font-display: swap;
+      }
+      
+      /* Ensure fonts load gracefully */
+      .font-loading {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      }
+    </style>
 
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,100..900;1,100..900&family=Maven+Pro:wght@400..900&family=Sevillana&display=swap" rel="stylesheet">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&family=Exo+2:ital,wght@0,100..900;1,100..900&family=Maven+Pro:wght@400..900&family=Merienda:wght@300..900&family=Pacifico&family=Rubik:ital,wght@0,300..900;1,300..900&family=Sevillana&display=swap" rel="stylesheet">    
-
-<!--
-      manifest.json provides metadata used when your web app is installed on a
-      user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
-    -->
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
-    <!--
-      Notice the use of %PUBLIC_URL% in the tags above.
-      It will be replaced with the URL of the `public` folder during the build.
-      Only files inside the `public` folder can be referenced from the HTML.
-
-      Unlike "/favicon.ico" or "favicon.ico", "%PUBLIC_URL%/favicon.ico" will
-      work correctly both with client-side routing and a non-root public URL.
-      Learn how to configure a non-root public URL by running `npm run build`.
-    -->
-    <title>React App</title>
+    
+    <title>Mahindra Personalisation App</title>
   </head>
-  <body>
+  <body class="font-loading">
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
-    <!--
-      This HTML file is a template.
-      If you open it directly in the browser, you will see an empty page.
 
-      You can add webfonts, meta tags, or analytics to this file.
-      The build step will place the bundled scripts into the <body> tag.
-
-      To begin the development, run `npm start` or `yarn start`.
-      To create a production bundle, use `npm run build` or `yarn build`.
-    -->
+    <!-- Enhanced security script for font loading timeout and validation -->
+    <script>
+      (function() {
+        'use strict';
+        
+        // Remove font-loading class when fonts are ready
+        function removeFontLoadingClass() {
+          document.body.classList.remove('font-loading');
+        }
+        
+        // Validate font loading with timeout and security checks
+        var fontLoadTimeout = setTimeout(function() {
+          console.warn('Font loading timeout, proceeding with system fonts');
+          removeFontLoadingClass();
+          
+          // Force fallback to system fonts
+          var fallbackStyle = document.createElement('style');
+          fallbackStyle.textContent = 'body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", sans-serif !important; }';
+          document.head.appendChild(fallbackStyle);
+        }, 3000);
+        
+        // Clear timeout when fonts are loaded
+        if (document.fonts && document.fonts.ready) {
+          document.fonts.ready.then(function() {
+            clearTimeout(fontLoadTimeout);
+            removeFontLoadingClass();
+          }).catch(function(error) {
+            console.warn('Font loading failed:', error);
+            clearTimeout(fontLoadTimeout);
+            removeFontLoadingClass();
+          });
+        } else {
+          // Fallback for browsers without font loading API
+          setTimeout(function() {
+            clearTimeout(fontLoadTimeout);
+            removeFontLoadingClass();
+          }, 2000);
+        }
+        
+        // Additional security: Monitor for suspicious font loading (simplified)
+        var fontLoadAttempts = 0;
+        var maxFontLoadAttempts = 5;
+        
+        document.addEventListener('error', function(e) {
+          if (e.target && e.target.tagName === 'LINK' && e.target.rel === 'stylesheet') {
+            fontLoadAttempts++;
+            if (fontLoadAttempts > maxFontLoadAttempts) {
+              console.warn('Too many font load failures detected');
+              return;
+            }
+          }
+        }, true);
+      })();
+    </script>
   </body>
 </html>

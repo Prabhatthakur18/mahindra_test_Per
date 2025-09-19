@@ -10,6 +10,159 @@ import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';  
 import './App.css';
 
+
+
+// Add this near the top of your file, after the imports
+const sanitizeInput = (input) => {
+  if (!input) return '';
+  
+  // Convert to string and limit length
+  const str = String(input).slice(0, 100);
+  
+  // Remove potentially dangerous characters and HTML tags
+  return str
+    .replace(/[<>\"'&\/\\]/g, (match) => {
+      const escapeMap = {
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#x27;',
+        '&': '&amp;',
+        '/': '&#x2F;',
+        '\\': '&#x5C;'
+      };
+      return escapeMap[match];
+    })
+    // Remove script tags and javascript: protocols
+    .replace(/script/gi, 'scr1pt')
+    .replace(/javascript:/gi, 'java5cript:')
+    .replace(/data:/gi, 'dat4:')
+    .replace(/vbscript:/gi, 'vb5cript:')
+    .replace(/on\w+=/gi, 'on_event=')
+    .trim();
+};
+
+// Add this new validation function after sanitizeInput
+const validateInput = (input, type = 'text') => {
+  if (!input) return '';
+  
+  switch (type) {
+    case 'phone':
+      return input.replace(/[^\d]/g, '').slice(0, 10);
+    case 'email':
+      // Basic email validation and sanitization
+      return input.toLowerCase().trim().replace(/[<>\"'&]/g, '');
+    case 'text':
+    default:
+      return sanitizeInput(input).slice(0, 100); // Limit length
+  }
+};
+
+// Add URL validation function
+const isValidUrl = (url) => {
+  try {
+    const urlObj = new URL(url);
+    // Only allow http/https protocols
+    return ['http:', 'https:'].includes(urlObj.protocol);
+  } catch {
+    return false;
+  }
+};
+// Safe DOM manipulation functions to prevent XSS
+const safeSetTextContent = (element, text) => {
+  if (!element || typeof element.textContent === 'undefined') {
+    throw new Error('Invalid element for text content');
+  }
+  element.textContent = sanitizeInput(text);
+};
+
+const safeSetInnerHTML = (element, html) => {
+  if (!element) {
+    throw new Error('Invalid element for innerHTML');
+  }
+  
+  // Strip all HTML tags and scripts
+  const sanitized = sanitizeInput(html)
+    .replace(/<[^>]*>/g, '') // Remove all HTML tags
+    .replace(/&lt;[^&gt;]*&gt;/g, ''); // Remove escaped HTML tags
+  
+  element.textContent = sanitized; // Use textContent instead of innerHTML
+};
+
+const safeInsertBefore = (newNode, referenceNode) => {
+  // Validate inputs
+  if (!newNode || !referenceNode || !referenceNode.parentNode) {
+    throw new Error('Invalid nodes for insertion');
+  }
+  
+  // Only allow safe node types
+  const allowedNodeTypes = [Node.TEXT_NODE, Node.ELEMENT_NODE];
+  if (!allowedNodeTypes.includes(newNode.nodeType)) {
+    throw new Error('Invalid node type for insertion');
+  }
+  
+  // If it's an element node, sanitize its content
+  if (newNode.nodeType === Node.ELEMENT_NODE) {
+    sanitizeElement(newNode);
+  }
+  
+  return referenceNode.parentNode.insertBefore(newNode, referenceNode);
+};
+
+const sanitizeElement = (element) => {
+  if (!element || element.nodeType !== Node.ELEMENT_NODE) {
+    return;
+  }
+  
+  // Remove dangerous attributes
+  const dangerousAttrs = [
+    'onclick', 'onload', 'onerror', 'onmouseover', 'onmouseout',
+    'onfocus', 'onblur', 'onchange', 'onsubmit', 'onreset',
+    'onselect', 'onkeydown', 'onkeypress', 'onkeyup',
+    'javascript', 'vbscript', 'data'
+  ];
+  
+  dangerousAttrs.forEach(attr => {
+    if (element.hasAttribute(attr)) {
+      element.removeAttribute(attr);
+    }
+  });
+  
+  // Sanitize text content
+  if (element.textContent) {
+    element.textContent = sanitizeInput(element.textContent);
+  }
+  
+  // Recursively sanitize child elements
+  Array.from(element.children).forEach(child => {
+    sanitizeElement(child);
+  });
+};
+
+const isValidNode = (node) => {
+  if (!node) return false;
+  
+  // Only allow safe node types
+  const allowedTypes = [Node.TEXT_NODE, Node.ELEMENT_NODE];
+  if (!allowedTypes.includes(node.nodeType)) {
+    return false;
+  }
+  
+  // For element nodes, check tag name
+  if (node.nodeType === Node.ELEMENT_NODE) {
+    const allowedTags = ['DIV', 'SPAN', 'P', 'H1', 'H2', 'H3', 'H4', 'H5', 'H6', 'BR', 'HR'];
+    if (!allowedTags.includes(node.tagName.toUpperCase())) {
+      return false;
+    }
+  }
+  
+  return true;
+};
+
+
+
+
+
 const extraStyles = `
   .embroidered-text {
     -webkit-print-color-adjust: exact !important;
@@ -523,24 +676,112 @@ const previewTextPositions  = {
  }
 };
 
+//updated font loading with security considerations
 const loadFonts = async () => {
- const style = document.createElement('style');
- style.textContent = `
-   @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Montserrat:wght@400;700&display=swap');
-   
-   @font-face {
-     font-family: 'Gabriola';
-     src: local('Gabriola'), local('Segoe Script');
-   }
-   
-   @font-face {
-     font-family: 'Blackadder ITC';
-     src: local('Blackadder ITC'), local('Brush Script MT');
-   }
- `;
- document.head.appendChild(style);
+  const style = document.createElement('style');
+  style.textContent = `
+    @font-face {
+      font-family: 'Dancing Script';
+      src: local('Dancing Script'), 
+           local('DancingScript-Regular');
+      font-display: swap;
+    }
+    
+    @font-face {
+      font-family: 'Montserrat';
+      src: local('Montserrat'),
+           local('Montserrat-Regular');
+      font-display: swap;
+    }
+    
+    @font-face {
+      font-family: 'Gabriola';
+      src: local('Gabriola'), local('Segoe Script');
+      font-display: swap;
+    }
+    
+    @font-face {
+      font-family: 'Blackadder ITC';
+      src: local('Blackadder ITC'), local('Brush Script MT');
+      font-display: swap;
+    }
+    
+    /* Fallback fonts for better security */
+    .font-fallback {
+      font-family: 'Dancing Script', 'Times New Roman', serif;
+    }
+  `;
+  
+  // Secure external font loading with validation and timeout
+  const loadExternalFont = (url, integrity = null) => {
+    return new Promise((resolve) => {
+      if (!isValidUrl(url)) {
+        console.warn('Invalid font URL, using system fonts');
+        resolve();
+        return;
+      }
+      
+      const link = document.createElement('link');
+      link.rel = 'stylesheet';
+      link.href = url;
+      link.crossOrigin = 'anonymous';
+      
+      if (integrity) {
+        link.integrity = integrity;
+      }
+      
+      let loaded = false;
+      
+      const cleanup = () => {
+        if (!loaded) {
+          loaded = true;
+          resolve();
+        }
+      };
+      
+      link.onload = cleanup;
+      link.onerror = () => {
+        console.warn(`Failed to load font from ${url}, using fallbacks`);
+        cleanup();
+      };
+      
+      // Set timeout for font loading (3 seconds)
+      setTimeout(() => {
+        if (!loaded) {
+          console.warn(`Font loading timeout for ${url}`);
+          cleanup();
+        }
+      }, 3000);
+      
+      document.head.appendChild(link);
+    });
+  };
+  
+  document.head.appendChild(style);
+  
+  try {
+    // Load external fonts with error handling and timeout
+    await Promise.race([
+      loadExternalFont('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Montserrat:wght@400;700&display=swap'),
+      new Promise(resolve => setTimeout(resolve, 3000)) // 3 second timeout
+    ]);
+  } catch (error) {
+    console.warn('External font loading failed, using system fonts');
+  }
 
- await document.fonts.ready;
+  // Don't wait indefinitely for fonts
+  const fontTimeout = setTimeout(() => {
+    console.warn('Font loading timeout, proceeding with available fonts');
+  }, 2000);
+
+  try {
+    await Promise.race([
+      document.fonts.ready,
+      new Promise(resolve => setTimeout(resolve, 2000))
+    ]);
+  } finally {
+    clearTimeout(fontTimeout);
+  }
 };
 
 const EmbroideredText = ({ text, fontFamily, position, textColor, isMobile }) => {
@@ -616,8 +857,13 @@ const fontSize = isMobile ? 6 : 12; // Fixed size for mobile and non-mobile
         whiteSpace: 'nowrap',
         zIndex: 10
       }}
+       ref={(el) => {
+    if (el && text) {
+      safeSetTextContent(el, text);
+    }
+  }}
     >
-      {text}
+  {sanitizeInput(text)} 
     </div>
   );
 };
@@ -655,6 +901,21 @@ const isValidPhone = (s) => /^\d{10}$/.test(s || '');
  const [customerEmail, setCustomerEmail] = useState(''); // Added back for validation
  const [emailError, setEmailError] = useState("");
 
+
+ const validateInput = (input, type = 'text') => {
+  if (!input) return '';
+  
+  switch (type) {
+    case 'phone':
+      return input.replace(/[^\d]/g, '').slice(0, 10);
+    case 'email':
+      // Basic email validation and sanitization
+      return input.toLowerCase().trim().replace(/[<>\"'&]/g, '');
+    case 'text':
+    default:
+      return sanitizeInput(input).slice(0, 100); // Limit length
+  }
+};
 
 // your validation function
 const isValidEmail = (email) => {
@@ -732,14 +993,7 @@ const lockField = (fieldName, e) => {
   const [termsChecked, setTermsChecked] = useState(false);
   const [showThanks, setShowThanks] = useState(false);
 
-  const generateRandomAlphaNum = (length = 8) => {
-   const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
-   let out = '';
-   for (let i = 0; i < length; i++) {
-     out += chars.charAt(Math.floor(Math.random() * chars.length));
-   }
-   return out;
- };
+
 
  // Dummy dropdown data for dealers
  const dealerDirectory = [
@@ -795,13 +1049,62 @@ useEffect(() => {
    // eslint-disable-next-line react-hooks/exhaustive-deps
  }, [dealershipName]);
 
- useEffect(() => {
-   if (!showThanks) return;
-   const id = window.setTimeout(() => {
-     window.location.assign('/');
-   }, 2000);
-   return () => window.clearTimeout(id);
- }, [showThanks]);
+//  useEffect(() => {
+//    if (!showThanks) return;
+//    const id = window.setTimeout(() => {
+//      window.location.assign('/');
+//    }, 2000);
+//    return () => window.clearTimeout(id);
+//  }, [showThanks]);
+
+
+// Add resource management and timeout controls
+useEffect(() => {
+  // Set global timeout for any long-running operations
+  const timeouts = [];
+  
+  const safeTimeout = (callback, delay) => {
+    const id = setTimeout(() => {
+      try {
+        callback();
+      } catch (error) {
+        console.error('Timeout callback error:', error);
+      }
+    }, delay);
+    timeouts.push(id);
+    return id;
+  };
+  
+  // Cleanup function
+  return () => {
+    timeouts.forEach(id => clearTimeout(id));
+  };
+}, []);
+
+// Add memory usage monitoring
+useEffect(() => {
+  const checkMemoryUsage = () => {
+    if (performance.memory) {
+      const used = performance.memory.usedJSHeapSize;
+      const limit = performance.memory.jsHeapSizeLimit;
+      const percentage = (used / limit) * 100;
+      
+      if (percentage > 90) {
+        console.warn('High memory usage detected:', percentage.toFixed(2) + '%');
+        // Force garbage collection if available
+        if (window.gc) {
+          window.gc();
+        }
+      }
+    }
+  };
+  
+  const interval = setInterval(checkMemoryUsage, 30000); // Check every 30 seconds
+  return () => clearInterval(interval);
+}, []);
+
+
+
 
 const validateForm = () => {
   if (!customerName.trim()) {
@@ -853,13 +1156,52 @@ const validateForm = () => {
 
 // Load a Unicode font so ₹ renders correctly
 const fetchAsBase64 = async (url) => {
+  const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB limit
+  const MAX_ITERATIONS = 1000000; // 1M iteration limit
+  
+  // Validate URL first
+  if (!isValidUrl(url)) {
+    throw new Error('Invalid URL provided');
+  }
+  
   const res = await fetch(url);
+  
+  // Check response status
+  if (!res.ok) {
+    throw new Error(`HTTP error! status: ${res.status}`);
+  }
+  
+  // Check content length if available
+  const contentLength = res.headers.get('content-length');
+  if (contentLength && parseInt(contentLength) > MAX_FILE_SIZE) {
+    throw new Error('File too large to process');
+  }
+  
   const buf = await res.arrayBuffer();
-  let binary = '';
+  
+  // Validate size before processing
   const bytes = new Uint8Array(buf);
-  for (let i = 0; i < bytes.byteLength; i++) binary += String.fromCharCode(bytes[i]);
+  if (bytes.byteLength > MAX_FILE_SIZE) {
+    throw new Error('File too large to process');
+  }
+  
+  // Additional safety check for iterations
+  const maxIterations = Math.min(bytes.byteLength, MAX_ITERATIONS);
+  
+  let binary = '';
+  for (let i = 0; i < maxIterations; i++) {
+    binary += String.fromCharCode(bytes[i]);
+  }
+  
+  // Check if we had to truncate
+  if (bytes.byteLength > MAX_ITERATIONS) {
+    console.warn(`File truncated: ${bytes.byteLength} bytes to ${MAX_ITERATIONS} bytes`);
+  }
+  
   return btoa(binary);
 };
+
+
 
 let rupeeFontLoaded = false;
 const ensureRupeeFont = async (pdf) => {
@@ -1365,27 +1707,41 @@ const handleDownloadOrder = async () => {
     // DESIGN PREVIEW
     addSectionHeader('DESIGN PREVIEW');
 
-    // Image capture and display - Updated to use configurable margins
+// Image capture and display - Use the same method as the working preview
+  // Image capture and display - Use the same method as the working preview
     const captureSeatView = async (seatView) => {
-      const element = document.createElement('div');
-      element.style.position = 'fixed';
-      element.style.left = '-9999px';
-      element.style.width = '500px';
-      element.style.height = '390px';
-      document.body.appendChild(element);
+      // Create a temporary element similar to how the preview works
+      const container = document.createElement('div');
+      container.style.position = 'fixed';
+      container.style.left = '-9999px';
+      container.style.top = '0';
+      container.style.width = '500px';
+      container.style.height = '390px';
+      container.style.background = '#fff';
+      document.body.appendChild(container);
 
+      // Add the background image
       const img = document.createElement('img');
       img.src = `/models/${selectedVehicleModel}/${seatView}/${selectedAccessory}.png`;
       img.style.width = '100%';
-      img.style.height= '100%';
+      img.style.height = '100%';
       img.style.position = 'absolute';
       img.style.top = '0';
       img.style.left = '0';
-      element.appendChild(img);
+      container.appendChild(img);
 
-      await new Promise(resolve => img.onload = resolve);
+      // Wait for image to load
+      await new Promise(resolve => {
+        img.onload = resolve;
+        img.onerror = () => {
+          console.warn(`Image failed to load: ${seatView}`);
+          resolve();
+        };
+        setTimeout(resolve, 2000); // Fallback timeout
+      });
 
-      const positions = pdfTextPositions?.[selectedVehicleModel]?.[seatView]?.[selectedAccessory] || [];
+      // Add text overlays using the same positions as the working preview
+      const positions = pdfTextPositions[selectedVehicleModel]?.[seatView]?.[selectedAccessory] || [];
       positions.forEach(position => {
         const textEl = document.createElement('div');
         textEl.textContent = personalisedContent;
@@ -1402,11 +1758,19 @@ const handleDownloadOrder = async () => {
         textEl.style.textShadow = `1px 1px 1px rgba(33, 33, 33, 0.28), -1px -1px 1px rgba(71, 71, 71, 0.56), 0 0 2px rgba(37, 36, 36, 0.3)`;
         textEl.style.pointerEvents = 'none';
         textEl.style.whiteSpace = 'nowrap';
-        element.appendChild(textEl);
+        textEl.style.zIndex = '10';
+        container.appendChild(textEl);
       });
 
-      const canvas = await html2canvas(element, { scale: 1.5, useCORS: true, allowTaint: true, backgroundColor: null });
-      document.body.removeChild(element);
+      // Use the same html2canvas settings that work elsewhere in the app
+      const canvas = await html2canvas(container, {
+        scale: 2,
+        useCORS: true,
+        allowTaint: true,
+        backgroundColor: null
+      });
+
+      document.body.removeChild(container);
       return canvas.toDataURL('image/jpeg', 0.95);
     };
 
@@ -2184,7 +2548,10 @@ const handleDownloadOrder = async () => {
   name="customerName"
   type="text" 
   value={customerName} 
-  onChange={(e) => setCustomerName(e.target.value)} 
+onChange={(e) => {
+  const sanitized = sanitizeInput(e.target.value);
+  setCustomerName(sanitized);
+}}
   placeholder="Enter Customer Name"
   style={inputStyle}
 />
@@ -2198,10 +2565,10 @@ const handleDownloadOrder = async () => {
   inputMode="numeric"
   pattern="[0-9]*"
   value={customerPhone} 
-  onChange={(e) => {
-    const digits = sanitizeDigits(e.target.value).slice(0, 10);
-    setCustomerPhone(digits);
-  }} 
+onChange={(e) => {
+  const sanitized = validateInput(e.target.value, 'phone');
+  setCustomerPhone(sanitized);
+}}
   placeholder="Enter Customer Phone Number"
   style={inputStyle}
 />
@@ -2224,11 +2591,11 @@ const handleDownloadOrder = async () => {
         type="email"
         name="customerEmail"
         value={customerEmail}
-        onChange={(e) => {
-          const val = e.target.value;
-          setCustomerEmail(val);
-          setEmailError(isValidEmail(val) ? "" : "Invalid email format");
-        }}
+     onChange={(e) => {
+  const val = validateInput(e.target.value, 'email');
+  setCustomerEmail(val);
+  setEmailError(isValidEmail(val) ? "" : "Invalid email format");
+}}
         style={inputStyle}
         placeholder="Enter Customer Email"
         required
@@ -2778,17 +3145,19 @@ const PreviewPage = ({ savedImages, onModify, onConfirm, onClose }) => {
   >
     {/* 👇 Blurred Background */}
     <div
-      style={{
-        position: 'absolute',
-        inset: 0,
-        borderRadius: '8px',
-        backgroundImage: `url('/dots-perspective-with-blank-space-background.jpg')`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundRepeat: 'no-repeat',
-        filter: 'blur(1.3px)',
-        zIndex: 0,
-      }}
+  style={{
+  position: 'absolute',
+  inset: 0,
+  borderRadius: '8px',
+  backgroundImage: `url('/dots-perspective-with-blank-space-background.jpg')`,
+  backgroundSize: 'cover',
+  backgroundPosition: 'center',
+  backgroundRepeat: 'no-repeat',
+  filter: 'blur(1.3px)',
+  zIndex: 0,
+  height: '155%',
+}}
+
     />
 
     {/* 👇 Foreground Content */}
@@ -3113,98 +3482,61 @@ const [isPreviewLoading, setIsPreviewLoading] = useState(false);
     // Start generating preview images in parallel with the loading screen
     const generatePreviewImages = async () => {
       // Save both images for preview using previewTextPositions
-      const saveImageForRow = async (row) => {
-        const container = document.createElement('div');
-        container.style.position = 'fixed';
-        container.style.left = '-9999px';
-        container.style.top = '0';
-        container.style.width = '500px';
-        container.style.height = '390px';
-        container.style.background = '#fff';
-        document.body.appendChild(container);
+       const saveImageForRow = async (row) => {
+    const container = document.createElement('div');
+    container.style.position = 'fixed';
+    container.style.left = '-9999px';
+    container.style.top = '0';
+    container.style.width = '500px';
+    container.style.height = '390px';
+    container.style.background = '#fff';
+    document.body.appendChild(container);
 
-        // Add image
-        const img = document.createElement('img');
-        img.src = `/models/${selectedVehicleModel}/${row}/${selectedAccessory}.png`;
-        img.style.width = '100%';
-        img.style.height = '100%';
-        img.style.position = 'absolute';
-        img.style.top = '0';
-        img.style.left = '0';
-        container.appendChild(img);
+    // Add image
+    const img = document.createElement('img');
+    img.src = `/models/${selectedVehicleModel}/${row}/${selectedAccessory}.png`;
+    img.style.width = '100%';
+    img.style.height = '100%';
+    img.style.position = 'absolute';
+    img.style.top = '0';
+    img.style.left = '0';
+    container.appendChild(img);
 
-        await new Promise(resolve => img.onload = resolve);
+    await new Promise(resolve => img.onload = resolve);
 
-        // Use previewTextPositions for embroidery overlays
-     // In the handlePreviewClick function, replace the text styling part with this:
+    // Use previewTextPositions for embroidery overlays
+    const positions = previewTextPositions[selectedVehicleModel]?.[row]?.[selectedAccessory] || [];
+    positions.forEach(position => {
+      const textEl = document.createElement('div');
+      textEl.textContent = personalisedContent;
+      textEl.style.position = 'absolute';
+      textEl.style.top = position.top;
+      textEl.style.left = position.left;
+      textEl.style.transform = `translate(-50%, -50%) ${position.rotation ? `rotate(${position.rotation}deg)` : ''}`;
+      textEl.style.fontFamily = selectedFont;
+      textEl.style.fontSize = `${position.fontSize?.desktop || 14}px`;
+      textEl.style.color = selectedColor;
+      textEl.style.fontStyle = 'italic';
+      textEl.style.fontWeight = 'bold';
+      textEl.style.WebkitTextStroke = '0.3px rgba(68, 68, 68, 0.5)';
+      textEl.style.textShadow = `1px 1px 1px rgba(33, 33, 33, 0.28), -1px -1px 1px rgba(71, 71, 71, 0.56), 0 0 2px rgba(37, 36, 36, 0.3)`;
+      textEl.style.pointerEvents = 'none';
+      textEl.style.whiteSpace = 'nowrap';
+      textEl.style.zIndex = '10';
+      container.appendChild(textEl);
+    });
 
-// Use previewTextPositions for embroidery overlays
-const positions = previewTextPositions[selectedVehicleModel]?.[row]?.[selectedAccessory] || [];
-positions.forEach(position => {
-  const textEl = document.createElement('div');
-  textEl.textContent = personalisedContent;
-  textEl.style.position = 'absolute';
-  textEl.style.top = position.top;
-  textEl.style.left = position.left;
-  textEl.style.transform = `translate(-50%, -50%) ${position.rotation ? `rotate(${position.rotation}deg)` : ''}`;
-  textEl.style.fontFamily = selectedFont;
-  textEl.style.fontSize = `${position.fontSize?.desktop || 14}px`;
-  textEl.style.color = selectedColor;
-  textEl.style.fontStyle = 'italic';
-  textEl.style.fontWeight = 'bold';
-  
-  // Make the text styling exactly match the main editor view
-  const getStrokeColor = (color) => {
-    const hexToRgb = (hex) => {
-      const r = parseInt(hex.slice(1, 3), 16);
-      const g = parseInt(hex.slice(3, 5), 16);
-      const b = parseInt(hex.slice(5, 7), 16);
-      return [r, g, b];
-    };
+    const canvas = await html2canvas(container, {
+      scale: 2,
+      useCORS: true,
+      allowTaint: true,
+      backgroundColor: null
+    });
 
-    const calculateLuminance = (r, g, b) => {
-      const a = [r, g, b].map(v => {
-        v /= 255;
-        return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4);
-      });
-      return a[0] * 0.2126 + a[1] * 0.7152 + a[2] * 0.0722;
-    };
-
-    if (color.startsWith('#')) {
-      const [r, g, b] = hexToRgb(color);
-      const luminance = calculateLuminance(r, g, b);
-      return luminance > 0.5 ? 'rgba(68, 68, 68, 0.5)' : 'rgba(48, 47, 47, 0.5)';
-    }
-    const lightColors = ['#ffe599', '#c0c0c0', 'beige', 'ivory', 'white'];
-    return lightColors.includes(color.toLowerCase()) 
-      ? 'rgba(58, 55, 55, 0.5)' 
-      : 'rgba(255, 255, 255, 0.5)';
+    document.body.removeChild(container);
+    return canvas.toDataURL('image/jpeg', 0.95);
   };
 
-  const strokeColor = getStrokeColor(selectedColor);
-  
-  // Apply the same styling as EmbroideredText component
-  textEl.style.WebkitTextStroke = `0.3px ${strokeColor}`;
-  textEl.style.textShadow = `
-    1px 1px 1px rgba(33, 33, 33, 0.28),
-    -1px -1px 1px rgba(71, 71, 71, 0.56),
-    0 0 2px rgba(37, 36, 36, 0.3)
-  `;
-  textEl.style.pointerEvents = 'none';
-  textEl.style.whiteSpace = 'nowrap';
-  textEl.style.zIndex = '10';
-  container.appendChild(textEl);
-});
-        const canvas = await html2canvas(container, {
-          scale: 2,
-          useCORS: true,
-          allowTaint: true,
-          backgroundColor: null
-        });
-
-        document.body.removeChild(container);
-        return canvas.toDataURL('image/jpeg', 0.95);
-      };
 
       // Generate both images in parallel
       const [frontImage, rearImage] = await Promise.all([
@@ -3501,12 +3833,17 @@ if (showOrderForm) {
          type="text"
          maxLength={7}
          value={personalisedContent}
-         onChange={e => setPersonalisedContent(e.target.value)}
-         disabled={primarySeatView && selectedSeatView !== primarySeatView}
+
+onChange={(e) => {
+  const sanitized = sanitizeInput(e.target.value.slice(0, 7));
+  setPersonalisedContent(sanitized);
+}}
+
+  disabled={primarySeatView && selectedSeatView !== primarySeatView}
          style={{ fontFamily: selectedFont, opacity: (primarySeatView && selectedSeatView !== primarySeatView) ? 0.6 : 1 }}
        />
 
-{/* Font Style */}
+
 {/* Font Style */}
 <label
   style={{
