@@ -14,11 +14,11 @@
     <meta http-equiv="X-Content-Type-Options" content="nosniff">
     <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
 
-    <!-- CSP with nonce (update NONCE_VALUE dynamically in server render) -->
+    <!-- Content Security Policy with HASHES -->
     <meta http-equiv="Content-Security-Policy"
           content="default-src 'self';
-                   script-src 'self' 'nonce-NONCE_VALUE';
-                   style-src 'self' 'nonce-NONCE_VALUE' https://fonts.googleapis.com;
+                   script-src 'self' 'sha256-cZ5dctb3y4xVqN65EcwAtu4R8ZoAMxeUR3sZnOqULIM=' 'sha256-R8cW3ExkDG4ZjylgKf+6dANL1Z3MlXZsW4bo/A61w20=';
+                   style-src 'self' 'sha256-bD5mVGslR6FTHA69DXPK8uvU8PoUds/MGEyGpLZs3aY=' https://fonts.googleapis.com;
                    font-src 'self' https://fonts.gstatic.com;
                    img-src 'self';
                    connect-src 'self';
@@ -29,11 +29,11 @@
                    base-uri 'self';">
 
     <!-- Anti-clickjack -->
-    <style id="antiClickjack" nonce="NONCE_VALUE">
+    <style id="antiClickjack">
       html { display: none !important; }
     </style>
 
-    <script nonce="NONCE_VALUE">
+    <script>
     (function() {
       'use strict';
       try {
@@ -44,13 +44,10 @@
           }
         } else {
           var currentUrl = window.location.origin + window.location.pathname;
-          try {
-            top.location.replace(currentUrl);
-          } catch(e) {
-            self.location.replace(currentUrl);
-          }
+          try { top.location.replace(currentUrl); }
+          catch(e) { self.location.replace(currentUrl); }
         }
-      } catch(globalError) {
+      } catch {
         var antiClickjack = document.getElementById("antiClickjack");
         if (antiClickjack && antiClickjack.parentNode) {
           antiClickjack.parentNode.removeChild(antiClickjack);
@@ -59,62 +56,51 @@
     })();
     </script>
 
-    <!-- Fonts preload -->
+    <!-- Preconnect + Fonts (with optional SRI if needed) -->
     <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&display=swap" 
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&display=swap"
           rel="stylesheet"
           crossorigin="anonymous"
           referrerpolicy="no-referrer"
-          media="print"
-          onload="this.media='all'"
+          media="all"
           onerror="this.onerror=null;console.warn('Failed to load Cinzel font, using fallback')">
 
-    <link href="https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,100..900;1,100..900&family=Maven+Pro:wght@400..900&family=Sevillana&display=swap" 
+    <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;700&family=Maven+Pro:wght@400;700&family=Sevillana&display=swap"
           rel="stylesheet"
           crossorigin="anonymous"
           referrerpolicy="no-referrer"
-          media="print"
-          onload="this.media='all'"
+          media="all"
           onerror="this.onerror=null;console.warn('Failed to load main fonts, using fallback')">
 
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&family=Merienda:wght@300..900&family=Pacifico&family=Rubik:ital,wght@0,300..900;1,300..900&display=swap" 
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Merienda:wght@400;700&family=Pacifico&family=Rubik:wght@400;700&display=swap"
           rel="stylesheet"
           crossorigin="anonymous"
           referrerpolicy="no-referrer"
-          media="print"
-          onload="this.media='all'"
+          media="all"
           onerror="this.onerror=null;console.warn('Failed to load extended fonts, using fallback')">
 
     <noscript>
-      <style nonce="NONCE_VALUE">
+      <style>
         body {
-          font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif !important;
+          font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu',
+                       'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif !important;
         }
       </style>
     </noscript>
 
-    <style nonce="NONCE_VALUE">
+    <style>
       body {
-        font-family: 'Exo 2', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+        font-family: 'Exo 2', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+                     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
       }
 
-      .cinzel-fallback {
-        font-family: 'Cinzel Decorative', 'Times New Roman', serif;
-      }
+      .cinzel-fallback { font-family: 'Cinzel Decorative', 'Times New Roman', serif; }
+      .dancing-script-fallback { font-family: 'Dancing Script', 'Brush Script MT', cursive; }
+      .pacifico-fallback { font-family: 'Pacifico', 'Comic Sans MS', cursive; }
 
-      .dancing-script-fallback {
-        font-family: 'Dancing Script', 'Brush Script MT', cursive;
-      }
-
-      .pacifico-fallback {
-        font-family: 'Pacifico', 'Comic Sans MS', cursive;
-      }
-
-      @font-face {
-        font-display: swap;
-      }
+      @font-face { font-display: swap; }
 
       .font-loading {
         font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
@@ -130,126 +116,77 @@
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
 
-    <script nonce="NONCE_VALUE">
+    <script>
     (function() {
       'use strict';
-      var MAX_FONT_LOAD_TIME = 5000;
-      var MAX_FONT_RETRY_ATTEMPTS = 2;
-      var fontLoadAttempts = 0;
+      var MAX_FONT_LOAD_TIME = 5000, MAX_FONT_RETRY_ATTEMPTS = 2, fontLoadAttempts = 0;
 
       function isValidUrl(url) {
         try {
-          var parsedUrl = new URL(url);
-          return parsedUrl.protocol === 'https:' &&
-                 (parsedUrl.hostname === 'fonts.googleapis.com' ||
-                  parsedUrl.hostname === 'fonts.gstatic.com' ||
-                  parsedUrl.origin === window.location.origin);
-        } catch (e) {
-          return false;
-        }
+          var u = new URL(url);
+          return u.protocol === 'https:' &&
+                 (u.hostname === 'fonts.googleapis.com' ||
+                  u.hostname === 'fonts.gstatic.com' ||
+                  u.origin === window.location.origin);
+        } catch { return false; }
       }
 
-      function secureSetAttribute(element, name, value) {
-        if ((name === 'href' || name === 'src') && typeof value === 'string') {
-          if (isValidUrl(value)) {
-            element.setAttribute(name, value);
-          } else {
-            console.warn('Blocked potentially unsafe URL:', value);
-          }
-        } else {
-          if (typeof value === 'string' && value.length < 2000) {
-            element.setAttribute(name, value);
-          }
+      function secureSetAttribute(el, name, val) {
+        if ((name === 'href' || name === 'src') && typeof val === 'string') {
+          if (isValidUrl(val)) el.setAttribute(name, val);
+          else console.warn('Blocked unsafe URL:', val);
+        } else if (typeof val === 'string' && val.length < 2000) {
+          el.setAttribute(name, val);
         }
       }
 
       function removeFontLoadingClass() {
-        if (document.body) {
-          document.body.classList.remove('font-loading');
-        }
+        if (document.body) document.body.classList.remove('font-loading');
       }
 
       function applyFallbackFonts() {
-        var fallbackStyle = document.createElement('style');
-        fallbackStyle.setAttribute('nonce', 'NONCE_VALUE');
-        fallbackStyle.textContent = `
-          body { 
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", sans-serif !important; 
-          }
+        var style = document.createElement('style');
+        style.textContent = `
+          body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", sans-serif !important; }
           .cinzel-fallback { font-family: "Times New Roman", serif !important; }
           .dancing-script-fallback { font-family: "Brush Script MT", cursive !important; }
         `;
-        if (fallbackStyle.textContent.length < 500 && !/javascript:|data:|expression/i.test(fallbackStyle.textContent)) {
-          document.head.appendChild(fallbackStyle);
-        }
+        document.head.appendChild(style);
       }
 
-      var fontLoadTimeout = setTimeout(function() {
-        console.warn('Font loading timeout - using system fonts');
-        removeFontLoadingClass();
-        applyFallbackFonts();
-      }, MAX_FONT_LOAD_TIME);
+      var fontLoadTimeout = setTimeout(() => { removeFontLoadingClass(); applyFallbackFonts(); }, MAX_FONT_LOAD_TIME);
 
       if (document.fonts && document.fonts.ready) {
-        document.fonts.ready.then(function() {
-          clearTimeout(fontLoadTimeout);
-          removeFontLoadingClass();
-        }).catch(function(error) {
-          console.warn('Font loading failed:', error.message);
-          clearTimeout(fontLoadTimeout);
-          removeFontLoadingClass();
-          applyFallbackFonts();
-        });
+        document.fonts.ready.then(() => { clearTimeout(fontLoadTimeout); removeFontLoadingClass(); })
+                            .catch(() => { clearTimeout(fontLoadTimeout); removeFontLoadingClass(); applyFallbackFonts(); });
       } else {
-        setTimeout(function() {
-          clearTimeout(fontLoadTimeout);
-          removeFontLoadingClass();
-        }, 2000);
+        setTimeout(() => { clearTimeout(fontLoadTimeout); removeFontLoadingClass(); }, 2000);
       }
 
       document.addEventListener('error', function(e) {
         if (e.target && e.target.tagName === 'LINK' && e.target.rel === 'stylesheet') {
           fontLoadAttempts++;
           if (fontLoadAttempts > MAX_FONT_RETRY_ATTEMPTS) {
-            console.warn('Multiple font load failures - blocking further attempts');
-            var fontLinks = document.querySelectorAll('link[href*="fonts.googleapis.com"]');
-            fontLinks.forEach(function(link) {
-              if (link.parentNode) {
-                link.parentNode.removeChild(link);
-              }
-            });
+            console.warn('Multiple font failures - blocking further attempts');
+            document.querySelectorAll('link[href*="fonts.googleapis.com"]').forEach(l => l.remove());
             applyFallbackFonts();
           }
         }
       }, true);
 
-      var originalCreateElement = document.createElement;
-      document.createElement = function(tagName) {
-        var element = originalCreateElement.call(document, tagName);
-        if (tagName.toLowerCase() === 'link' || tagName.toLowerCase() === 'script') {
-          var originalSetAttribute = element.setAttribute;
-          element.setAttribute = function(name, value) {
-            secureSetAttribute(this, name, value);
-          };
-          Object.defineProperty(element, 'href', {
-            set: function(value) { secureSetAttribute(this, 'href', value); },
-            get: function() { return this.getAttribute('href'); },
-            configurable: true
-          });
-          Object.defineProperty(element, 'src', {
-            set: function(value) { secureSetAttribute(this, 'src', value); },
-            get: function() { return this.getAttribute('src'); },
-            configurable: true
-          });
+      var origCreate = document.createElement;
+      document.createElement = function(tag) {
+        var el = origCreate.call(document, tag);
+        if (['link','script'].includes(tag.toLowerCase())) {
+          el.setAttribute = function(n, v) { secureSetAttribute(this, n, v); };
         }
-        return element;
+        return el;
       };
 
-      // Extra hardening: block javascript: links
-      document.addEventListener('click', function(e) {
+      // Block javascript: links
+      document.addEventListener('click', e => {
         if (e.target && e.target.tagName === 'A' && e.target.href.startsWith('javascript:')) {
-          e.preventDefault();
-          console.warn('Blocked javascript: link');
+          e.preventDefault(); console.warn('Blocked javascript: link');
         }
       });
     })();
