@@ -13,183 +13,57 @@
     <!-- Security Headers -->
     <meta http-equiv="X-Content-Type-Options" content="nosniff">
     <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
+    <meta http-equiv="Strict-Transport-Security" content="max-age=63072000; includeSubDomains; preload">
 
-    <!-- Content Security Policy with HASHES -->
-    <meta http-equiv="Content-Security-Policy"
-          content="default-src 'self';
-                   script-src 'self' 'sha256-cZ5dctb3y4xVqN65EcwAtu4R8ZoAMxeUR3sZnOqULIM=' 'sha256-R8cW3ExkDG4ZjylgKf+6dANL1Z3MlXZsW4bo/A61w20=';
-                   style-src 'self' 'sha256-bD5mVGslR6FTHA69DXPK8uvU8PoUds/MGEyGpLZs3aY=' https://fonts.googleapis.com;
-                   font-src 'self' https://fonts.gstatic.com;
-                   img-src 'self';
-                   connect-src 'self';
-                   object-src 'none';
-                   media-src 'self';
-                   frame-src 'none';
-                   form-action 'self';
-                   base-uri 'self';">
+    <!-- CSP without unsafe-inline -->
+    <meta http-equiv="Content-Security-Policy" 
+          content="default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: blob:; connect-src 'self'; object-src 'none'; media-src 'self'; frame-src 'none'; form-action 'self'; base-uri 'self';">
 
-    <!-- Anti-clickjack -->
-    <style id="antiClickjack">
-      html { display: none !important; }
-    </style>
-
-    <script>
-    (function() {
-      'use strict';
-      try {
-        if (self === top) {
+    <!-- Anti-Clickjack -->
+    <style id="antiClickjack">html { display: none !important; }</style>
+    <script nonce="secure123">
+      (function() {
+        'use strict';
+        try {
+          if (self === top) {
+            var antiClickjack = document.getElementById("antiClickjack");
+            if (antiClickjack && antiClickjack.parentNode) {
+              antiClickjack.parentNode.removeChild(antiClickjack);
+            }
+          } else {
+            var currentUrl = window.location.origin + window.location.pathname;
+            if (window.location.origin === top.location.origin) {
+              try { top.location.replace(currentUrl); }
+              catch(e) { self.location.replace(currentUrl); }
+            } else {
+              console.warn("Blocked potential frame redirect");
+            }
+          }
+        } catch(e) {
           var antiClickjack = document.getElementById("antiClickjack");
           if (antiClickjack && antiClickjack.parentNode) {
             antiClickjack.parentNode.removeChild(antiClickjack);
           }
-        } else {
-          var currentUrl = window.location.origin + window.location.pathname;
-          try { top.location.replace(currentUrl); }
-          catch(e) { self.location.replace(currentUrl); }
         }
-      } catch {
-        var antiClickjack = document.getElementById("antiClickjack");
-        if (antiClickjack && antiClickjack.parentNode) {
-          antiClickjack.parentNode.removeChild(antiClickjack);
-        }
-      }
-    })();
+      })();
     </script>
 
-    <!-- Preconnect + Fonts (with optional SRI if needed) -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- Fonts (from env variables) -->
+    <link href="%REACT_APP_FONTS_CINZEL%" rel="stylesheet" crossorigin="anonymous" referrerpolicy="no-referrer">
+    <link href="%REACT_APP_FONTS_MAIN%" rel="stylesheet" crossorigin="anonymous" referrerpolicy="no-referrer">
+    <link href="%REACT_APP_FONTS_EXTENDED%" rel="stylesheet" crossorigin="anonymous" referrerpolicy="no-referrer">
 
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&display=swap"
-          rel="stylesheet"
-          crossorigin="anonymous"
-          referrerpolicy="no-referrer"
-          media="all"
-          onerror="this.onerror=null;console.warn('Failed to load Cinzel font, using fallback')">
-
-    <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;700&family=Maven+Pro:wght@400;700&family=Sevillana&display=swap"
-          rel="stylesheet"
-          crossorigin="anonymous"
-          referrerpolicy="no-referrer"
-          media="all"
-          onerror="this.onerror=null;console.warn('Failed to load main fonts, using fallback')">
-
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Merienda:wght@400;700&family=Pacifico&family=Rubik:wght@400;700&display=swap"
-          rel="stylesheet"
-          crossorigin="anonymous"
-          referrerpolicy="no-referrer"
-          media="all"
-          onerror="this.onerror=null;console.warn('Failed to load extended fonts, using fallback')">
-
+    <!-- Fallback fonts for noscript -->
     <noscript>
       <style>
-        body {
-          font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu',
-                       'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif !important;
-        }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important; }
       </style>
     </noscript>
-
-    <style>
-      body {
-        font-family: 'Exo 2', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-                     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
-      }
-
-      .cinzel-fallback { font-family: 'Cinzel Decorative', 'Times New Roman', serif; }
-      .dancing-script-fallback { font-family: 'Dancing Script', 'Brush Script MT', cursive; }
-      .pacifico-fallback { font-family: 'Pacifico', 'Comic Sans MS', cursive; }
-
-      @font-face { font-display: swap; }
-
-      .font-loading {
-        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      }
-    </style>
-
-    <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
-    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
 
     <title>Mahindra Personalisation App</title>
   </head>
   <body class="font-loading">
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
-
-    <script>
-    (function() {
-      'use strict';
-      var MAX_FONT_LOAD_TIME = 5000, MAX_FONT_RETRY_ATTEMPTS = 2, fontLoadAttempts = 0;
-
-      function isValidUrl(url) {
-        try {
-          var u = new URL(url);
-          return u.protocol === 'https:' &&
-                 (u.hostname === 'fonts.googleapis.com' ||
-                  u.hostname === 'fonts.gstatic.com' ||
-                  u.origin === window.location.origin);
-        } catch { return false; }
-      }
-
-      function secureSetAttribute(el, name, val) {
-        if ((name === 'href' || name === 'src') && typeof val === 'string') {
-          if (isValidUrl(val)) el.setAttribute(name, val);
-          else console.warn('Blocked unsafe URL:', val);
-        } else if (typeof val === 'string' && val.length < 2000) {
-          el.setAttribute(name, val);
-        }
-      }
-
-      function removeFontLoadingClass() {
-        if (document.body) document.body.classList.remove('font-loading');
-      }
-
-      function applyFallbackFonts() {
-        var style = document.createElement('style');
-        style.textContent = `
-          body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", sans-serif !important; }
-          .cinzel-fallback { font-family: "Times New Roman", serif !important; }
-          .dancing-script-fallback { font-family: "Brush Script MT", cursive !important; }
-        `;
-        document.head.appendChild(style);
-      }
-
-      var fontLoadTimeout = setTimeout(() => { removeFontLoadingClass(); applyFallbackFonts(); }, MAX_FONT_LOAD_TIME);
-
-      if (document.fonts && document.fonts.ready) {
-        document.fonts.ready.then(() => { clearTimeout(fontLoadTimeout); removeFontLoadingClass(); })
-                            .catch(() => { clearTimeout(fontLoadTimeout); removeFontLoadingClass(); applyFallbackFonts(); });
-      } else {
-        setTimeout(() => { clearTimeout(fontLoadTimeout); removeFontLoadingClass(); }, 2000);
-      }
-
-      document.addEventListener('error', function(e) {
-        if (e.target && e.target.tagName === 'LINK' && e.target.rel === 'stylesheet') {
-          fontLoadAttempts++;
-          if (fontLoadAttempts > MAX_FONT_RETRY_ATTEMPTS) {
-            console.warn('Multiple font failures - blocking further attempts');
-            document.querySelectorAll('link[href*="fonts.googleapis.com"]').forEach(l => l.remove());
-            applyFallbackFonts();
-          }
-        }
-      }, true);
-
-      var origCreate = document.createElement;
-      document.createElement = function(tag) {
-        var el = origCreate.call(document, tag);
-        if (['link','script'].includes(tag.toLowerCase())) {
-          el.setAttribute = function(n, v) { secureSetAttribute(this, n, v); };
-        }
-        return el;
-      };
-
-      // Block javascript: links
-      document.addEventListener('click', e => {
-        if (e.target && e.target.tagName === 'A' && e.target.href.startsWith('javascript:')) {
-          e.preventDefault(); console.warn('Blocked javascript: link');
-        }
-      });
-    })();
-    </script>
   </body>
 </html>
