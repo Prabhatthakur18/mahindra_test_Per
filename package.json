@@ -13,6 +13,8 @@
     "@testing-library/user-event": "^13.5.0",
     "ajv": "^6.12.6",
     "ajv-keywords": "^3.5.2",
+    "express": "^5.1.0",
+    "helmet": "^8.1.0",
     "html2canvas": "^1.4.1",
     "jspdf": "^2.5.2",
     "lucide-react": "^0.525.0",
@@ -22,11 +24,17 @@
     "react-feather": "^2.0.10",
     "react-router-dom": "^7.6.3",
     "react-scripts": "5.0.1",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+      "type": "module"
+
   },
+
+  
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
+     "serve": "node server.js",
+  "start-server": "npm run build && npm run serve",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },

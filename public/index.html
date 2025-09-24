@@ -11,52 +11,78 @@
     />
 
     <!-- Security Headers -->
-    <meta http-equiv="X-Content-Type-Options" content="nosniff">
-    <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
-    <meta http-equiv="Strict-Transport-Security" content="max-age=63072000; includeSubDomains; preload">
+    <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+    <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin" />
+    <meta http-equiv="Strict-Transport-Security" content="max-age=63072000; includeSubDomains; preload" />
+    <meta http-equiv="Cross-Origin-Opener-Policy" content="same-origin" />
+    <meta http-equiv="Cross-Origin-Embedder-Policy" content="require-corp" />
 
-    <!-- CSP without unsafe-inline -->
-    <meta http-equiv="Content-Security-Policy" 
-          content="default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: blob:; connect-src 'self'; object-src 'none'; media-src 'self'; frame-src 'none'; form-action 'self'; base-uri 'self';">
+    <!-- CSP hardened, no redirects in JS, allow nonce for inline script -->
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; 
+               script-src 'self' 'nonce-{{RANDOM_NONCE}}'; 
+               style-src 'self' https://fonts.googleapis.com; 
+               font-src 'self' https://fonts.gstatic.com data:; 
+               img-src 'self' data: blob:; 
+               connect-src 'self'; 
+               object-src 'none'; 
+               media-src 'self'; 
+               frame-ancestors 'none'; 
+               form-action 'self'; 
+               base-uri 'self'; 
+               upgrade-insecure-requests;"
+    />
 
-    <!-- Anti-Clickjack -->
+    <!-- Anti-Clickjack: keep page hidden if framed (no redirect) -->
     <style id="antiClickjack">html { display: none !important; }</style>
-    <script nonce="secure123">
-      (function() {
+    <script nonce="{{RANDOM_NONCE}}">
+      (function () {
         'use strict';
         try {
           if (self === top) {
-            var antiClickjack = document.getElementById("antiClickjack");
+            var antiClickjack = document.getElementById('antiClickjack');
             if (antiClickjack && antiClickjack.parentNode) {
               antiClickjack.parentNode.removeChild(antiClickjack);
             }
           } else {
-            var currentUrl = window.location.origin + window.location.pathname;
-            if (window.location.origin === top.location.origin) {
-              try { top.location.replace(currentUrl); }
-              catch(e) { self.location.replace(currentUrl); }
-            } else {
-              console.warn("Blocked potential frame redirect");
-            }
+            // Page stays hidden if framed (antiClickjack + CSP enforcement)
           }
-        } catch(e) {
-          var antiClickjack = document.getElementById("antiClickjack");
-          if (antiClickjack && antiClickjack.parentNode) {
-            antiClickjack.parentNode.removeChild(antiClickjack);
+        } catch (e) {
+          var fallback = document.getElementById('antiClickjack');
+          if (fallback && fallback.parentNode) {
+            fallback.parentNode.removeChild(fallback);
           }
         }
       })();
     </script>
 
     <!-- Fonts (from env variables) -->
-    <link href="%REACT_APP_FONTS_CINZEL%" rel="stylesheet" crossorigin="anonymous" referrerpolicy="no-referrer">
-    <link href="%REACT_APP_FONTS_MAIN%" rel="stylesheet" crossorigin="anonymous" referrerpolicy="no-referrer">
-    <link href="%REACT_APP_FONTS_EXTENDED%" rel="stylesheet" crossorigin="anonymous" referrerpolicy="no-referrer">
+    <link
+      href="%REACT_APP_FONTS_CINZEL%"
+      rel="stylesheet"
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link
+      href="%REACT_APP_FONTS_MAIN%"
+      rel="stylesheet"
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link
+      href="%REACT_APP_FONTS_EXTENDED%"
+      rel="stylesheet"
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
 
     <!-- Fallback fonts for noscript -->
     <noscript>
       <style>
-        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important; }
+        body {
+          font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+        }
       </style>
     </noscript>
 

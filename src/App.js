@@ -1081,6 +1081,7 @@ const OrderForm = React.memo(({
   // SECURITY: Enhanced state management with validation
   const [customerName, setCustomerName] = useState('');
   const [customerPhone, setCustomerPhone] = useState('');
+  const [customerEmail, setCustomerEmail] = useState('');
   const [BookingID, setBookingID] = useState('');
   const [dealershipName, setDealershipName] = useState('');
   const [dealershipAddress, setDealershipAddress] = useState('');
@@ -1091,93 +1092,8 @@ const OrderForm = React.memo(({
   const [termsChecked, setTermsChecked] = useState(false);
   const [showThanks, setShowThanks] = useState(false);
 
-  // SECURITY: Enhanced local toast management
-  const [localToasts, setLocalToasts] = useState([]);
-  const localPushToast = useCallback((message, variant = 'info', timeoutMs = 3000, onClose) => {
-    // Validate inputs
-    const safeMessage = validateInput(message, 'text');
-    const safeVariant = ['info', 'success', 'error', 'warning'].includes(variant) ? variant : 'info';
-    const safeTimeout = Math.max(1000, Math.min(10000, timeoutMs)); // Bounded timeout
-    
-    const id = Date.now() + Math.random();
-    setLocalToasts(prev => [...prev, { id, message: safeMessage, variant: safeVariant, onClose }]);
-    
-    setTimeout(() => {
-      setLocalToasts(prev => {
-        const removed = prev.find(t => t.id === id);
-        if (removed && typeof removed.onClose === 'function') {
-          try { 
-            removed.onClose(); 
-          } catch (err) { 
-            console.error('Toast onClose error:', err); 
-          }
-        }
-        return prev.filter(t => t.id !== id);
-      });
-    }, safeTimeout);
-  }, [validateInput]);
 
-  // SECURITY: Safe form validation
-  const validateForm = useCallback(() => {
-    const newErrors = {};
-
-    if (!customerName.trim()) {
-      newErrors.customerName = 'Customer name is required';
-    }
-
-    if (!isValidPhone(customerPhone)) {
-      newErrors.customerPhone = 'Valid 10-digit phone number is required';
-    }
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  }, [customerName, customerPhone, isValidPhone]);
-
-  // SECURITY: Enhanced state updates with validation
-  useEffect(() => {
-    if (BookingID && BookingID !== orderNo) {
-      const validatedBookingID = validateInput(BookingID, 'text');
-      setOrderNo(validatedBookingID);
-    }
-  }, [BookingID, validateInput]);
-
-  useEffect(() => {
-    if (orderNo && orderNo !== BookingID) {
-      const validatedOrderNo = validateInput(orderNo, 'text');
-      setBookingID(validatedOrderNo);
-    }
-  }, [orderNo, validateInput]);
-
-  // SECURITY: Enhanced input styling with validation feedback
-  const getInputStyle = useCallback((fieldName) => ({
-    width: '100%',
-    padding: '4px 0',
-    border: 'none',
-    borderBottom: errors[fieldName] ? '2px solid red' : '1px solid #000',
-    borderRadius: '0',
-    fontSize: '14px',
-    backgroundColor: 'transparent',
-    outline: 'none'
-  }), [errors]);
-
-  // SECURITY: Enhanced PDF generation with comprehensive validation
-  const handleDownloadOrder = useCallback(async () => {
-    // SECURITY: Validate all required fields
-    if (!validateForm()) {
-      localPushToast('Please fill in all required fields correctly.', 'error');
-      return;
-    }
-
-    try {
-      // Mock PDF generation - replace with actual implementation
-      localPushToast('PDF generated successfully!', 'success');
-    } catch (err) {
-      console.error('PDF generation failed:', err);
-      localPushToast('Failed to generate PDF. Please try again.', 'error');
-    }
-  }, [validateForm, localPushToast]);
-
-  // SECURITY: Memoized validated data for rendering
+    // **ADD THESE VALIDATED VARIABLES HERE:**
   const validatedVehicleModel = useMemo(() => 
     validateInput(selectedVehicleModel, 'text'), 
     [selectedVehicleModel, validateInput]
@@ -1207,6 +1123,1082 @@ const OrderForm = React.memo(({
     Math.max(1, parseInt(numSets) || 1), 
     [numSets]
   );
+
+  // SECURITY: Enhanced local toast management
+  const [localToasts, setLocalToasts] = useState([]);
+  const localPushToast = useCallback((message, variant = 'info', timeoutMs = 3000, onClose) => {
+    // Validate inputs
+    const safeMessage = validateInput(message, 'text');
+    const safeVariant = ['info', 'success', 'error', 'warning'].includes(variant) ? variant : 'info';
+    const safeTimeout = Math.max(1000, Math.min(10000, timeoutMs)); // Bounded timeout
+    
+    const id = Date.now() + Math.random();
+    setLocalToasts(prev => [...prev, { id, message: safeMessage, variant: safeVariant, onClose }]);
+    
+    setTimeout(() => {
+      setLocalToasts(prev => {
+        const removed = prev.find(t => t.id === id);
+        if (removed && typeof removed.onClose === 'function') {
+          try { 
+            removed.onClose(); 
+          } catch (err) { 
+            console.error('Toast onClose error:', err); 
+          }
+        }
+        return prev.filter(t => t.id !== id);
+      });
+    }, safeTimeout);
+  }, [validateInput]);
+
+  // SECURITY: Safe form validation
+ const validateForm = useCallback(() => {
+  const newErrors = {};
+
+  if (!customerName.trim()) {
+    newErrors.customerName = 'Customer name is required';
+  }
+
+  if (!isValidPhone(customerPhone)) {
+    newErrors.customerPhone = 'Valid 10-digit phone number is required';
+  }
+
+  // Optional email validation - only validate if email is provided
+  if (customerEmail.trim() && !isValidEmail(customerEmail)) {
+    newErrors.customerEmail = 'Please enter a valid email address';
+  }
+
+  setErrors(newErrors);
+  return Object.keys(newErrors).length === 0;
+}, [customerName, customerPhone, customerEmail, isValidPhone]);
+
+  // SECURITY: Enhanced state updates with validation
+  useEffect(() => {
+    if (BookingID && BookingID !== orderNo) {
+      const validatedBookingID = validateInput(BookingID, 'text');
+      setOrderNo(validatedBookingID);
+    }
+  }, [BookingID, validateInput]);
+
+  useEffect(() => {
+    if (orderNo && orderNo !== BookingID) {
+      const validatedOrderNo = validateInput(orderNo, 'text');
+      setBookingID(validatedOrderNo);
+    }
+  }, [orderNo, validateInput]);
+
+  // SECURITY: Enhanced input styling with validation feedback
+  const getInputStyle = useCallback((fieldName) => ({
+    width: '100%',
+    padding: '4px 0',
+    border: 'none',
+    borderBottom: errors[fieldName] ? '2px solid red' : '1px solid #000',
+    borderRadius: '0',
+    fontSize: '14px',
+    backgroundColor: 'transparent',
+    outline: 'none'
+  }), [errors]);
+
+  // SECURITY: Enhanced PDF generation with comprehensive validation
+const handleDownloadOrder = async () => {
+  // Security fix: gate by form validation with safe toast/alert
+  if (typeof validateForm === 'function' && !validateForm()) {
+    if (typeof localPushToast === 'function') {
+      localPushToast('Please fill in all required fields correctly.', 'error');
+    } else {
+      alert('Please fill in all required fields correctly.');
+    }
+    return;
+  }
+
+  if (!orderFormRef.current) return;
+
+  try {
+    const pdfDoc = await PDFDocument.create();
+    
+    // Convert mm to points (1mm = 2.834645669 points)
+    const mmToPt = (mm) => mm * 2.834645669;
+    
+    // CONFIGURABLE MARGINS - Adjust these values to increase/decrease margins
+    const topMargin = mmToPt(10);
+    const bottomMargin = mmToPt(10);
+    const leftMargin = mmToPt(10);
+    const rightMargin = mmToPt(10);
+
+    // Load fonts
+    const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
+    const boldFont = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
+    
+    // Get form
+    const form = pdfDoc.getForm();
+
+    const labelColor = rgb(0, 0, 0);
+    const valueColor = rgb(80/255, 80/255, 80/255);
+    const sectionBg = rgb(245/255, 245/255, 245/255);
+
+    const cleanDate = new Date(orderDate).toLocaleDateString('en-GB', {
+      day: '2-digit', month: '2-digit', year: 'numeric'
+    }).replace(/\//g, '-');
+
+    const safeCustomerName = (customerName || 'Customer').replace(/[^a-zA-Z0-9]/g, '_');
+
+    // Create shared order number variable
+    const sharedOrderNumber = BookingID || orderNo || '';
+
+    // HELPER FUNCTION: Add header and footer to any page
+    const addHeaderFooter = async (page, pageType = 'first') => {
+      const { width: pageWidth, height: pageHeight } = page.getSize();
+      
+      // Mahindra logo
+      const logoMarginLeft = mmToPt(7);
+      const logoMarginTop = pageHeight - mmToPt(6.5);
+      const logoMarginRight = mmToPt(10);
+      
+      try {
+        const logoResponse = await fetch('/logo-rec.png');
+        const logoBytes = await logoResponse.arrayBuffer();
+        const logoImage = await pdfDoc.embedPng(logoBytes);
+
+        const img = new Image();
+        const logoDataUrl = URL.createObjectURL(new Blob([logoBytes]));
+        img.src = logoDataUrl;
+
+        await new Promise(resolve => {
+          img.onload = resolve;
+        });
+
+        // Natural size converted to points
+        let logoWidth = mmToPt(img.width * 0.264583);
+        let logoHeight = mmToPt(img.height * 0.264583);
+        const aspectRatio = logoWidth / logoHeight;
+
+        // Desired max logo size
+        const maxWidth = mmToPt(40);
+        const maxHeight = mmToPt(40);
+
+        // Scale within max size
+        if (logoWidth > maxWidth) {
+          logoWidth = maxWidth;
+          logoHeight = logoWidth / aspectRatio;
+        }
+        if (logoHeight > maxHeight) {
+          logoHeight = maxHeight;
+          logoWidth = logoHeight * aspectRatio;
+        }
+
+        page.drawImage(logoImage, {
+          x: logoMarginLeft,
+          y: logoMarginTop - logoHeight,
+          width: logoWidth,
+          height: logoHeight,
+        });
+
+        URL.revokeObjectURL(logoDataUrl);
+      } catch (error) {
+        console.warn('Logo could not be loaded:', error);
+      }
+
+      // Add editable order number field based on page type
+      if (pageType === 'first') {
+        // Order info text (static)
+        page.drawText(`Order No :`, {
+          x: pageWidth - rightMargin - mmToPt(50),
+          y: pageHeight - topMargin - mmToPt(6),
+          size: 10,
+          font: font,
+          color: labelColor,
+        });
+
+        // Create editable Order Number field in header
+        const headerOrderNoField = form.createTextField("headerOrderNo");
+        headerOrderNoField.setText(sharedOrderNumber + (sharedOrderNumber && !sharedOrderNumber.endsWith('-P') ? '-P' : ''));
+        headerOrderNoField.addToPage(page, {
+          x: pageWidth - rightMargin - mmToPt(30),
+          y: pageHeight - topMargin - mmToPt(7),
+          width: mmToPt(30),
+          height: mmToPt(4),
+          borderWidth: 0,
+          backgroundColor: rgb(1, 1, 1, 0),
+        });
+        headerOrderNoField.setFontSize(9);
+      } else if (pageType === 'second') {
+        // Order info text (static)
+        page.drawText(`Order No :`, {
+          x: pageWidth - rightMargin - mmToPt(50),
+          y: pageHeight - topMargin - mmToPt(6),
+          size: 10,
+          font: font,
+          color: labelColor,
+        });
+
+        // Create editable Order Number field in second page header
+        const headerOrderNoFieldPage2 = form.createTextField("headerOrderNoPage2");
+        headerOrderNoFieldPage2.setText(sharedOrderNumber + (sharedOrderNumber && !sharedOrderNumber.endsWith('-P') ? '-P' : ''));
+        headerOrderNoFieldPage2.addToPage(page, {
+          x: pageWidth - rightMargin - mmToPt(30),
+          y: pageHeight - topMargin - mmToPt(7),
+          width: mmToPt(30),
+          height: mmToPt(4),
+          borderWidth: 0,
+          backgroundColor: rgb(1, 1, 1, 0),
+        });
+        headerOrderNoFieldPage2.setFontSize(9);
+      }
+
+      page.drawText(`Date : ${cleanDate}`, {
+        x: pageWidth - rightMargin - mmToPt(50),
+        y: pageHeight - topMargin - mmToPt(12),
+        size: 10,
+        font: font,
+        color: valueColor,
+      });
+
+      // Header line
+      page.drawLine({
+        start: { x: leftMargin, y: pageHeight - topMargin - mmToPt(18) },
+        end: { x: pageWidth - rightMargin, y: pageHeight - topMargin - mmToPt(18) },
+        thickness: mmToPt(0.5),
+        color: rgb(1, 153/255, 153/255),
+      });
+
+      // Footer line
+      page.drawLine({
+        start: { x: leftMargin, y: bottomMargin - mmToPt(2) },
+        end: { x: pageWidth - rightMargin, y: bottomMargin - mmToPt(2) },
+        thickness: 1,
+        color: rgb(1, 153/255, 153/255),
+      });
+    };
+
+    // ==================== FIRST PAGE ====================
+    const firstPage = pdfDoc.addPage([595.28, 841.89]); // A4 size in points
+    const { width: pageWidth, height: pageHeight } = firstPage.getSize();
+    
+    // Add header and footer to first page
+    await addHeaderFooter(firstPage, 'first');
+    
+    let currentY = pageHeight - topMargin;
+
+    // Helper function for invisible editable fields on FIRST PAGE
+    const addInvisibleEditableField = (name, x, y, width = mmToPt(50), height = mmToPt(4), defaultValue = '') => {
+      const textField = form.createTextField(name);
+      textField.setText(defaultValue);
+      textField.addToPage(firstPage, {
+        x,
+        y: y - height,
+        width,
+        height,
+        borderWidth: 0,
+        backgroundColor: rgb(1, 1, 1, 0),
+      });
+      textField.setFontSize(9);
+      return textField;
+    };
+
+    // Helper function for invisible editable fields on SECOND PAGE
+    const addInvisibleEditableFieldPage2 = (name, x, y, width = mmToPt(50), height = mmToPt(4), defaultValue = '') => {
+      const textField = form.createTextField(name);
+      textField.setText(defaultValue);
+      textField.addToPage(secondPage, {
+        x,
+        y: y - height,
+        width,
+        height,
+        borderWidth: 0,
+        backgroundColor: rgb(1, 1, 1, 0),
+      });
+      textField.setFontSize(9);
+      return textField;
+    };
+
+    // Updated addLabelValue function with selective editability
+    const addLabelValue = (label, value, x, y, labelWidth = mmToPt(45), fieldName = '', isEditable = false) => {
+      const safeValue = (value && value !== 'N/A') ? value : '';
+      
+      firstPage.drawText(label, {
+        x: x,
+        y: y,
+        size: 9,
+        font: boldFont,
+        color: labelColor,
+      });
+
+      if (fieldName && isEditable) {
+        addInvisibleEditableField(fieldName, x + labelWidth, y - mmToPt(1), mmToPt(60), mmToPt(4), safeValue);
+      } else {
+        firstPage.drawText(safeValue, {
+          x: x + labelWidth,
+          y: y,
+          size: 9,
+          font: font,
+          color: valueColor,
+        });
+      }
+    };
+
+    // FIXED: Updated addLabelValueWithWrap function with proper editability
+    const addLabelValueWithWrap = (label, value, x, y, labelWidth = mmToPt(45), maxWidth = mmToPt(80), fieldName = '', isEditable = false) => {
+      const safeValue = (value && value !== 'N/A') ? value : '';
+      
+      firstPage.drawText(label, {
+        x: x,
+        y: y,
+        size: 9,
+        font: boldFont,
+        color: labelColor,
+      });
+      
+      if (fieldName && isEditable) {
+        addInvisibleEditableField(fieldName, x + labelWidth, y - mmToPt(1), maxWidth - labelWidth, mmToPt(8), safeValue);
+        return mmToPt(Math.max(4, 5));
+      } else if (safeValue) {
+        const availableWidth = maxWidth - labelWidth;
+        firstPage.drawText(safeValue, {
+          x: x + labelWidth,
+          y: y,
+          size: 9,
+          font: font,
+          color: valueColor,
+          maxWidth: availableWidth,
+        });
+        return mmToPt(Math.max(4, 5));
+      }
+      return mmToPt(5);
+    };
+
+    currentY -= mmToPt(18);
+    
+    currentY -= mmToPt(4);
+
+    const addSectionHeader = (title) => {
+      firstPage.drawRectangle({
+        x: leftMargin,
+        y: currentY - mmToPt(8),
+        width: pageWidth - leftMargin - rightMargin,
+        height: mmToPt(8),
+        color: sectionBg,
+      });
+      
+      firstPage.drawText(title, {
+        x: leftMargin + mmToPt(1),
+        y: currentY - mmToPt(5.5),
+        size: 12,
+        font: boldFont,
+        color: labelColor,
+      });
+      
+      currentY -= mmToPt(12);
+    };
+
+    // DEALER & CUSTOMER DETAILS
+    addSectionHeader('DEALER & CUSTOMER DETAILS');
+
+    const dealerX = leftMargin;
+    const customerX = pageWidth / 2 + mmToPt(5);
+    let dealerY = currentY - mmToPt(3);
+    let customerY = currentY - mmToPt(3);
+
+    firstPage.drawText('DEALER INFORMATION', {
+      x: dealerX,
+      y: dealerY,
+      size: 10,
+      font: boldFont,
+      color: labelColor,
+    });
+
+    firstPage.drawText('CUSTOMER INFORMATION', {
+      x: customerX,
+      y: customerY,
+      size: 10,
+      font: boldFont,
+      color: labelColor,
+    });
+
+    dealerY -= mmToPt(6);
+    customerY -= mmToPt(6);
+
+    // Dealer info - Custom positioning for editable fields
+    firstPage.drawText('Dealer Name :', {
+      x: dealerX,
+      y: dealerY,
+      size: 9,
+      font: boldFont,
+      color: labelColor,
+    });
+    addInvisibleEditableField('dealerName', dealerX + mmToPt(45), dealerY - mmToPt(-3), mmToPt(40), mmToPt(4), dealershipName || '');
+    dealerY -= mmToPt(5);
+
+    firstPage.drawText('Accessory Manager :', {
+      x: dealerX,
+      y: dealerY,
+      size: 9,
+      font: boldFont,
+      color: labelColor,
+    });
+    addInvisibleEditableField('dealerManager', dealerX + mmToPt(45), dealerY - mmToPt(-3), mmToPt(40), mmToPt(4), dealershipManager || '');
+    dealerY -= mmToPt(5);
+
+    firstPage.drawText('Dealer Location :', {
+      x: dealerX,
+      y: dealerY,
+      size: 9,
+      font: boldFont,
+      color: labelColor,
+    });
+    addInvisibleEditableField('dealerLocation', dealerX + mmToPt(45), dealerY - mmToPt(-3), mmToPt(40), mmToPt(4), dealershipLocation || '');
+    dealerY -= mmToPt(7);
+
+    firstPage.drawText('Dealer Address :', {
+      x: dealerX,
+      y: dealerY,
+      size: 9,
+      font: boldFont,
+      color: labelColor,
+    });
+    addInvisibleEditableField('dealerAddress', dealerX + mmToPt(45), dealerY - mmToPt(-3.5), mmToPt(40), mmToPt(5), dealershipAddress || '');
+    dealerY -= mmToPt(6);
+
+    firstPage.drawText('Booking ID / OTF No :', {
+      x: dealerX,
+      y: dealerY,
+      size: 9,
+      font: boldFont,
+      color: labelColor,
+    });
+    const bookingIdField = addInvisibleEditableField(
+      "bookingId",
+      dealerX + mmToPt(45),
+      dealerY - mmToPt(-3),
+      mmToPt(40),
+      mmToPt(4),
+      sharedOrderNumber
+    );
+
+    // Customer info - NOT editable
+    addLabelValue('Customer Name :', customerName, customerX, customerY, mmToPt(35));
+    customerY -= mmToPt(5);
+    addLabelValue('Customer Phone :', customerPhone, customerX, customerY, mmToPt(35));
+    customerY -= mmToPt(5);
+    addLabelValue(customerEmail ? 'Customer Email :' : 'Customer Email :', customerEmail, customerX, customerY, mmToPt(35));
+    customerY -= mmToPt(5);
+
+    currentY = Math.min(dealerY, customerY) - mmToPt(2);
+    
+    firstPage.drawLine({
+      start: { x: leftMargin, y: currentY },
+      end: { x: pageWidth - rightMargin, y: currentY },
+      thickness: 1,
+      color: labelColor,
+    });
+    
+    currentY -= mmToPt(4);
+
+    // VEHICLE & PERSONALIZATION - NOT editable
+    addSectionHeader('VEHICLE & PERSONALIZATION');
+    
+    addLabelValue('Vehicle Model :', selectedVehicleModel, leftMargin, currentY, mmToPt(35));
+    addLabelValue('Accessory Kit :', selectedAccessory, pageWidth / 2 + mmToPt(5), currentY, mmToPt(35));
+    currentY -= mmToPt(6);
+    
+    addLabelValue('Personalized Text :', personalisedContent, leftMargin, currentY, mmToPt(35));
+    addLabelValue('Font Style :', selectedFont , pageWidth / 2 + mmToPt(5), currentY, mmToPt(35));
+    currentY -= mmToPt(6);
+    
+    const textColorName = textColors?.find(c => c.value === selectedColor)?.name || selectedColor;
+    addLabelValue('Thread Color :', textColorName, leftMargin, currentY, mmToPt(35));
+    
+    const boxSize = mmToPt(4);
+    const textWidth = font.widthOfTextAtSize(textColorName || '', 9);
+    const boxX = leftMargin + mmToPt(35) + textWidth + mmToPt(3);
+    const boxY = currentY - mmToPt(1);
+
+    if (selectedColor) {
+      firstPage.drawRectangle({
+        x: boxX,
+        y: boxY,
+        width: boxSize,
+        height: boxSize,
+        color: rgb(
+          parseInt(selectedColor.slice(1, 3), 16) / 255,
+          parseInt(selectedColor.slice(3, 5), 16) / 255,
+          parseInt(selectedColor.slice(5, 7), 16) / 255
+        ),
+        borderColor: labelColor,
+        borderWidth: 0.5,
+      });
+    }
+    
+    const quantityText = numSets
+      ? `${numSets} ${numSets === 1 ? 'Set' : 'Sets'}`
+      : '0 Sets';
+
+    addLabelValue(
+      'Quantity :',
+      quantityText,
+      pageWidth / 2 + mmToPt(5),
+      currentY,
+      mmToPt(35)
+    );    
+    currentY -= mmToPt(6);
+    
+    // Price information - NOT editable
+    const unitPrice = selectedAccessory && kitPrices?.[selectedAccessory]
+      ? parseInt(kitPrices[selectedAccessory].replace(/[^\d]/g, ''))
+      : 0;
+    const totalPrice = unitPrice * (Number(numSets) || 1);
+
+    firstPage.drawText('MRP :', {
+      x: leftMargin,
+      y: currentY,
+      size: 10,
+      font: boldFont,
+      color: labelColor,
+    });
+
+    const priceText = `Rs. ${totalPrice.toLocaleString()} (inclusive of all taxes)`;
+    firstPage.drawText(priceText, {
+      x: leftMargin + mmToPt(35),
+      y: currentY,
+      size: 9,
+      font: font,
+      color: valueColor,
+    });
+
+    currentY -= mmToPt(8);
+    
+    firstPage.drawLine({
+      start: { x: leftMargin, y: currentY },
+      end: { x: pageWidth - rightMargin, y: currentY },
+      thickness: 1,
+      color: labelColor,
+    });
+    
+    currentY -= mmToPt(4);
+
+    // DESIGN PREVIEW
+    addSectionHeader('DESIGN PREVIEW');
+
+    // Image capture and display - Use the same method as the working preview
+    const captureSeatView = async (seatView) => {
+      try {
+        const container = document.createElement('div');
+        container.style.position = 'fixed';
+        container.style.left = '-9999px';
+        container.style.top = '0';
+        container.style.width = '500px';
+        container.style.height = '390px';
+        container.style.background = '#fff';
+        document.body.appendChild(container);
+
+        const img = document.createElement('img');
+        img.crossOrigin = 'anonymous';
+        img.src = `/models/${selectedVehicleModel}/${seatView}/${selectedAccessory}.png`;
+        img.style.width = '100%';
+        img.style.height = '100%';
+        img.style.position = 'absolute';
+        img.style.top = '0';
+        img.style.left = '0';
+        container.appendChild(img);
+
+        await new Promise((resolve, reject) => {
+          let loaded = false;
+          
+          img.onload = () => {
+            loaded = true;
+            resolve();
+          };
+          
+          img.onerror = () => {
+            if (!loaded) {
+              console.warn(`Image failed to load: ${seatView}`);
+              const placeholder = document.createElement('div');
+              placeholder.style.width = '100%';
+              placeholder.style.height = '100%';
+              placeholder.style.background = '#f0f0f0';
+              placeholder.style.display = 'flex';
+              placeholder.style.alignItems = 'center';
+              placeholder.style.justifyContent = 'center';
+              placeholder.innerHTML = '<p>Image not available</p>';
+              container.appendChild(placeholder);
+              resolve();
+            }
+          };
+          
+          setTimeout(() => {
+            if (!loaded) {
+              console.warn(`Image load timeout: ${seatView}`);
+              resolve();
+            }
+          }, 5000);
+        });
+
+        const positions = pdfTextPositions[selectedVehicleModel]?.[seatView]?.[selectedAccessory] || [];
+        positions.forEach(position => {
+          const textEl = document.createElement('div');
+          textEl.textContent = personalisedContent;
+          textEl.style.position = 'absolute';
+          textEl.style.top = position.top;
+          textEl.style.left = position.left;
+          textEl.style.transform = `translate(-50%, -50%) ${position.rotation ? `rotate(${position.rotation}deg)` : ''}`;
+          textEl.style.fontFamily = selectedFont;
+          textEl.style.fontSize = `${position.fontSize?.desktop || 8}px`;
+          textEl.style.color = selectedColor;
+          textEl.style.fontStyle = 'italic';
+          textEl.style.fontWeight = 'bold';
+          textEl.style.WebkitTextStroke = '0.3px rgba(68, 68, 68, 0.5)';
+          textEl.style.textShadow = `1px 1px 1px rgba(33, 33, 33, 0.28), -1px -1px 1px rgba(71, 71, 71, 0.56), 0 0 2px rgba(37, 36, 36, 0.3)`;
+          textEl.style.pointerEvents = 'none';
+          textEl.style.whiteSpace = 'nowrap';
+          textEl.style.zIndex = '10';
+          container.appendChild(textEl);
+        });
+
+        const canvas = await html2canvas(container, {
+          scale: 2,
+          useCORS: true,
+          allowTaint: false,
+          backgroundColor: '#ffffff',
+          logging: false
+        });
+
+        document.body.removeChild(container);
+        return canvas.toDataURL('image/jpeg', 0.95);
+      } catch (error) {
+        console.error('Error capturing seat view:', error);
+        return 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTAwIiBoZWlnaHQ9IjM5MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZjBmMGYwIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxOCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZG9taW5hbnQtYmFzZWxpbmU9Im1pZGRsZSIgZmlsbD0iIzY2NiI+SW1hZ2UgTm90IEF2YWlsYWJsZTwvdGV4dD48L3N2Zz4=';
+      }
+    };
+
+    try {
+      const [frontImage, rearImage] = await Promise.all([
+        captureSeatView('Front Row'),
+        captureSeatView('Rear Row')
+      ]);
+
+      const imgW = (pageWidth - leftMargin - rightMargin - mmToPt(10)) / 2;
+      
+      const img1 = new Image(); 
+      img1.src = frontImage;
+      const img2 = new Image(); 
+      img2.src = rearImage;
+      
+      await Promise.all([
+        new Promise(resolve => img1.onload = resolve),
+        new Promise(resolve => img2.onload = resolve)
+      ]);
+      
+      const h1 = (img1.height / img1.width) * imgW;
+      const h2 = (img2.height / img2.width) * imgW;
+      const imgH = Math.max(h1, h2);
+
+      const frontImageBytes = await fetch(frontImage).then(res => res.arrayBuffer());
+      const rearImageBytes = await fetch(rearImage).then(res => res.arrayBuffer());
+      
+      const frontPdfImage = await pdfDoc.embedJpg(frontImageBytes);
+      const rearPdfImage = await pdfDoc.embedJpg(rearImageBytes);
+
+      firstPage.drawImage(frontPdfImage, {
+        x: leftMargin,
+        y: currentY - h1,
+        width: imgW,
+        height: h1,
+      });
+
+      firstPage.drawText('Front Row', {
+        x: leftMargin + imgW / 2 - mmToPt(8),
+        y: currentY - h1 - mmToPt(5),
+        size: 10,
+        font: font,
+        color: labelColor,
+      });
+
+      firstPage.drawImage(rearPdfImage, {
+        x: leftMargin + imgW + mmToPt(10),
+        y: currentY - h2,
+        width: imgW,
+        height: h2,
+      });
+
+      firstPage.drawText('Rear Row', {
+        x: leftMargin + imgW + mmToPt(10) + imgW / 2 - mmToPt(8),
+        y: currentY - h2 - mmToPt(5),
+        size: 10,
+        font: font,
+        color: labelColor,
+      });
+
+      currentY -= imgH + mmToPt(12);
+    }
+    
+    catch (error) {
+      console.warn('Could not load preview images:', error);
+      currentY -= mmToPt(50);
+    }
+
+    // DEALERSHIP AUTHENTICATION
+    addSectionHeader('DEALERSHIP AUTHENTICATION');
+
+    firstPage.drawText('Please affix the official dealership seal and provide an authorized signature below to validate this personalization.', {
+      x: leftMargin,
+      y: currentY,
+      size: 8,
+      font: font,
+      color: valueColor,
+    });
+
+    currentY -= mmToPt(7);
+
+    const authDealerX = leftMargin;
+    const authCustomerX = pageWidth / 2 + mmToPt(5);
+    let authDealerY = currentY;
+    let authCustomerY = currentY;
+
+    firstPage.drawText('Authorized Representative Name:', {
+      x: authDealerX,
+      y: authDealerY,
+      size: 9,
+      font: boldFont,
+      color: labelColor,
+    });
+    addInvisibleEditableField('authRepName', authDealerX + mmToPt(55), authDealerY - mmToPt(-4), mmToPt(40), mmToPt(5), '');
+    authDealerY -= mmToPt(7);
+
+    firstPage.drawText('Signature:', {
+      x: authDealerX,
+      y: authDealerY,
+      size: 9,
+      font: boldFont,
+      color: labelColor,
+    });
+    addInvisibleEditableField('signature', authDealerX + mmToPt(18), authDealerY - mmToPt(-5), mmToPt(50), mmToPt(8), '');
+    authDealerY -= mmToPt(7);
+
+    firstPage.drawText('Date:', {
+      x: authDealerX,
+      y: authDealerY,
+      size: 9,
+      font: boldFont,
+      color: labelColor,
+    });
+    addInvisibleEditableField('authDate', authDealerX + mmToPt(15), authDealerY - mmToPt(-3), mmToPt(40), mmToPt(4), '');
+
+    authCustomerY -= mmToPt(7);
+
+    firstPage.drawText('Customer Signature:', {
+      x: authCustomerX,
+      y: authCustomerY,
+      size: 9,
+      font: boldFont,
+      color: labelColor,
+    });
+    addInvisibleEditableField('customerSignature', authCustomerX + mmToPt(35), authCustomerY - mmToPt(-5), mmToPt(45), mmToPt(8), '');
+    authCustomerY -= mmToPt(7);
+
+    firstPage.drawText('Date:', {
+      x: authCustomerX,
+      y: authCustomerY,
+      size: 9,
+      font: boldFont,
+      color: labelColor,
+    });
+    addInvisibleEditableField('customerDate', authCustomerX + mmToPt(15), authCustomerY - mmToPt(-3), mmToPt(40), mmToPt(4), '');
+
+    currentY = Math.min(authDealerY, authCustomerY) - mmToPt(7);
+
+    firstPage.drawText('Note: Personalization will not be processed without dealership authentication.', {
+      x: leftMargin,
+      y: currentY,
+      size: 8,
+      font: font,
+      color: rgb(150/255, 0, 0),
+    });
+
+    currentY -= mmToPt(6);
+
+    // DELIVERY TIMELINE NOTICE
+    firstPage.drawText('Delivery Timeline Notice', {
+      x: leftMargin,
+      y: currentY,
+      size: 10,
+      font: boldFont,
+      color: labelColor,
+    });
+    
+    currentY -= mmToPt(5);
+
+    const deliveryText = 'Orders may require additional processing time. Delivery timelines may vary depending on the nature of customization and Dealership Location.                We appreciate your patience. Thank You for giving us the opportunity to serve you!';
+    const dealershipLabel = 'Dealership Location :';
+    const dealershipMessage = 'Orders need to be picked from the Dealership Location.';
+
+    function wrapText(text, font, fontSize, maxLineWidth) {
+      const words = text.split(' ');
+      let line = '';
+      let lines = [];
+
+      for (let word of words) {
+        const testLine = line + (line ? ' ' : '') + word;
+        const testWidth = font.widthOfTextAtSize(testLine, fontSize);
+
+        if (testWidth <= maxLineWidth) {
+          line = testLine;
+        } else {
+          if (line) lines.push(line);
+          line = word;
+        }
+      }
+      if (line) lines.push(line);
+
+      return lines;
+    }
+
+    const maxLineWidth = pageWidth - leftMargin - rightMargin;
+
+    const deliveryLines = wrapText(deliveryText, font, 8, maxLineWidth);
+    deliveryLines.forEach(textLine => {
+      firstPage.drawText(textLine, {
+        x: leftMargin,
+        y: currentY,
+        size: 8,
+        font: font,
+        color: labelColor,
+      });
+      currentY -= mmToPt(4);
+    });
+
+    currentY -= mmToPt(2);
+
+    firstPage.drawText(dealershipLabel, {
+      x: leftMargin,
+      y: currentY,
+      size: 8,
+      font: boldFont,
+      color: rgb(0, 0, 0),
+    });
+
+    const labelWidth = boldFont.widthOfTextAtSize(dealershipLabel + ' ', 8);
+
+    const dealerLines = wrapText(dealershipMessage, font, 8, maxLineWidth - labelWidth);
+
+    if (dealerLines.length > 0) {
+      firstPage.drawText(dealerLines[0], {
+        x: leftMargin + labelWidth,
+        y: currentY,
+        size: 8,
+        font: font,
+        color: labelColor,
+      });
+      currentY -= mmToPt(4);
+    }
+
+    for (let i = 1; i < dealerLines.length; i++) {
+      firstPage.drawText(dealerLines[i], {
+        x: leftMargin,
+        y: currentY,
+        size: 8,
+        font: font,
+        color: labelColor,
+      });
+      currentY -= mmToPt(4);
+    }
+
+    currentY -= mmToPt(4);
+
+    // ==================== SECOND PAGE (Terms & Conditions) ====================
+    const secondPage = pdfDoc.addPage([595.28, 841.89]); // A4 size in points
+    
+    // Add header and footer to second page
+    await addHeaderFooter(secondPage, 'second');
+    
+    let page2CurrentY = pageHeight - topMargin - mmToPt(22); // Start after header
+
+    // Terms & Conditions Section Header
+    secondPage.drawRectangle({
+      x: leftMargin,
+      y: page2CurrentY - mmToPt(8),
+      width: pageWidth - leftMargin - rightMargin,
+      height: mmToPt(8),
+      color: sectionBg,
+    });
+    
+    secondPage.drawText('TERMS & CONDITIONS', {
+      x: leftMargin + mmToPt(1),
+      y: page2CurrentY - mmToPt(5.5),
+      size: 12,
+      font: boldFont,
+      color: labelColor,
+    });
+    
+    page2CurrentY -= mmToPt(16);
+
+    const termsContent = [
+      'Once the order is confirmed, it cannot be Modified and cancelled.',
+      'The images represent the actual product, though the color of the image and product may slightly differ.',
+      'The product will be delivered within 15 working days from the date of order confirmation.',
+      'The product is non-returnable and non-refundable.'
+    ];
+
+    const maxTermsLineWidth = pageWidth - leftMargin - rightMargin - mmToPt(15);
+
+    termsContent.forEach((term, index) => {
+      secondPage.drawText('•', {
+        x: leftMargin + mmToPt(5),
+        y: page2CurrentY,
+        size: 11,
+        font: boldFont,
+        color: labelColor,
+      });
+
+      const wrappedLines = wrapText(term, font, 10, maxTermsLineWidth);
+      
+      wrappedLines.forEach((line, lineIndex) => {
+        secondPage.drawText(line, {
+          x: leftMargin + mmToPt(12),
+          y: page2CurrentY - (lineIndex * mmToPt(5)),
+          size: 10,
+          font: font,
+          color: labelColor,
+        });
+      });
+
+      page2CurrentY -= mmToPt(5) * wrappedLines.length + mmToPt(4);
+    });
+
+    page2CurrentY -= mmToPt(30);
+
+    // Customer signature section with EDITABLE fields
+    const signatureX = pageWidth / 2 + mmToPt(5);
+    const signatureY = pageHeight/2+  mmToPt(40);
+    const dateSignX = pageWidth / 2 + mmToPt(5);
+    const dateSignY = signatureY - mmToPt(20);
+
+    secondPage.drawText('Customer Signature:', {
+      x: signatureX,
+      y: signatureY,
+      size: 9,
+      font: boldFont,
+      color: labelColor,
+    });
+
+    addInvisibleEditableFieldPage2('termsCustomerSignature',
+      signatureX + mmToPt(35),
+      signatureY + mmToPt(5),
+      mmToPt(50), mmToPt(8), '');
+
+    secondPage.drawText('Date:', {
+      x: dateSignX,
+      y: dateSignY+ mmToPt(11),
+      size: 9,
+      font: boldFont,
+      color: labelColor,
+    });
+
+    addInvisibleEditableFieldPage2('termsDate',
+      dateSignX + mmToPt(15),
+      dateSignY + mmToPt(15),
+      mmToPt(40), mmToPt(6), '');
+
+    // Add JavaScript for field synchronization - Updated to include all order number fields
+    const javascript = `
+     var headerOrderNoField = this.getField("headerOrderNo");
+     var headerOrderNoFieldPage2 = this.getField("headerOrderNoPage2");
+     var bookingIdField = this.getField("bookingId");
+
+     function addSuffix(value) {
+       if (value == null || value.trim() === "") return "";
+       if (!value.endsWith("-P")) {
+         return value + "-P";
+       }
+       return value;
+     }
+
+     function syncAllOrderFields(sourceValue, excludeField) {
+       var processedValue = addSuffix(sourceValue.toUpperCase());
+       var bookingValue = sourceValue.toUpperCase().replace(/-P$/, '');
+       
+       if (excludeField !== "headerOrderNo" && headerOrderNoField) {
+         headerOrderNoField.value = processedValue;
+       }
+       if (excludeField !== "headerOrderNoPage2" && headerOrderNoFieldPage2) {
+         headerOrderNoFieldPage2.value = processedValue;
+       }
+       if (excludeField !== "bookingId" && bookingIdField) {
+         bookingIdField.value = bookingValue;
+       }
+     }
+
+     bookingIdField.setAction("Keystroke", "event.change = event.change.toUpperCase();");
+     bookingIdField.setAction("Validate", "if (event.value != '') { syncAllOrderFields(event.value, 'bookingId'); }");
+     bookingIdField.setAction("Blur", "if (event.value != '') { syncAllOrderFields(event.value, 'bookingId'); }");
+
+     headerOrderNoField.setAction("Keystroke", "event.change = event.change.toUpperCase();");
+     headerOrderNoField.setAction("Validate", "if (event.value != '') { syncAllOrderFields(event.value.replace(/-P$/, ''), 'headerOrderNo'); }");
+     headerOrderNoField.setAction("Blur", "if (event.value != '') { syncAllOrderFields(event.value.replace(/-P$/, ''), 'headerOrderNo'); }");
+
+     headerOrderNoFieldPage2.setAction("Keystroke", "event.change = event.change.toUpperCase();");
+     headerOrderNoFieldPage2.setAction("Validate", "if (event.value != '') { syncAllOrderFields(event.value.replace(/-P$/, ''), 'headerOrderNoPage2'); }");
+     headerOrderNoFieldPage2.setAction("Blur", "if (event.value != '') { syncAllOrderFields(event.value.replace(/-P$/, ''), 'headerOrderNoPage2'); }");
+   `;
+
+    pdfDoc.addJavaScript('syncFields', javascript);
+
+    const pdfBytes = await pdfDoc.save();
+    
+    const filename = `Mahindra_${safeCustomerName}_${cleanDate}.pdf`;
+    const blob = new Blob([pdfBytes], { type: 'application/pdf' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+
+    // Security fix: success toast
+    if (typeof localPushToast === 'function') {
+      localPushToast('Order PDF downloaded successfully!', 'success');
+    }
+  } catch (err) {
+    console.error('PDF generation failed:', err);
+    if (typeof localPushToast === 'function') {
+      localPushToast('Failed to generate PDF. Please try again.', 'error');
+    } else {
+      alert('Something went wrong while generating the PDF.');
+    }
+  }
+};
+
+
+
+  // // SECURITY: Memoized validated data for rendering
+  // const validatedVehicleModel = useMemo(() => 
+  //   validateInput(selectedVehicleModel, 'text'), 
+  //   [selectedVehicleModel, validateInput]
+  // );
+  
+  // const validatedAccessory = useMemo(() => 
+  //   validateInput(selectedAccessory, 'text'), 
+  //   [selectedAccessory, validateInput]
+  // );
+  
+  // const validatedPersonalisedContent = useMemo(() => 
+  //   validateInput(personalisedContent, 'text'), 
+  //   [personalisedContent, validateInput]
+  // );
+  
+  // const validatedSelectedFont = useMemo(() => 
+  //   validateInput(selectedFont, 'text'), 
+  //   [selectedFont, validateInput]
+  // );
+  
+  // const validatedSelectedColor = useMemo(() => 
+  //   validateInput(selectedColor, 'text'), 
+  //   [selectedColor, validateInput]
+  // );
+
+  // const validatedNumSets = useMemo(() => 
+  //   Math.max(1, parseInt(numSets) || 1), 
+  //   [numSets]
+  // );
 
   // Original styles maintained
   const orderFormRef = useRef(null);
@@ -1598,6 +2590,17 @@ const OrderForm = React.memo(({
                   style={getInputStyle('customerPhone')}
                 />
               </div>
+              <div style={{ marginBottom: '12px', display: 'flex', alignItems: 'center', gap: '4px' }}>
+  <label style={{ fontWeight: 'bold', minWidth: '140px' }}>Customer Email :</label>
+  <input 
+    name="customerEmail"
+    type="email" 
+    value={customerEmail} 
+    onChange={(e) => setCustomerEmail(validateInput(e.target.value, 'email'))} 
+    placeholder="Enter Customer Email (Optional)"
+    style={getInputStyle('customerEmail')}
+  />
+</div>
             </div>
 
             {/* Divider */}
@@ -1625,26 +2628,27 @@ const OrderForm = React.memo(({
                 <span>{validatedSelectedFont}</span>
               </div>
 
-              <div style={{ marginBottom: '12px', display: 'flex', alignItems: 'center', gap: '4px' }}>
-                <label style={{ fontWeight: 'bold', minWidth: '140px' }}>Thread :</label>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                  <span
-                    style={{
-                      width: '16px',
-                      height: '16px',
-                      backgroundColor: validatedSelectedColor,
-                      border: '1px solid #ccc',
-                      borderRadius: '3px'
-                    }}
-                  />
-                  <span>{textColors && textColors.find && textColors.find((c) => c.value === validatedSelectedColor)?.name || validatedSelectedColor}</span>
-                </div>
-              </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+  <label style={{ fontWeight: 'bold', minWidth: '140px' }}>Thread :</label>
+  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+    <span
+      style={{
+        width: '16px',
+        height: '16px',
+        backgroundColor: validatedSelectedColor,
+        border: '1px solid #ccc',
+        borderRadius: '3px'
+      }}
+    />
+    <span>{textColors.find((c) => c.value === validatedSelectedColor)?.name || 'Unknown'}</span>
+  </div>
+</div>
 
-              <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                <label style={{ fontWeight: 'bold', minWidth: '140px' }}>Qty :</label>
-                <span>{validatedNumSets}</span>
-              </div>
+             <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+  <label style={{ fontWeight: 'bold', minWidth: '140px' }}>Qty :</label>
+  <span>{validatedNumSets} {validatedNumSets === 1 ? 'set' : 'sets'}</span>
+</div>
+
 
               <div
                 style={{
@@ -2816,16 +3820,22 @@ const App = () => {
           setShowOrderForm(false);
           setIsPreviewOpen(true);
         }}
-        selectedVehicleModel={validateInput(selectedVehicleModel, 'vehicleModel')}
-        selectedSeatView={selectedSeatView}
-        selectedAccessory={validateInput(selectedAccessory, 'accessory')}
-        personalisedContent={validateInput(personalisedContent, 'personalized')}
-        selectedFont={validateInput(selectedFont, 'font')}
-        selectedColor={validateInput(selectedColor, 'color')}
-        numSets={validateInput(numSets, 'number')}
-        previewImage={previewImage}
-        pushToast={pushToast}
-        imageRef={imageRef}
+selectedVehicleModel={validateInput(selectedVehicleModel, 'vehicleModel')}
+  selectedSeatView={selectedSeatView}
+  selectedAccessory={validateInput(selectedAccessory, 'accessory')}
+  personalisedContent={validateInput(personalisedContent, 'personalized')}
+  selectedFont={validateInput(selectedFont, 'font')}
+  selectedColor={validateInput(selectedColor, 'color')}
+  numSets={validateInput(numSets, 'number')}
+  previewImage={previewImage}
+  pushToast={pushToast}
+  imageRef={imageRef}
+  textColors={textColors}
+  kitPrices={kitPrices}
+  previewTextPositions={previewTextPositions}
+  fontsLoaded={fontsLoaded}  // Add this if missing
+  isMobile={isMobile}        // Add this if missing
+        
       />
     );
   }
@@ -3276,7 +4286,7 @@ const App = () => {
             <p>Your PDF "{validateInput(downloadedFileName, 'text')}" has been downloaded successfully!</p>
             <button onClick={() => setShowSuccessPopup(false)}>OK</button>
           </div>
-        </div>
+        </div>  
       )}
 
       {showPopup && (
