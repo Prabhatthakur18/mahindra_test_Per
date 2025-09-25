@@ -10,31 +10,7 @@
       content="Mahindra Personalisation App - Customize your comfort kit with bespoke embroidery"
     />
 
-    <!-- Security Headers -->
-    <meta http-equiv="X-Content-Type-Options" content="nosniff" />
-    <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin" />
-    <meta http-equiv="Strict-Transport-Security" content="max-age=63072000; includeSubDomains; preload" />
-    <meta http-equiv="Cross-Origin-Opener-Policy" content="same-origin" />
-    <meta http-equiv="Cross-Origin-Embedder-Policy" content="require-corp" />
-
-    <!-- CSP hardened, no redirects in JS, allow nonce for inline script -->
-    <meta
-      http-equiv="Content-Security-Policy"
-      content="default-src 'self'; 
-               script-src 'self' 'nonce-{{RANDOM_NONCE}}'; 
-               style-src 'self' https://fonts.googleapis.com; 
-               font-src 'self' https://fonts.gstatic.com data:; 
-               img-src 'self' data: blob:; 
-               connect-src 'self'; 
-               object-src 'none'; 
-               media-src 'self'; 
-               frame-ancestors 'none'; 
-               form-action 'self'; 
-               base-uri 'self'; 
-               upgrade-insecure-requests;"
-    />
-
-    <!-- Anti-Clickjack: keep page hidden if framed (no redirect) -->
+    <!-- Anti-Clickjack: keep page hidden if framed -->
     <style id="antiClickjack">html { display: none !important; }</style>
     <script nonce="{{RANDOM_NONCE}}">
       (function () {
@@ -45,8 +21,6 @@
             if (antiClickjack && antiClickjack.parentNode) {
               antiClickjack.parentNode.removeChild(antiClickjack);
             }
-          } else {
-            // Page stays hidden if framed (antiClickjack + CSP enforcement)
           }
         } catch (e) {
           var fallback = document.getElementById('antiClickjack');
@@ -57,7 +31,7 @@
       })();
     </script>
 
-    <!-- Fonts (from env variables) -->
+    <!-- Fonts (validated server-side) -->
     <link
       href="%REACT_APP_FONTS_CINZEL%"
       rel="stylesheet"
